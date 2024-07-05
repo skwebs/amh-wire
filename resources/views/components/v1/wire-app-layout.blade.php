@@ -7,12 +7,36 @@
 
     <title>{{ $title ?? 'Page Title' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- <script src="{{ asset('tailwindcss-3.4.3.min.js') }}"></script> --}}
+
 </head>
 
-<body class="bg-gray-100">
-    <div class="mx-auto w-96 bg-gray-50 relative h-svh">
-        {{ $slot }}
+<body>
+    <div class="mx-auto w-96 bg-gray-50 relative">
+
+        @props(['heading', 'footer', 'href'])
+
+        <div {{ $attributes->class(['h-svh w-full flex flex-col']) }}>
+            {{-- <div {{ $heading->attributes->class(['']) }}>
+                {{ $heading }}
+            </div> --}}
+            <header class="bg-blue-700 text-white m-0 p-0 flex justify-between">
+                <div class="h-12 aspect-square">
+                    <x-back-arrow-link href="{{ $href }}" />
+                </div>
+                {{ $heading }}
+                <div class="h-12 aspect-square">
+
+                </div>
+            </header>
+
+            <main class="flex-grow">
+                {{ $slot }}
+            </main>
+
+            <footer {{ $footer->attributes->class(['text-gray-700']) }}>
+                {{ $footer }}
+            </footer>
+        </div>
     </div>
 </body>
 

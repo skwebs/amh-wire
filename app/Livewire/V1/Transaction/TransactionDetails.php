@@ -8,7 +8,7 @@ use Livewire\Component;
 class TransactionDetails extends Component
 {
 
-    #[Layout('layouts.wire')]
+    // #[Layout('layouts.wire')]
     public function render()
     {
         return view('livewire.v1.transaction.transaction-details');

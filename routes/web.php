@@ -4,6 +4,7 @@ use App\Livewire\V1\Customer\CreateCustomer;
 use App\Livewire\V1\Customer\CustomerDetails;
 use App\Livewire\V1\Customer\Customers;
 use App\Livewire\V1\Customer\UpdateCustomer;
+use App\Livewire\V1\Homepage;
 use App\Livewire\V1\Transaction\CreateTransaction;
 use App\Livewire\V1\Transaction\TransactionDetails;
 use App\Livewire\V1\Transaction\Transactions;
@@ -11,8 +12,10 @@ use App\Livewire\V1\Transaction\UpdateTransaction;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/c');
+    // return redirect('/c');
+    return view('homepage');
 });
+Route::get('/', Homepage::class)->name('homepage');
 // Route::view('/', 'welcome');
 
 // Route::view('dashboard', 'dashboard')

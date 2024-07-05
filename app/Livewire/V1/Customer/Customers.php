@@ -31,7 +31,7 @@ class Customers extends Component
         //     });
 
     }
-    #[Layout('layouts.wire')]
+    // #[Layout('layouts.wire')]
     public function render()
     {
         // dd($this->customers);

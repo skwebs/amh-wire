@@ -1,83 +1,50 @@
-<div class="relative overflow-clip">
+<x-wrapper-layout class=" bg-blue-50">
+    <x-slot:header class="bg-red-300">
 
-    <div class="mx-auto w-96 bg-gray-50 relative">
+        <x-header-all href="{{ route('customers') }}" :back="false">
+            Customers List
+        </x-header-all>
 
-        <div class="relative " x-data="{ shown: true, timeout: null }" x-init="@this.on('customer-created', () => {
-            clearTimeout(timeout);
-            shown = true;
-            timeout = setTimeout(() => { shown = false }, 2000);
-        })"
-            x-show.transition.out.opacity.duration.1500ms="shown" x-transition:leave.opacity.duration.1500ms
-            style="display: ;">
-            <div class="absolute bottom-2 right-0 bg-gray-800 text-white  px-3 py-1 rounded-lg">
-                {{ session('message') }}
-            </div>
-        </div>
-
-        <div class="bg-white h-dvh flex flex-col relative">
-            <div class="bg-blue-800 text-white p-2">
-                <span>Anshu Medical Hall</span>
-            </div>
+    </x-slot:header>
 
 
-            <div class="w-full p-2 flex gap-2">
-                <input type="search" name="search" id="search" class="rounded p-1 border w-full "> <button
-                    class="bg-sky-500 text-white px-3 rounded" type="submit">Search</button>
-            </div>
-            <div class="flex flex-col divide-y grow overflow-y-auto overflow-x-hidden">
+    <main class="flex-grow bg-blue-50 overflow-y-auto">
+        <div class="flex flex-col gap-1 grow overflow-y-auto overflow-x-hidden">
 
-                @foreach ($customers as $customer)
-                    <div
-                        class="overflow-hidden group/customer relative  w-full  min-h-14 border hover:bg-gray-50  transition-all duration-100 ">
-                        <a class="relative  w-full rounded h-full flex gap-1"
-                            href="{{ route('customer.transactions', $customer->id) }}" wire:navigate>
-                            <div class="aspect-square h-full bg-white  p-1">
-                                <div class="aspect-square h-full bg-white border rounded-full overflow-hidden">
-                                    <img src="https://via.placeholder.com/52" alt="Square Image"
-                                        class="object-cover w-full h-full">
-                                </div>
-                            </div>
-                            <div class="flex-grow max-w-52 text-clip">
-                                <div class="text-gray-700">{{ $customer->name }}</div>
-                                <div class="text-xs text-gray-500">{{ $customer->created_at->diffForHumans() }}</div>
-                                <div class="text-xs text-gray-500">{{ $customer->balance }}</div>
-                            </div>
+            @foreach ($customers as $customer)
+                <div class="w-full bg-white rounded flex h-14">
+                    <div class="p-[2px]">
+                        <div
+                            class="bg-green-50 aspect-square h-full rounded-full border flex justify-center items-center">
+                            photo
+                        </div>
+                    </div>
+                    <div class="bg-red-50 flex flex-col justify-center  flex-grow px-1">
+                        <a href="{{ route('customer.transactions', $customer->id) }}" wire:navigate>
+                            <div>Name</div>
+                            <div class="text-xs">Date</div>
                         </a>
                     </div>
-                @endforeach
-            </div>
+                    <div class=" bg-blue-100 h-full flex justify-center items-center gap-x-2">
+                        <div>
+                            2411244
+                        </div>
+                        <x-icons.chevron-right />
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </main>
 
-            <div class="w-full relative flex justify-end  bg-yellow-50 text-sm">
-                <a href="{{ route('customer.create') }}" wire:navigate
-                    class="absolute bottom-2 right-5 px-4 py-2 bg-red-700 text-white font-semibold rounded-3xl">Add
-                    Customer</a>
-            </div>
 
 
+    <x-slot:footer>
+        <div class="w-full flex justify-around p-2 border-t gap-2">
 
-
-            <div
-                class=" relative text-sm font-medium text-center text-gray-500 border-b border-t border-gray-200 dark:text-gray-400 dark:border-gray-700">
-                <ul class="flex gap-5 -mb-px justify-center">
-                    <li class="grow">
-                        <a href="#"
-                            class="inline-block py-4 px-1 border-t-2 border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Customer</a>
-                    </li>
-                    <li class="grow">
-                        <a href="#"
-                            class="inline-block py-4 px-1 text-blue-600 border-t-2 border-blue-600  active dark:text-blue-500 dark:border-blue-500"
-                            aria-current="page">Bills</a>
-                    </li>
-                    <li class="grow">
-                        <a href="#"
-                            class="inline-block py-4 px-1 border-t-2 border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Settings</a>
-                    </li>
-
-                </ul>
-            </div>
-
-            {{-- <livewire:customers.customers-modal /> --}}
+            <button href="{{ route('customer.create', ['customer' => $customer, 'type' => 'd']) }}" wire:navigate
+                class="bg-red-700 text-white px-4 py-1 rounded flex-grow">Add New Customer</button>
 
         </div>
-    </div>
-</div>
+    </x-slot:footer>
+
+</x-wrapper-layout>

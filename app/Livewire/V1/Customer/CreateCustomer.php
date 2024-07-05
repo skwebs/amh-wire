@@ -44,7 +44,7 @@ class CreateCustomer extends Component
     }
 
 
-    #[Layout('layouts.wire')]
+    // #[Layout('layouts.wire')]
     public function render()
     {
         return view('livewire.v1.customer.create-customer');

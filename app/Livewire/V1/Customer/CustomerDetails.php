@@ -11,7 +11,7 @@ class CustomerDetails extends Component
     public $customer;
     public $balance;
     public $latestTransaction;
-    #[Layout('layouts.wire')]
+    // #[Layout('layouts.wire')]
     public function mount(Customer $customer)
     {
         $this->customer = $customer;

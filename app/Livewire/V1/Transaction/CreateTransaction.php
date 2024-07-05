@@ -60,7 +60,7 @@ class CreateTransaction extends Component
         return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
     }
 
-    #[Layout('layouts.wire')]
+    // #[Layout('layouts.wire')]
     public function render()
     {
         return $this->type === 'debit' ? view('livewire.v1.transaction.create-debit-transaction') : view('livewire.v1.transaction.create-credit-transaction');

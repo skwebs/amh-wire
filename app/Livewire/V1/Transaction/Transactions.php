@@ -35,7 +35,7 @@ class Transactions extends Component
         $this->transactions = $customer->transactions()->get();
     }
 
-    #[Layout('layouts.wire')]
+    // #[Layout('layouts.wire')]
     public function render()
     {
         return view('livewire.v1.transaction.transactions');
