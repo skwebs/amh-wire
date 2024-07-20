@@ -1,10 +1,20 @@
 <x-wrapper-layout class=" bg-blue-50">
     <x-slot:header class="bg-red-300">
 
-        <x-header-all href="{{ route('customers') }}">
-            Customers List
-        </x-header-all>
+        <x-header-all href="{{ route('customer.transactions', $customer->id) }}" :back="true">
+            <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex justify-center items-center ">
+                <div class="aspect-square h-full">
+                    <x-icons.user-cirlce />
+                </div>
+                <div>
+                    <div class=" text-nowrap text-sm">{{ $customer->name }}</div>
+                    <div class="text-nowrap font-bold text-sm text-center">
+                        Customer Details
+                    </div>
+                </div>
+            </a>
 
+        </x-header-all>
     </x-slot:header>
 
 

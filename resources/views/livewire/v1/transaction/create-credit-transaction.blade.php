@@ -45,7 +45,16 @@
                     </div>
 
                 </div>
+                <div class="w-full flex justify-around p-2 gap-2">
 
+                    <a href="{{ route('customer.transactions', $customer) }}"
+                        class="text-center w-full inline-block bg-gray-700 hover:bg-gray-800 text-white rounded-md px-3 py-2 font-semibold">Go
+                        Back</a>
+
+                    <button type="submit"
+                        class=" w-full bg-green-700 hover:bg-green-800 text-white rounded-md px-3 py-2 font-semibold">Submit</button>
+
+                </div>
             </form>
 
 
@@ -58,12 +67,12 @@
     <x-slot:footer>
         <div class="w-full flex justify-around p-2 border-t gap-2">
 
-            <a href="{{ route('customer.transactions', $customer) }}"
+            {{-- <a href="{{ route('customer.transactions', $customer) }}"
                 class="text-center w-full inline-block bg-gray-700 hover:bg-gray-800 text-white rounded-md px-3 py-2 font-semibold">Go
                 Back</a>
 
             <button type="submit"
-                class=" w-full bg-green-700 hover:bg-green-800 text-white rounded-md px-3 py-2 font-semibold">Submit</button>
+                class=" w-full bg-green-700 hover:bg-green-800 text-white rounded-md px-3 py-2 font-semibold">Submit</button> --}}
 
         </div>
     </x-slot:footer>

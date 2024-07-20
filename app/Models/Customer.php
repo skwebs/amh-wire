@@ -33,6 +33,6 @@ class Customer extends Model
     {
         $debits = $this->transactions()->where('type', 'debit')->sum('amount');
         $credits = $this->transactions()->where('type', 'credit')->sum('amount');
-        return $credits - $debits;
+        return   $debits - $credits;
     }
 }

@@ -53,12 +53,12 @@
                 @endphp
 
                 <div
-                    class="  bg-white overflow-hidden group/customer relative text-xs  w-full  min-h-14 shadow hover:bg-gray-50  transition-all duration-100 ">
+                    class="  bg-white overflow-hidden group/customer relative text-xs  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
                     <a class="relative  w-full rounded h-full flex"
                         href="{{ route('customer.transaction.details', ['customer' => $customer->id, 'transaction' => $transaction]) }}"
                         wire:navigate>
 
-                        <div class="flex-grow px-2 py-1 text-xs flex flex-col justify-around">
+                        <div class="flex-grow px-2 py-2 text-xs flex flex-col justify-around">
                             <div class="text-gray-700">{{ $transaction->date }}</div>
                             <div>
                                 Bal. <span @class([

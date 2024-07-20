@@ -12,26 +12,37 @@
         <div class="flex flex-col gap-1 grow overflow-y-auto overflow-x-hidden">
 
             @foreach ($customers as $customer)
-                <div class="w-full bg-white rounded flex h-14">
-                    <div class="p-[2px]">
-                        <div
-                            class="bg-green-50 aspect-square h-full rounded-full border flex justify-center items-center">
-                            photo
+                <a href="{{ route('customer.transactions', $customer->id) }}" wire:navigate>
+                    <div class="w-full bg-white rounded flex h-14">
+                        <div class="p-[2px]">
+                            <div
+                                class="bg-green-50 aspect-square h-full rounded-full border flex justify-center items-center">
+                                photo
+                            </div>
                         </div>
-                    </div>
-                    <div class="bg-red-50 flex flex-col justify-center  flex-grow px-1">
-                        <a href="{{ route('customer.transactions', $customer->id) }}" wire:navigate>
-                            <div>Name</div>
-                            <div class="text-xs">Date</div>
-                        </a>
-                    </div>
-                    <div class=" bg-blue-100 h-full flex justify-center items-center gap-x-2">
-                        <div>
-                            2411244
+                        <div class=" flex flex-col justify-center  flex-grow px-1">
+                            <div>{{ $customer->name }}</div>
+                            <div class="text-xs">{{ $customer->created_at }}</div>
                         </div>
-                        <x-icons.chevron-right />
+
+                        <div class="h-full flex justify-center items-center gap-x-2">
+                            @php
+                                $balance = abs($customer->balance);
+                                $balanceClass =
+                                    $customer->balance > 0
+                                        ? 'text-red-600'
+                                        : ($customer->balance < 0
+                                            ? 'text-green-600'
+                                            : '');
+                            @endphp
+                            <div class="{{ $balanceClass }}">
+                                {{ $balance }}
+                            </div>
+                            <x-icons.chevron-right />
+                        </div>
+
                     </div>
-                </div>
+                </a>
             @endforeach
         </div>
     </main>

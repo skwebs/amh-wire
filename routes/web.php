@@ -30,12 +30,12 @@ Route::get('/', Homepage::class)->name('homepage');
 // customer routes
 Route::get('/c', Customers::class)->name('customers');
 Route::get('/c/c', CreateCustomer::class)->name('customer.create');
-Route::get('/c/d/{customer}', CustomerDetails::class)->name('customer.details');
-Route::get('/u/c/{customer}', UpdateCustomer::class)->name('customer.update');
+Route::get('/c/{customer}/d', CustomerDetails::class)->name('customer.details');
+Route::get('/c/{customer}/u', UpdateCustomer::class)->name('customer.update');
 // translation routes
 Route::get('/c/{customer}/t', Transactions::class)->name('customer.transactions');
 Route::get('/c/{customer}/c/t/{type}', CreateTransaction::class)->name('customer.transaction.create');
-Route::get('/c/{customer}/t/d/{transaction}', TransactionDetails::class)->name('customer.transaction.details');
-Route::get('/c/{customer}/u/t/{transaction}', UpdateTransaction::class)->name('customer.transaction.update');
+Route::get('/c/{customer}/t/{transaction}', TransactionDetails::class)->name('customer.transaction.details');
+Route::get('/c/{customer}/t/{transaction}/u', UpdateTransaction::class)->name('customer.transaction.update');
 
 require __DIR__ . '/auth.php';
