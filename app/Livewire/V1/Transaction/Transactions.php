@@ -18,7 +18,7 @@ class Transactions extends Component
         $balance = 0;
 
         foreach ($this->transactions as $transaction) {
-            if ($transaction->type === 'debit') {
+            if ($transaction->type === 'credit') {
                 $balance -= $transaction->amount;
             } else {
                 $balance += $transaction->amount;
