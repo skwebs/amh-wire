@@ -55,6 +55,22 @@
                 <button href="{{ route('customer.update', $customer) }}" wire:navigate
                     class="bg-blue-700 text-white px-4 py-1 rounded w-full">Edit</button>
             </div>
+            <div class="mt-5">
+                @php
+                    $url = route('customer.summary', [
+                        'customer' => $customer,
+                        'd' => strtotime($customer->created_at),
+                    ]);
+                    $msg = urlencode('Check out this link: ' . $url);
+                @endphp
+                {{-- @dd($customer->created_at->format('d-m-Y H:i:s')); --}}
+                <a class="bg-blue-700 text-white px-4 py-1 rounded w-full" href="sms:?body={{ $msg }}"
+                    class="share-button sms-button">Share via
+                    SMS</a>
+                <a class="bg-blue-700 text-white px-4 py-1 rounded w-full"
+                    href="https://api.whatsapp.com/send?text={{ $msg }}"
+                    class="share-button whatsapp-button">Share via WhatsApp</a>
+            </div>
 
         </div>
     </main>

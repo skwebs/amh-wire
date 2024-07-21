@@ -33,7 +33,12 @@
                 <tr class="border">
                     <th class="text-left p-2">Txn Date</th>
                     <td>:</td>
-                    <td>{{ $transaction->date }}</td>
+                    <td>{{ date('d-m-Y', strtotime($transaction->date)) }}</td>
+                </tr>
+                <tr class="border">
+                    <th class="text-left p-2">Txn Remarks</th>
+                    <td>:</td>
+                    <td>{{ $transaction->particulars }}</td>
                 </tr>
                 <tr class="border">
                     <th class="text-left p-2">Created At</th>

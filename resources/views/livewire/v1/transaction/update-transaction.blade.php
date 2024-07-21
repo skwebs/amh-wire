@@ -5,7 +5,6 @@
             href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}">
             Update Transaction Details
         </x-header-all>
-
     </x-slot:header>
 
 
@@ -15,8 +14,10 @@
                 {{ $customer->name }}</h2>
 
             <form class="flex flex-col gap-2" wire:submit="updateTransaction">
-
-                <div class="">
+                <x-input name="amount" label="Amount" placeholder="Amount" model="amount" />
+                <x-input name="date" label="Transaction Date" type="date" placeholder="Date" model="date" />
+                <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" />
+                {{-- <div class="">
 
                     <div class="">
                         <input type="text" name="amount" id="amount" autocomplete="currency"
@@ -66,15 +67,13 @@
                             <div class="text-red-600 text-xs">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="w-full flex justify-around p-2 gap-2">
-
+                <div class="w-full flex justify-around mt-2 gap-2">
                     <button type="submit"
                         class="{{ $type == 'credit' ? ' bg-green-700 hover:bg-green-800 ' : ' bg-red-700 hover:bg-red-800 ' }} w-full  text-white rounded-md px-3 py-2 font-semibold">Update</button>
                 </div>
             </form>
-
         </div>
 
     </main>

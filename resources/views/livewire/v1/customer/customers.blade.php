@@ -1,7 +1,7 @@
 <x-wrapper-layout class=" bg-blue-50">
     <x-slot:header class="bg-red-300">
 
-        <x-header-all>
+        <x-header-all href="/">
             Customers List
         </x-header-all>
 
@@ -17,7 +17,7 @@
                         <div class="p-[2px]">
                             <div
                                 class="bg-green-50 aspect-square h-full rounded-full border flex justify-center items-center">
-                                photo
+                                <x-icons.user-cirlce class="size-10" />
                             </div>
                         </div>
                         <div class=" flex flex-col justify-center  flex-grow px-1">
@@ -52,9 +52,8 @@
     <x-slot:footer>
         <div class="w-full flex justify-around p-2 border-t gap-2">
 
-            <button href="{{ route('customer.create', ['customer' => $customer, 'type' => 'd']) }}" wire:navigate
+            <button href="{{ route('customer.create') }}" wire:navigate
                 class="bg-red-700 text-white px-4 py-1 rounded flex-grow">Add New Customer</button>
-
         </div>
     </x-slot:footer>
 

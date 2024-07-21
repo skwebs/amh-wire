@@ -1,4 +1,3 @@
-<!-- resources/views/livewire/v1/transaction/transaction.blade.php -->
 <x-wrapper-layout class="{{ $transactionType === 'credit' ? 'bg-green-50' : 'bg-red-50 ' }}">
     <x-slot:header>
         <x-header-all class="{{ $transactionType === 'credit' ? 'bg-green-700' : 'bg-red-700 ' }}"
@@ -16,7 +15,7 @@
                 <x-input name="amount" label="Amount" placeholder="Amount" model="amount" />
                 <x-input name="date" label="Transaction Date" type="date" placeholder="Date" model="date" />
                 <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" />
-                <div class="w-full flex justify-around gap-2">
+                <div class="w-full flex justify-around">
                     <button type="submit"
                         class="w-full {{ $transactionType === 'credit' ? 'bg-green-700 hover:bg-green-800' : 'bg-red-700 hover:bg-red-800' }} text-white rounded-md px-3 py-2 font-semibold">
                         Submit

@@ -24,6 +24,7 @@ class UpdateTransaction extends Component
         $this->type = $transaction->type;
         $this->amount = $transaction->amount;
         $this->date = $transaction->date;
+        $this->particulars = $transaction->particulars;
         // $this->type = request('type') === 'd' ? 'debit' : (request('type') === 'c' ? 'credit' : null); // 'debit' or 'credit'
         // $this->date = now()->format('Y-m-d'); // default to current date if not provided by the user
     }
@@ -43,12 +44,13 @@ class UpdateTransaction extends Component
         ]);
 
         session()->flash('message', 'Transaction updated successfully.');
-        return $this->redirect(route('customer.transaction.details', ['customer' => $this->customer, 'transaction' => $this->transaction]), navigate: true);
-        // return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
+        // return $this->redirect(route('customer.transaction.details', ['customer' => $this->customer, 'transaction' => $this->transaction]), navigate: true);
+        return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
     }
     // #[Layout('layouts.wire')]
     public function render()
     {
+        // dd($this->transaction);
         return view('livewire.v1.transaction.update-transaction');
     }
 }

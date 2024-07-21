@@ -37,6 +37,7 @@ class CreateTransaction extends Component
     public function mount(Customer $customer)
     {
         $this->customer = $customer;
+
         $this->type = request('type') === 'd' ? 'debit' : (request('type') === 'c' ? 'credit' : null); // 'debit' or 'credit'
         $this->date = now()->format('Y-m-d'); // default to current date if not provided by the user
     }
