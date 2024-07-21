@@ -2,61 +2,82 @@
 
     <x-slot:header>
         <x-header-all href="{{ route('customer.transactions', $customer) }}" :back="true">
-
             Transaction Details
         </x-header-all>
 
     </x-slot:header>
 
 
-    <main class="flex-grow bg-blue-50 overflow-y-auto">
-        <div class="p-5">
-            <h2 class="mb-5 font-semibold text-blue-600 text-2xl">{{ $customer->name }}</h2>
-            <table class="table w-full border">
-                <tr class="odd:bg-gray-200">
-                    <td class="px-4 py-2 "> id </td>
-                    <td>:</td>
-                    <td class="px-4 py-2"> {{ $transaction->id }} </td>
-                </tr>
-                <tr class="odd:bg-gray-200">
-                    <td class="px-4 py-2 "> Amount </td>
-                    <td>:</td>
-                    <td class="px-4 py-2"> {{ $transaction->amount }} </td>
-                </tr>
-                <tr class="odd:bg-gray-200">
-                    <td class="px-4 py-2 "> Type </td>
-                    <td>:</td>
-                    <td class="px-4 py-2"> {{ $transaction->type }} </td>
-                </tr>
-                <tr class="odd:bg-gray-200">
-                    <td class="px-4 py-2 "> Date </td>
-                    <td>:</td>
-                    <td class="px-4 py-2"> {{ $transaction->date }} </td>
-                </tr>
-                <tr class="odd:bg-gray-200">
-                    <td class="px-4 py-2 "> Created At </td>
-                    <td>:</td>
-                    <td class="px-4 py-2"> {{ $transaction->created_at }} </td>
-                </tr>
-            </table>
+    <main class="flex-grow  overflow-y-auto {{ $transaction->type == 'debit' ? 'bg-red-50/20' : 'bg-green-50/20' }}">
 
+        <div class="p-5">
+            <table class="w-full">
+                <tr class="border">
+                    <th class="text-left p-2">Txn Id</th>
+                    <td>:</td>
+                    <td>{{ $transaction->id }}</td>
+                </tr>
+                <tr class="border">
+                    <th class="text-left p-2">Txn Amount</th>
+                    <td>:</td>
+                    <td>{{ $transaction->amount }}</td>
+                </tr>
+                <tr class="border">
+                    <th class="text-left p-2">Txn Type</th>
+                    <td>:</td>
+                    <td
+                        class="capitalize font-semibold {{ $transaction->type == 'debit' ? 'text-red-600' : 'text-green-600' }} ">
+                        {{ $transaction->type }}</td>
+                </tr>
+                <tr class="border">
+                    <th class="text-left p-2">Txn Date</th>
+                    <td>:</td>
+                    <td>{{ $transaction->date }}</td>
+                </tr>
+                <tr class="border">
+                    <th class="text-left p-2">Created At</th>
+                    <td>:</td>
+                    <td>{{ $transaction->created_at }}</td>
+                </tr>
+
+            </table>
+            <div class="w-full flex justify-around p-2 border-t gap-2">
+                <button
+                    href="{{ route('customer.transaction.update', ['customer' => $customer, 'transaction' => $transaction]) }}"
+                    wire:navigate
+                    class=" w-full
+                bg-red-700 hover:bg-red-800 text-white rounded-md px-3 py-2 font-semibold">Delete</button>
+
+                <button
+                    href="{{ route('customer.transaction.update', ['customer' => $customer, 'transaction' => $transaction]) }}"
+                    wire:navigate
+                    class=" w-full
+                bg-blue-700 hover:bg-blue-800 text-white rounded-md px-3 py-2 font-semibold">Edit</button>
+            </div>
 
         </div>
 
 
     </main>
-    {{-- route('customer.transactions', $customer) --}}
+
     <x-slot:footer>
         <div class="w-full flex justify-around p-2 border-t gap-2">
 
             <a href="{{ route('customer.transactions', $customer) }}"
-                class="text-center w-full inline-block bg-gray-700 hover:bg-gray-800 text-white rounded-md px-3 py-2 font-semibold">Go
+                class="text-center w-full inline-block bg-gray-600 hover:bg-gray-700 text-white rounded-md px-3 py-2 font-semibold">Go
                 Back</a>
-            <button type="submit" href="{{ route('customer.transactions', $transaction) }}"
+
+            {{-- <button
+                href="{{ route('customer.transaction.update', ['customer' => $customer, 'transaction' => $transaction]) }}"
+                wire:navigate
                 class=" w-full
-                bg-blue-700 hover:bg-blue-800 text-white rounded-md px-3 py-2 font-semibold">Update</button>
+                bg-red-700 hover:bg-red-800 text-white rounded-md px-3 py-2 font-semibold">Delete</button>
 
-
+            <button
+                href="{{ route('customer.transaction.update', ['customer' => $customer, 'transaction' => $transaction]) }}"
+                wire:navigate
+                class=" w-full
+                bg-blue-700 hover:bg-blue-800 text-white rounded-md px-3 py-2 font-semibold">Edit</button> --}}
         </div>
     </x-slot:footer>
 

@@ -2,7 +2,8 @@
 
     <x-header.item class="aspect-square">
         @isset($back)
-            <a class="aspect-square h-full flex justify-center items-center hover:bg-black/20" href="{{ $href }}">
+            <a class="aspect-square h-full flex justify-center items-center hover:bg-black/20" href="{{ $href }}"
+                wire:navigate>
                 <x-icons.left-arrow />
             </a>
             @endif

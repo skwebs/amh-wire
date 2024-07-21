@@ -45,7 +45,10 @@
                 </tr>
                 <tr class="border">
                     <th class="text-left p-2">Balance</th>
-                    <td>{{ $customer->balance }}</td>
+                    <td
+                        class="{{ $customer->balance > 0 ? 'text-red-600' : ($customer->balance < 0 ? 'text-green-600' : '') }}">
+                        {{ abs($customer->balance) }}
+                        {{ $customer->balance > 0 ? 'Dr' : ($customer->balance < 0 ? 'Cr' : '') }}</td>
                 </tr>
             </table>
 
@@ -60,7 +63,7 @@
             <button href="{{ route('customer.transactions', $customer) }}" wire:navigate
                 class="bg-gray-500 text-white px-4 py-1 rounded flex-grow">Go Back</button>
             <button href="{{ route('customer.update', $customer) }}" wire:navigate
-                class="bg-blue-700 text-white px-4 py-1 rounded flex-grow">Update</button>
+                class="bg-blue-700 text-white px-4 py-1 rounded flex-grow">Edit</button>
 
         </div>
     </x-slot:footer>
