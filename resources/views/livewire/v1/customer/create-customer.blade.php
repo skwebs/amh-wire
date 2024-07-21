@@ -2,7 +2,7 @@
     <x-slot:header class="bg-red-300">
 
         <x-header-all href="{{ route('customers') }}">
-            Customers List
+            Add New Customer
         </x-header-all>
 
     </x-slot:header>
@@ -10,7 +10,7 @@
 
     <main class="flex-grow bg-blue-50 overflow-y-auto">
         <div class="p-5">
-            <h2 class="mb-5 text-2xl text-green-700">Add Customer</h2>
+            {{-- <h2 class="mb-5 text-2xl text-green-700">Add Customer</h2> --}}
 
             <form class="flex flex-col gap-2" wire:submit="addCustomer">
                 <div class="">
@@ -81,5 +81,13 @@
 
         </div>
     </main>
+    <x-slot:footer>
+        <div class="w-full flex justify-around p-2 border-t gap-2">
 
+            <a href="{{ route('customers') }}"
+                class="text-center w-full inline-block bg-gray-600 hover:bg-gray-700 text-white rounded-md px-3 py-2 font-semibold">Go
+                Back</a>
+
+        </div>
+    </x-slot:footer>
 </x-wrapper-layout>

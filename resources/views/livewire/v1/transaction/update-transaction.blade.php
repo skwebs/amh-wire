@@ -1,9 +1,8 @@
 <x-wrapper-layout class=" bg-blue-50">
 
-    <x-slot:header class="bg-red-500">
-        <x-header-all
-            href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
-            :back="true">
+    <x-slot:header>
+        <x-header-all class="{{ $transaction->type == 'credit' ? ' bg-green-700 ' : ' bg-red-700  ' }}"
+            href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}">
             Update Transaction Details
         </x-header-all>
 
@@ -67,31 +66,21 @@
                             <div class="text-red-600 text-xs">{{ $message }}</div>
                         @enderror
                     </div>
-
                 </div>
-
-                {{-- {{ $type }} --}}
 
                 <div class="w-full flex justify-around p-2 gap-2">
 
-
-
                     <button type="submit"
                         class="{{ $type == 'credit' ? ' bg-green-700 hover:bg-green-800 ' : ' bg-red-700 hover:bg-red-800 ' }} w-full  text-white rounded-md px-3 py-2 font-semibold">Update</button>
-
                 </div>
             </form>
 
-
-
         </div>
-
 
     </main>
 
     <x-slot:footer>
         <div class="w-full flex justify-around p-2 border-t gap-2">
-
             <a href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
                 class="text-center w-full inline-block bg-gray-500 hover:bg-gray-600 text-white rounded-md px-3 py-2 font-semibold"
                 wire:navigate>Go

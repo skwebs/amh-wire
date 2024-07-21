@@ -1,7 +1,8 @@
 <x-wrapper-layout class=" bg-blue-50">
 
     <x-slot:header>
-        <x-header-all href="{{ route('customer.transactions', $customer) }}" :back="true">
+        <x-header-all class="{{ $transaction->type == 'credit' ? ' bg-green-700 ' : ' bg-red-700  ' }}"
+            href="{{ route('customer.transactions', $customer) }}">
             Transaction Details
         </x-header-all>
 
@@ -66,18 +67,6 @@
             <a href="{{ route('customer.transactions', $customer) }}"
                 class="text-center w-full inline-block bg-gray-600 hover:bg-gray-700 text-white rounded-md px-3 py-2 font-semibold">Go
                 Back</a>
-
-            {{-- <button
-                href="{{ route('customer.transaction.update', ['customer' => $customer, 'transaction' => $transaction]) }}"
-                wire:navigate
-                class=" w-full
-                bg-red-700 hover:bg-red-800 text-white rounded-md px-3 py-2 font-semibold">Delete</button>
-
-            <button
-                href="{{ route('customer.transaction.update', ['customer' => $customer, 'transaction' => $transaction]) }}"
-                wire:navigate
-                class=" w-full
-                bg-blue-700 hover:bg-blue-800 text-white rounded-md px-3 py-2 font-semibold">Edit</button> --}}
         </div>
     </x-slot:footer>
 

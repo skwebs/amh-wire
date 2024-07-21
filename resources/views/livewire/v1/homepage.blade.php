@@ -11,7 +11,8 @@
     <main class="flex-grow bg-blue-50 overflow-y-auto p-5">
         <div class="flex flex-col gap-1 grow overflow-y-auto overflow-x-hidden">
 
-            <a href="/c" wire:navigate class="bg-blue-600 rounded text-white px-5 py-3">Customer List</a>
+            <a href="{{ route('customers') }}" wire:navigate class="bg-blue-600 rounded text-white px-5 py-3">Customer
+                List</a>
         </div>
     </main>
 

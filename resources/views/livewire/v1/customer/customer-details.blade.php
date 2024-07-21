@@ -1,7 +1,7 @@
 <x-wrapper-layout class=" bg-blue-50">
     <x-slot:header class="bg-red-300">
 
-        <x-header-all href="{{ route('customer.transactions', $customer->id) }}" :back="true">
+        <x-header-all href="{{ route('customer.transactions', $customer->id) }}">
             <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex justify-center items-center ">
                 <div class="aspect-square h-full">
                     <x-icons.user-cirlce />
@@ -51,7 +51,10 @@
                         {{ $customer->balance > 0 ? 'Dr' : ($customer->balance < 0 ? 'Cr' : '') }}</td>
                 </tr>
             </table>
-
+            <div class="mt-5">
+                <button href="{{ route('customer.update', $customer) }}" wire:navigate
+                    class="bg-blue-700 text-white px-4 py-1 rounded w-full">Edit</button>
+            </div>
 
         </div>
     </main>
@@ -62,8 +65,7 @@
 
             <button href="{{ route('customer.transactions', $customer) }}" wire:navigate
                 class="bg-gray-500 text-white px-4 py-1 rounded flex-grow">Go Back</button>
-            <button href="{{ route('customer.update', $customer) }}" wire:navigate
-                class="bg-blue-700 text-white px-4 py-1 rounded flex-grow">Edit</button>
+
 
         </div>
     </x-slot:footer>

@@ -20,7 +20,8 @@
 
 
     <main class="flex-grow p-5">
-        <a href="/c" wire:navigate class="bg-blue-600 rounded text-white px-5 py-3">Customer List</a>
+        <a href="{{ route('customers') }}" wire:navigate class="bg-blue-600 rounded text-white px-5 py-3">Customer
+            List</a>
     </main>
 
     <x-slot:footer>

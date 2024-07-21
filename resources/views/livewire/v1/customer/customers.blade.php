@@ -1,7 +1,7 @@
 <x-wrapper-layout class=" bg-blue-50">
     <x-slot:header class="bg-red-300">
 
-        <x-header-all href="{{ route('customers') }}" :back="false">
+        <x-header-all>
             Customers List
         </x-header-all>
 
@@ -12,7 +12,7 @@
         <div class="flex flex-col gap-1 grow overflow-y-auto overflow-x-hidden">
 
             @foreach ($customers as $customer)
-                <a href="{{ route('customer.transactions', $customer->id) }}" wire:navigate>
+                <a href="{{ route('customer.transactions', $customer) }}" wire:navigate>
                     <div class="w-full bg-white rounded flex h-14">
                         <div class="p-[2px]">
                             <div

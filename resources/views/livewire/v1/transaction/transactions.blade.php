@@ -1,7 +1,11 @@
 <x-wrapper-layout class=" bg-blue-50">
 
     <x-slot:header>
-        <x-header-all href="{{ route('customers') }}" :back="true">
+        @php
+            $cBal = $this->calculateBalance();
+        @endphp
+        <x-header-all href="{{ route('customers') }}"
+            class="{{ $cBal > 0 ? 'bg-red-700' : ($cBal < 0 ? 'bg-green-700' : '') }}">
             <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex justify-center items-center ">
                 <div class="aspect-square h-full">
                     <x-icons.user-cirlce />
@@ -9,12 +13,9 @@
                 <div>
                     <div class=" text-nowrap text-sm">{{ $customer->name }}</div>
                     <div class="text-nowrap font-bold text-sm text-center">
-                        @php
-                            $cBal = $this->calculateBalance();
-                        @endphp
                         Bal: ₹
                         {{ number_format(abs($this->calculateBalance()), 2) }}
-                        <span class="{{ $cBal > 0 ? 'text-red-300' : ($cBal < 0 ? 'text-green-300' : '') }}">
+                        <span class="{{ $cBal > 0 ? 'text-red-200' : ($cBal < 0 ? 'text-green-300' : '') }}">
                             {{ $cBal > 0 ? 'Dr' : ($cBal < 0 ? 'Cr' : '') }}
                         </span>
                     </div>
@@ -87,12 +88,6 @@
                         <div
                             class="w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
                             {{ number_format(abs($balance), 2) }}
-
-                            {{-- @php
-                                $c = $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '');
-                                $type = $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : null);
-                            @endphp
-                            <span class="{{ $c }}">&nbsp;{{ $type }}</span> --}}
 
                             <span class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
                                 <span
