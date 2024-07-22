@@ -24,7 +24,8 @@ class Transactions extends Component
     {
         $this->sortDir = ($field == $this->sortField) ? ($this->sortDir == 'asc' ? 'desc' : 'asc') : 'asc';
         $this->sortField = $field;
-        $this->transactions = $this->customer->transactions()->orderBy($this->sortField, $this->sortDir)->get();
+        $this->fetchTransactions();
+        // $this->transactions = $this->customer->transactions()->orderBy($this->sortField, $this->sortDir)->orderBy('created_at', 'desc')->get();
     }
 
     // public function sortBy($field)
@@ -42,15 +43,16 @@ class Transactions extends Component
     public function mount(Customer $customer)
     {
         $this->customer = $customer;
-        $this->transactions = $customer->transactions()->orderBy($this->sortField, $this->sortDir)->get();
+        $this->fetchTransactions();
     }
 
-    // public function fetchTransactions()
-    // {
-    //     $this->transactions = $this->customer->transactions()
-    //         ->orderBy($this->sortField, $this->sortDir)
-    //         ->get();
-    // }
+    public function fetchTransactions()
+    {
+        $this->transactions = $this->customer->transactions()
+            ->orderBy($this->sortField, $this->sortDir)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
 
     // #[Layout('layouts.wire')]
     public function render()

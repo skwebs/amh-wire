@@ -1,50 +1,51 @@
 <x-wrapper-layout class=" bg-blue-50">
+    @if ($validated)
 
-    <x-slot:header>
-        @php
-            $cBal = $customer->balance;
-        @endphp
-        <x-header-all class="{{ $cBal > 0 ? 'bg-red-700' : ($cBal < 0 ? 'bg-green-700' : '') }}">
-            <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex justify-center items-center ">
-                <div class="aspect-square h-full">
-                    <x-icons.user-cirlce />
-                </div>
-                <div>
-                    <div class=" text-nowrap text-sm">{{ $customer->name }}</div>
-                    <div class="text-nowrap font-bold text-sm text-center">
-                        Bal: ₹
-                        {{ number_format(abs($cBal), 2) }}
-                        <span class="{{ $cBal > 0 ? 'text-red-200' : ($cBal < 0 ? 'text-green-300' : '') }}">
-                            {{ $cBal > 0 ? 'Dr' : ($cBal < 0 ? 'Cr' : '') }}
-                        </span>
+        <x-slot:header>
+            @php
+                $cBal = $customer->balance;
+            @endphp
+            <x-header-all class="{{ $cBal > 0 ? 'bg-red-700' : ($cBal < 0 ? 'bg-green-700' : '') }}">
+                <div class="flex justify-center items-center ">
+                    <div class="aspect-square h-full">
+                        <x-icons.user-cirlce />
+                    </div>
+                    <div>
+                        <div class=" text-nowrap text-sm">{{ $customer->name }}</div>
+                        <div class="text-nowrap font-bold text-sm text-center">
+                            Bal: ₹
+                            {{ number_format(abs($cBal), 2) }}
+                            <span class="{{ $cBal > 0 ? 'text-red-200' : ($cBal < 0 ? 'text-green-300' : '') }}">
+                                {{ $cBal > 0 ? 'Dr' : ($cBal < 0 ? 'Cr' : '') }}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </a>
 
-        </x-header-all>
-        <div class="flex font-semibold p-2 w-full py-1 border-b ">
-            <div wire:click="sortBy('date')" class="flex-[2] py-2">Date</div>
-            <div class="text-center flex-1 py-2 text-red-700">Dues</div>
-            <div class="text-center flex-1 py-2 text-green-600">Payment</div>
-            {{-- <div class="w-16 py-2 text-gray-600 text-nowrap">Balance</div> --}}
-        </div>
-    </x-slot:header>
+            </x-header-all>
+            <div class="flex font-semibold p-2 w-full py-1 border-b ">
+                <div wire:click="sortBy('date')" class="flex-[2] py-2">Date</div>
+                <div class="text-center flex-1 py-2 text-red-700">Dues</div>
+                <div class="text-center flex-1 py-2 text-green-600">Payment</div>
+                {{-- <div class="w-16 py-2 text-gray-600 text-nowrap">Balance</div> --}}
+            </div>
+        </x-slot:header>
 
 
-    <main class="flex-grow bg-blue-50 overflow-y-auto">
+        <main class="flex-grow bg-blue-50 overflow-y-auto">
 
-        <div id="transactions-table-body" x-data x-init="$nextTick(() => {
-            const el = document.getElementById('transactions-table-body');
-            el.scrollTop = el.scrollHeight;
-        })"
-            @transactionsUpdated.window="$nextTick(() => { const el = document.getElementById('transactions-table-body'); el.scrollTop = el.scrollHeight; })"
-            class="bg-gray-100 flex flex-col gap-y grow overflow-y-auto overflow-x-hidden py-2">
+            <div id="transactions-table-body" x-data x-init="$nextTick(() => {
+                const el = document.getElementById('transactions-table-body');
+                el.scrollTop = el.scrollHeight;
+            })"
+                @transactionsUpdated.window="$nextTick(() => { const el = document.getElementById('transactions-table-body'); el.scrollTop = el.scrollHeight; })"
+                class="bg-gray-100 flex flex-col gap-y grow overflow-y-auto overflow-x-hidden py-2">
 
-            @php
-                $balance = 0;
-            @endphp
+                @php
+                    $balance = 0;
+                @endphp
 
-            @if ($validated)
+
                 @foreach ($transactions as $transaction)
                     {{-- @php
                 if ($transaction->type === 'credit') {
@@ -94,17 +95,19 @@
                         </div>
                     </div>
                 @endforeach
-            @else
-                Invalid link
-            @endif
+
+            </div>
+
+        </main>
+
+        <x-slot:footer>
+            <div class="w-full flex justify-around p-2 border-t ">
+                This is online generated statement
+            </div>
+        </x-slot:footer>
+    @else
+        <div class="">
+            <div class="bg-red-600 text-white p-3">Invalid link</div>
         </div>
-
-    </main>
-
-    <x-slot:footer>
-        <div class="w-full flex justify-around p-2 border-t ">
-            This is online generated statement
-        </div>
-    </x-slot:footer>
-
+    @endif
 </x-wrapper-layout>

@@ -1,7 +1,7 @@
 <x-wrapper-layout class=" bg-blue-50">
     <x-slot:header class="bg-red-300">
 
-        <x-header-all href="/">
+        <x-header-all href="{{ route('homepage') }}">
             Customers List
         </x-header-all>
 

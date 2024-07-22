@@ -21,7 +21,7 @@ class CustomerSummary extends Component
         if (strtotime($customer->created_at) === $this->d) {
             $this->validated = true;
             $this->customer = $customer;
-            $this->transactions = $customer->transactions()->orderBy('date', 'desc')->get();
+            $this->transactions = $customer->transactions()->orderBy('date', 'desc')->orderBy('created_at', 'desc')->get();
         }
         // $this->transactions = $customer->transactions()->orderBy('date', 'desc')->orderBy('id', 'desc')->get();
     }

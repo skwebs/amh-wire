@@ -1,6 +1,6 @@
 @props(['header', 'footer'])
 
-<div {{ $attributes->merge(['class' => 'h-svh mx-auto w-96 bg-gray-50 relative flex flex-col']) }}>
+<div {{ $attributes->merge(['class' => 'h-svh mx-auto w-full md:w-96 bg-gray-50 relative flex flex-col']) }}>
     @if (isset($header))
         <div {{ $header->attributes->merge(['class' => '']) }}>
             {{ $header }}

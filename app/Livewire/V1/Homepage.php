@@ -5,6 +5,7 @@ namespace App\Livewire\V1;
 use App\Models\Customer;
 use App\Models\Transaction;
 use Livewire\Component;
+use Illuminate\Support\Facades\Cache;
 
 class Homepage extends Component
 {
@@ -14,16 +15,20 @@ class Homepage extends Component
 
     public function mount()
     {
-        // Retrieve all transactions
-        $this->transactions = Transaction::all();
-
-        // Calculate debits and credits
-        $debits = $this->transactions->where('type', 'debit')->sum('amount');
-        $credits = $this->transactions->where('type', 'credit')->sum('amount');
+        // Calculate debits and credits directly in the database
+        $debits = Transaction::where('type', 'debit')->sum('amount');
+        $credits = Transaction::where('type', 'credit')->sum('amount');
 
         // Calculate balance
         $this->balance =  $debits - $credits;
-        $this->customerNumber = Customer::count();
+
+        // Retrieve and cache customer count
+        $this->customerNumber = Cache::remember('customer_count', 60, function () {
+            return Customer::count();
+        });
+
+        // Optionally, limit the number of transactions retrieved if only a subset is needed
+        $this->transactions = Transaction::latest()->take(100)->get(); // Example: Get the latest 100 transactions
     }
 
     public function render()
