@@ -2,6 +2,7 @@
 
 namespace App\Livewire\V1;
 
+use App\Models\Customer;
 use App\Models\Transaction;
 use Livewire\Component;
 
@@ -9,13 +10,20 @@ class Homepage extends Component
 {
     public $transactions;
     public $balance;
+    public $customerNumber;
 
     public function mount()
     {
-        $this->transactions = new Transaction();
-        $debits = Transaction::where('type', 'debit')->sum('amount');
-        $credits = Transaction::where('type', 'credit')->sum('amount');
-        $this->balance =   $debits - $credits;
+        // Retrieve all transactions
+        $this->transactions = Transaction::all();
+
+        // Calculate debits and credits
+        $debits = $this->transactions->where('type', 'debit')->sum('amount');
+        $credits = $this->transactions->where('type', 'credit')->sum('amount');
+
+        // Calculate balance
+        $this->balance =  $debits - $credits;
+        $this->customerNumber = Customer::count();
     }
 
     public function render()

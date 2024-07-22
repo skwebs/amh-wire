@@ -9,7 +9,9 @@
 
 
     <main class="flex-grow bg-blue-50 overflow-y-auto p-5">
-        <div class="mb-5 bg-blue-700 px-3 py-1 text-white rounded-md inline-block">Total Dues {{ $balance }} Rupees
+        <div class="mb-5 bg-blue-700 px-3 py-1 text-white rounded-md inline-block">Total Customers :{{ $customerNumber }}
+        </div>
+        <div class="mb-5 bg-blue-700 px-3 py-1 text-white rounded-md inline-block">Total Dues : {{ $balance }}/-
         </div>
         <div class="flex flex-col gap-1 grow overflow-y-auto overflow-x-hidden">
 
