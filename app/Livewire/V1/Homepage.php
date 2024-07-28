@@ -4,14 +4,25 @@ namespace App\Livewire\V1;
 
 use App\Models\Customer;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Cache;
+
+
 
 class Homepage extends Component
 {
     public $transactions;
     public $balance;
     public $customerNumber;
+
+    public function logout(){
+        Auth::guard('web')->logout();
+
+        Session::invalidate();
+        Session::regenerateToken();
+    }
 
     public function mount()
     {

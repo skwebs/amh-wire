@@ -16,21 +16,21 @@ Route::get('/', function () {
     // return redirect('/c');
     return view('homepage');
 });
-Route::get('/', Homepage::class)->name('homepage');
-
-// Customer Public Route
 Route::get('/customer/{customer}/summary', CustomerSummary::class)->name('customer.summary');
+Route::middleware('auth')->group(function () {
+    Route::get('/', Homepage::class)->name('homepage');
+    // Customer Public Route
 
-// Customer routes
-Route::get('/customers', Customers::class)->name('customers');
-Route::get('/customers/create', CreateCustomer::class)->name('customer.create');
-Route::get('/customers/{customer}/details', CustomerDetails::class)->name('customer.details');
-Route::get('/customers/{customer}/edit', UpdateCustomer::class)->name('customer.update');
+    // Customer routes
+    Route::get('/customers', Customers::class)->name('customers');
+    Route::get('/customers/create', CreateCustomer::class)->name('customer.create');
+    Route::get('/customers/{customer}/details', CustomerDetails::class)->name('customer.details');
+    Route::get('/customers/{customer}/edit', UpdateCustomer::class)->name('customer.update');
 
-// Transaction routes
-Route::get('/customers/{customer}/transactions', Transactions::class)->name('customer.transactions');
-Route::get('/customers/{customer}/transactions/create', CreateTransaction::class)->name('customer.transaction.create');
-Route::get('/customers/{customer}/transactions/{transaction}', TransactionDetails::class)->name('customer.transaction.details');
-Route::get('/customers/{customer}/transactions/{transaction}/edit', UpdateTransaction::class)->name('customer.transaction.update');
-
+    // Transaction routes
+    Route::get('/customers/{customer}/transactions', Transactions::class)->name('customer.transactions');
+    Route::get('/customers/{customer}/transactions/create', CreateTransaction::class)->name('customer.transaction.create');
+    Route::get('/customers/{customer}/transactions/{transaction}', TransactionDetails::class)->name('customer.transaction.details');
+    Route::get('/customers/{customer}/transactions/{transaction}/edit', UpdateTransaction::class)->name('customer.transaction.update');
+});
 require __DIR__ . '/auth.php';

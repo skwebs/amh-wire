@@ -26,7 +26,7 @@
 
 
     <x-slot:footer>
-        =
+
     </x-slot:footer>
 
 </x-wrapper-layout>
