@@ -42,18 +42,11 @@
             class="bg-gray-100 flex flex-col gap-y grow overflow-y-auto overflow-x-hidden py-2">
 
             @php
-                $balance = 0;
+                $balance = $this->calculateBalance();
 
             @endphp
 
             @foreach ($transactions as $transaction)
-                {{-- @php
-                    if ($transaction->type === 'credit') {
-                        $balance -= $transaction->amount;
-                    } else {
-                        $balance += $transaction->amount;
-                    }
-                @endphp --}}
 
                 <div
                     class=" border-t-2 bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
@@ -62,17 +55,17 @@
                         wire:navigate>
 
                         <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
-                            <div class="text-gray-700">{{ $transaction->date }}</div>
+                            <div class="text-gray-700">{{ date('d-m-Y', strtotime( $transaction->date)) }}</div>
                             <div>
 
-                                {{-- Bal. <span @class([
+                                Bal. <span @class([
                                     '' => $balance === 0,
                                     'bg-green-50 text-green-600' => $balance < 0,
                                     'bg-red-50 text-red-600' => $balance >= 0,
                                     'w-fit px-2',
                                 ])>
                                     {{ number_format(abs($balance), 2) }}
-                                </span> --}}
+                                </span>
                             </div>
                         </div>
                         <div
@@ -96,6 +89,14 @@
                         </div> --}}
                     </a>
                 </div>
+
+                @php
+                    if ($transaction->type === 'credit') {
+                        $balance += $transaction->amount;
+                    } else {
+                        $balance -= $transaction->amount;
+                    }
+                @endphp
             @endforeach
         </div>
 
