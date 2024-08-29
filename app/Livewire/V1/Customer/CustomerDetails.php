@@ -4,6 +4,7 @@ namespace App\Livewire\V1\Customer;
 
 use App\Models\Customer;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class CustomerDetails extends Component
@@ -20,6 +21,8 @@ class CustomerDetails extends Component
         $this->balance = $credit - $debit;
         $this->latestTransaction = $customer->transactions()->first();
     }
+
+    #[Title('Customers Details')]
     public function render()
     {
         return view('livewire.v1.customer.customer-details');

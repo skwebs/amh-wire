@@ -46,54 +46,74 @@
 
             @endphp
 
-            @foreach ($transactions as $transaction)
-                <div
-                    class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
-                    <a class="relative  w-full rounded h-full flex"
-                        href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
-                        wire:navigate>
+            @foreach ($transactions as $date => $groupedTransaction)
+                <span class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
+                @foreach ($groupedTransaction as $transaction)
+                    <div
+                        class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
+                        <a class="relative  w-full rounded h-full flex"
+                            href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
+                            wire:navigate>
 
-                        <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
-                            <div class="text-gray-700">{{ date('d-m-Y', strtotime($transaction->date)) }}</div>
-                            <div>
-                                <span class="bg-amber-50 text-amber-600">
-                                    <span
-                                        class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-2">
-                                        Bal. ₹ {{ number_format(abs($balance), 2) }}
+                            <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
+                                <div class="text-gray-700">{{ date('d-m-Y', strtotime($transaction->date)) }}</div>
+                                <div>
+                                    <span class="bg-amber-50 text-amber-600">
+                                        <span
+                                            class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-2">
+                                            Bal. ₹ {{ number_format(abs($balance), 2) }}
+                                        </span>
                                     </span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex-1 px-2 flex items-center justify-end font-semibold bg-red-50/50 text-red-600 text-right">
+                                {{ $transaction->type === 'debit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
+
+                            </div>
+                            <div
+                                class="flex-1 px-2 flex items-center justify-end font-semibold bg-green-50/50 text-green-600 text-right">
+                                {{ $transaction->type === 'credit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
+
+                            </div>
+
+                            <div
+                                class="w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
+                                {{ number_format(abs($balance), 2) }}
+
+                                <span
+                                    class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
+                                    <span
+                                        class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
                                 </span>
                             </div>
-                        </div>
-                        <div
-                            class="flex-1 px-2 flex items-center justify-end font-semibold bg-red-50/50 text-red-600 text-right">
-                            {{ $transaction->type === 'debit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
 
-                        </div>
-                        <div
-                            class="flex-1 px-2 flex items-center justify-end font-semibold bg-green-50/50 text-green-600 text-right">
-                            {{ $transaction->type === 'credit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
+                        </a>
+                    </div>
 
-                        </div>
-                        {{-- <div
-                            class="w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
-                            {{ number_format(abs($balance), 2) }}
-
-                            <span class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
-                                <span
-                                    class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
-                            </span>
-                        </div> --}}
-                    </a>
-                </div>
-
-                @php
-                    if ($transaction->type === 'credit') {
-                        $balance += $transaction->amount;
-                    } else {
-                        $balance -= $transaction->amount;
-                    }
-                @endphp
+                    @php
+                        if ($transaction->type === 'credit') {
+                            $balance += $transaction->amount;
+                        } else {
+                            $balance -= $transaction->amount;
+                        }
+                    @endphp
+                @endforeach
             @endforeach
+
+            {{-- @foreach ($transactions as $date => $groupedTransaction)
+                <h2>{{ $date }}</h2>
+            @endforeach --}}
+
+            {{-- @foreach ($transactions as $date => $dailyTransactions)
+                <h3>{{ $date }}</h3>
+                <ul>
+                    @foreach ($dailyTransactions as $transaction)
+                        <li>{{ $transaction->particulars }}: {{ $transaction->amount }}</li>
+                    @endforeach
+                </ul>
+            @endforeach --}}
+
         </div>
 
     </main>

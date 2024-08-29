@@ -3,6 +3,7 @@
 namespace App\Livewire\V1\Customer;
 
 use App\Models\Customer;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -27,6 +28,7 @@ class CustomerSummary extends Component
     }
 
 
+    #[Title('Customer Summary')]
     public function render()
     {
 

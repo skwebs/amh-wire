@@ -5,6 +5,7 @@ namespace App\Livewire\V1\Transaction;
 use App\Models\Customer;
 use App\Models\Transaction;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class TransactionDetails extends Component
@@ -23,6 +24,7 @@ class TransactionDetails extends Component
     }
 
     // #[Layout('layouts.wire')]
+    #[Title('Transaction Details')]
     public function render()
     {
         return view('livewire.v1.transaction.transaction-details');

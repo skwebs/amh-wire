@@ -4,6 +4,7 @@ namespace App\Livewire\V1\Customer;
 
 use App\Models\Customer;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class CreateCustomer extends Component
@@ -45,6 +46,7 @@ class CreateCustomer extends Component
 
 
     // #[Layout('layouts.wire')]
+    #[Title('Create Customer')]
     public function render()
     {
         return view('livewire.v1.customer.create-customer');

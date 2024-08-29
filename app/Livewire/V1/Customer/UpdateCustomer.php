@@ -3,6 +3,7 @@
 namespace App\Livewire\V1\Customer;
 
 use App\Models\Customer;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class UpdateCustomer extends Component
@@ -55,6 +56,7 @@ class UpdateCustomer extends Component
 
         // href="{{ route('customer.transaction.details', ['customer' => $customer->id, 'transaction' => $transaction]) }}"
     }
+    #[Title('Update Customer')]
     public function render()
     {
         // dd($this->customer);

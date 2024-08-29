@@ -3,6 +3,7 @@
 namespace App\Livewire\V1\Transaction;
 
 use App\Models\Customer;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class CreateTransaction extends Component
@@ -39,6 +40,7 @@ class CreateTransaction extends Component
         return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
     }
 
+    #[Title('Create Transaction')]
     public function render()
     {
         return view('livewire.v1.transaction.create-transaction', [

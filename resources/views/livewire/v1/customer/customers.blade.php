@@ -13,7 +13,7 @@
 
             @foreach ($customers as $customer)
                 <a href="{{ route('customer.transactions', $customer) }}" wire:navigate>
-                    <div class="w-full bg-white rounded flex h-14">
+                    <div class="w-full bg-white rounded flex h-14 hover:bg-gray-50">
                         <div class="p-[2px]">
                             <div
                                 class="bg-green-50 aspect-square h-full rounded-full border flex justify-center items-center">

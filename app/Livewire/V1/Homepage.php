@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Illuminate\Support\Facades\Cache;
 
@@ -41,7 +42,7 @@ class Homepage extends Component
         // Optionally, limit the number of transactions retrieved if only a subset is needed
         $this->transactions = Transaction::latest()->take(100)->get(); // Example: Get the latest 100 transactions
     }
-
+    #[Title('Home page')]
     public function render()
     {
         // dd($this->balance);

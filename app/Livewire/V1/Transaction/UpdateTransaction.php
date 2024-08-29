@@ -5,6 +5,7 @@ namespace App\Livewire\V1\Transaction;
 use App\Models\Customer;
 use App\Models\Transaction;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class UpdateTransaction extends Component
@@ -48,6 +49,7 @@ class UpdateTransaction extends Component
         return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
     }
     // #[Layout('layouts.wire')]
+    #[Title('Update Transaction')]
     public function render()
     {
         // dd($this->transaction);
