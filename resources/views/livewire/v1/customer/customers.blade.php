@@ -9,7 +9,7 @@
 
 
     <main class="flex-grow bg-blue-50 overflow-y-auto">
-        <div class="flex flex-col gap-1 grow overflow-y-auto overflow-x-hidden">
+        <div class="flex flex-col grow overflow-y-auto overflow-x-hidden divide-y">
 
             @foreach ($customers as $customer)
                 <a href="{{ route('customer.transactions', $customer) }}" wire:navigate>
@@ -50,10 +50,10 @@
 
 
     <x-slot:footer>
-        <div class="w-full flex justify-around p-2 border-t gap-2">
+        <div class="w-full flex justify-around p-4 border-t gap-4">
 
             <button href="{{ route('customer.create') }}" wire:navigate
-                class="bg-red-700 text-white px-4 py-1 rounded flex-grow">Add New Customer</button>
+                class="bg-red-700 text-white px-4 py-2 rounded flex-grow">Add New Customer</button>
         </div>
     </x-slot:footer>
 

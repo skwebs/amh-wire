@@ -39,7 +39,7 @@
             el.scrollTop = el.scrollHeight;
         })"
             @transactionsUpdated.window="$nextTick(() => { const el = document.getElementById('transactions-table-body'); el.scrollTop = el.scrollHeight; })"
-            class="bg-gray-100 flex flex-col gap-y grow overflow-y-auto overflow-x-hidden py-2">
+            class="bg-gray-100 flex flex-col gap-y-2 grow overflow-y-auto overflow-x-hidden p-2">
 
             @php
                 $balance = $this->calculateBalance();
@@ -48,7 +48,7 @@
 
             @foreach ($transactions as $transaction)
                 <div
-                    class=" border-t-2 bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
+                    class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
                     <a class="relative  w-full rounded h-full flex"
                         href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
                         wire:navigate>
@@ -57,26 +57,21 @@
                             <div class="text-gray-700">{{ date('d-m-Y', strtotime($transaction->date)) }}</div>
                             <div>
                                 <span class="bg-amber-50 text-amber-600">
-                                    <span {{-- @class([
-                                        '' => $balance === 0,
-                                        'bg-green-50 text-green-600' => $balance < 0,
-                                        'bg-red-50 text-red-600' => $balance >= 0,
-                                        'w-fit px-2',
-                                        ]) --}}
+                                    <span
                                         class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-2">
-                                        Bal. {{ number_format(abs($balance), 2) }}
+                                        Bal. ₹ {{ number_format(abs($balance), 2) }}
                                     </span>
                                 </span>
                             </div>
                         </div>
                         <div
                             class="flex-1 px-2 flex items-center justify-end font-semibold bg-red-50/50 text-red-600 text-right">
-                            {{ $transaction->type === 'debit' ? number_format($transaction->amount, 2) : '' }}
+                            {{ $transaction->type === 'debit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
 
                         </div>
                         <div
                             class="flex-1 px-2 flex items-center justify-end font-semibold bg-green-50/50 text-green-600 text-right">
-                            {{ $transaction->type === 'credit' ? number_format($transaction->amount, 2) : '' }}
+                            {{ $transaction->type === 'credit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
 
                         </div>
                         {{-- <div
@@ -104,13 +99,13 @@
     </main>
 
     <x-slot:footer>
-        <div class="w-full flex justify-around px-2 py-3 border-t gap-2">
+        <div class="w-full flex justify-around p-4 border-t gap-4 bg-white">
             <button href="{{ route('customer.transaction.create', ['customer' => $customer, 'type' => 'd']) }}"
-                wire:navigate class="bg-red-700 text-white px-4 py-1 rounded flex-grow">You
-                Give</button>
+                wire:navigate class="bg-red-600 text-white px-4 py-2 rounded flex-grow">You
+                Gave ₹</button>
             <button href="{{ route('customer.transaction.create', ['customer' => $customer, 'type' => 'c']) }}"
-                wire:navigate class="bg-green-700 text-white px-4 py-1 rounded flex-grow">You
-                Got</button>
+                wire:navigate class="bg-green-700 text-white px-4 py-2 rounded flex-grow">You
+                Got ₹</button>
         </div>
     </x-slot:footer>
 
