@@ -77,7 +77,7 @@
 
 
     <x-slot:footer>
-        <div class="w-full flex justify-around p-2 border-t gap-2">
+        <div class="w-full flex justify-around p-4 border-t gap-4">
 
             <button href="{{ route('customer.transactions', $customer) }}" wire:navigate
                 class="bg-gray-500 text-white px-4 py-1 rounded flex-grow">Go Back</button>
@@ -85,5 +85,7 @@
 
         </div>
     </x-slot:footer>
+
+
 
 </x-wrapper-layout>

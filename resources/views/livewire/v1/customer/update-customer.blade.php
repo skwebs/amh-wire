@@ -82,18 +82,17 @@
         </div>
     </main>
 
-    <x-slot:footer>
-        <div class="w-full flex justify-around p-2 border-t gap-2">
 
-            {{-- <a href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
-                class="text-center w-full inline-block bg-gray-500 hover:bg-gray-600 text-white rounded-md px-3 py-2 font-semibold"
-                wire:navigate>Go
-                Back</a> --}}
+
+    <x-slot:footer>
+
+        <div class="w-full flex justify-around p-4 border-t gap-4">
             <a href="{{ url()->previous() }}"
                 class="text-center w-full inline-block bg-gray-500 hover:bg-gray-600 text-white rounded-md px-3 py-2 font-semibold"
                 wire:navigate>Go
                 Back</a>
         </div>
+
     </x-slot:footer>
 
 </x-wrapper-layout>

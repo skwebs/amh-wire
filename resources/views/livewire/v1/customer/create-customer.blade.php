@@ -82,7 +82,7 @@
         </div>
     </main>
     <x-slot:footer>
-        <div class="w-full flex justify-around p-2 border-t gap-2">
+        <div class="w-full flex justify-around p-4 border-t gap-4">
 
             <a href="{{ route('customers') }}" wire:navigate
                 class="text-center w-full inline-block bg-gray-600 hover:bg-gray-700 text-white rounded-md px-3 py-2 font-semibold">Go

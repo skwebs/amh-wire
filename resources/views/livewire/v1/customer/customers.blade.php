@@ -51,7 +51,6 @@
 
     <x-slot:footer>
         <div class="w-full flex justify-around p-4 border-t gap-4">
-
             <button href="{{ route('customer.create') }}" wire:navigate
                 class="bg-red-700 text-white px-4 py-2 rounded flex-grow">Add New Customer</button>
         </div>
