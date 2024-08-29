@@ -47,7 +47,6 @@
             @endphp
 
             @foreach ($transactions as $transaction)
-
                 <div
                     class=" border-t-2 bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
                     <a class="relative  w-full rounded h-full flex"
@@ -55,16 +54,18 @@
                         wire:navigate>
 
                         <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
-                            <div class="text-gray-700">{{ date('d-m-Y', strtotime( $transaction->date)) }}</div>
+                            <div class="text-gray-700">{{ date('d-m-Y', strtotime($transaction->date)) }}</div>
                             <div>
-
-                                Bal. <span @class([
-                                    '' => $balance === 0,
-                                    'bg-green-50 text-green-600' => $balance < 0,
-                                    'bg-red-50 text-red-600' => $balance >= 0,
-                                    'w-fit px-2',
-                                ])>
-                                    {{ number_format(abs($balance), 2) }}
+                                <span class="bg-amber-50 text-amber-600">
+                                    <span {{-- @class([
+                                        '' => $balance === 0,
+                                        'bg-green-50 text-green-600' => $balance < 0,
+                                        'bg-red-50 text-red-600' => $balance >= 0,
+                                        'w-fit px-2',
+                                        ]) --}}
+                                        class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-2">
+                                        Bal. {{ number_format(abs($balance), 2) }}
+                                    </span>
                                 </span>
                             </div>
                         </div>
@@ -103,8 +104,7 @@
     </main>
 
     <x-slot:footer>
-        <div class="w-full flex justify-around p-2 border-t gap-2">
-
+        <div class="w-full flex justify-around px-2 py-3 border-t gap-2">
             <button href="{{ route('customer.transaction.create', ['customer' => $customer, 'type' => 'd']) }}"
                 wire:navigate class="bg-red-700 text-white px-4 py-1 rounded flex-grow">You
                 Give</button>
