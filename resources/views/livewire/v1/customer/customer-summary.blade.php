@@ -1,12 +1,11 @@
 <x-wrapper-layout class=" bg-blue-50">
     @if ($validated)
-
         <x-slot:header>
             @php
                 $cBal = $customer->balance;
             @endphp
             <x-header-all class="{{ $cBal > 0 ? 'bg-red-700' : ($cBal < 0 ? 'bg-green-700' : '') }}">
-                <div class="flex justify-center items-center ">
+                <span class="flex justify-center items-center ">
                     <div class="aspect-square h-full">
                         <x-icons.user-cirlce />
                     </div>
@@ -20,7 +19,7 @@
                             </span>
                         </div>
                     </div>
-                </div>
+                </span>
 
             </x-header-all>
             <div class="flex font-semibold p-2 w-full py-1 border-b ">
@@ -39,61 +38,63 @@
                 el.scrollTop = el.scrollHeight;
             })"
                 @transactionsUpdated.window="$nextTick(() => { const el = document.getElementById('transactions-table-body'); el.scrollTop = el.scrollHeight; })"
-                class="bg-gray-100 flex flex-col gap-y grow overflow-y-auto overflow-x-hidden py-2">
-
-                @php
-                    $balance = 0;
-                @endphp
+                class="bg-gray-100 flex flex-col gap-y-2 grow overflow-y-auto overflow-x-hidden p-2">
 
 
-                @foreach ($transactions as $transaction)
-                    {{-- @php
-                if ($transaction->type === 'credit') {
-                    $balance -= $transaction->amount;
-                } else {
-                    $balance += $transaction->amount;
-                }
-            @endphp --}}
+                @foreach ($transactions as $date => $groupedTransaction)
+                    <span
+                        class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
+                    @foreach ($groupedTransaction as $transaction)
+                        <div
+                            class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
+                            <a class="relative  w-full rounded h-full flex"
+                                href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
+                                wire:navigate>
 
-                    <div
-                        class=" border-t-2 bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
-                        <div class="relative  w-full rounded h-full flex">
-
-                            <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
-                                <div class="text-gray-700">{{ $transaction->date }}</div>
-                                <div>
-
-                                    {{-- Bal. <span @class([
-                                '' => $balance === 0,
-                                'bg-green-50 text-green-600' => $balance < 0,
-                                'bg-red-50 text-red-600' => $balance >= 0,
-                                'w-fit px-2',
-                            ])>
-                                {{ number_format(abs($balance), 2) }}
-                            </span> --}}
+                                <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
+                                    <div class="text-gray-700">{{ date('d-m-Y', strtotime($transaction->date)) }}</div>
+                                    <div>
+                                        <span class="bg-amber-50 text-amber-600">
+                                            <span
+                                                class="{{ $cBal > 0 ? 'bg-red-50 text-red-600' : ($cBal < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-1">
+                                                Bal. ₹ {{ number_format(abs($cBal), 2) }}
+                                            </span>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div
-                                class="flex-1 px-2 flex items-center justify-end font-semibold bg-red-50/50 text-red-600 text-right">
-                                {{ $transaction->type === 'debit' ? number_format($transaction->amount, 2) : '' }}
+                                <div
+                                    class="flex-1 px-2 flex items-center justify-end font-semibold bg-red-50/50 text-red-600 text-right">
+                                    {{ $transaction->type === 'debit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
 
-                            </div>
-                            <div
-                                class="flex-1 px-2 flex items-center justify-end font-semibold bg-green-50/50 text-green-600 text-right">
-                                {{ $transaction->type === 'credit' ? number_format($transaction->amount, 2) : '' }}
+                                </div>
+                                <div
+                                    class="flex-1 px-2 flex items-center justify-end font-semibold bg-green-50/50 text-green-600 text-right">
+                                    {{ $transaction->type === 'credit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
 
-                            </div>
-                            {{-- <div
-                        class="w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
-                        {{ number_format(abs($balance), 2) }}
+                                </div>
 
-                        <span class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
-                            <span
-                                class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
-                        </span>
-                    </div> --}}
+                                {{-- <div
+                                class="w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
+                                {{ number_format(abs($cBal), 2) }}
+
+                                <span
+                                    class="{{ $cBal > 0 ? 'text-red-600' : ($cBal < 0 ? 'text-green-600' : '') }}">
+                                    <span
+                                        class="ml-1 w-4 inline-block">{{ $cBal > 0 ? 'Dr' : ($cBal < 0 ? 'Cr' : '') }}</span>
+                                </span>
+                            </div> --}}
+
+                            </a>
                         </div>
-                    </div>
+
+                        @php
+                            if ($transaction->type === 'credit') {
+                                $cBal += $transaction->amount;
+                            } else {
+                                $cBal -= $transaction->amount;
+                            }
+                        @endphp
+                    @endforeach
                 @endforeach
 
             </div>
@@ -101,8 +102,8 @@
         </main>
 
         <x-slot:footer>
-            <div class="w-full flex justify-around p-2 border-t ">
-                This is online generated statement
+            <div class="w-full flex justify-around p-1 border-t text-gray-600 bg-white">
+                This is online generated statement.
             </div>
         </x-slot:footer>
     @else
@@ -110,4 +111,5 @@
             <div class="bg-red-600 text-white p-3">Invalid link</div>
         </div>
     @endif
+
 </x-wrapper-layout>

@@ -22,16 +22,25 @@ class CustomerSummary extends Component
         if (strtotime($customer->created_at) === $this->d) {
             $this->validated = true;
             $this->customer = $customer;
-            $this->transactions = $customer->transactions()->orderBy('date', 'desc')->orderBy('created_at', 'desc')->get();
+            // $this->transactions = $customer->transactions()->orderBy('date', 'desc')->orderBy('created_at', 'desc')->get();
+            $transactions = $this->customer->transactions()
+                ->orderBy('date', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->get(); // Fetches data and returns a collection
+
+            // Now group the fetched collection by date
+            $this->transactions = $transactions->groupBy(function ($txn) {
+                return date('Y-m-d', strtotime($txn->created_at));
+            })->all();
         }
-        // $this->transactions = $customer->transactions()->orderBy('date', 'desc')->orderBy('id', 'desc')->get();
+
     }
 
 
     #[Title('Customer Summary')]
     public function render()
     {
-
         return view('livewire.v1.customer.customer-summary');
     }
 }
+

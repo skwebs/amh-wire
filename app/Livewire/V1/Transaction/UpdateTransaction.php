@@ -52,7 +52,6 @@ class UpdateTransaction extends Component
     #[Title('Update Transaction')]
     public function render()
     {
-        // dd($this->transaction);
         return view('livewire.v1.transaction.update-transaction');
     }
 }

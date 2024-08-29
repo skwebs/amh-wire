@@ -29,18 +29,6 @@ class Transactions extends Component
         // $this->transactions = $this->customer->transactions()->orderBy($this->sortField, $this->sortDir)->orderBy('created_at', 'desc')->get();
     }
 
-    // public function sortBy($field)
-    // {
-    //     if ($this->sortField === $field) {
-    //         $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-    //     } else {
-    //         $this->sortDirection = 'asc';
-    //     }
-
-    //     $this->sortField = $field;
-    //     $this->fetchTransactions();
-    // }
-
     public function mount(Customer $customer)
     {
         $this->customer = $customer;

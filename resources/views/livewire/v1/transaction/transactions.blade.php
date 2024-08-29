@@ -60,7 +60,7 @@
                                 <div>
                                     <span class="bg-amber-50 text-amber-600">
                                         <span
-                                            class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-2">
+                                            class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-1">
                                             Bal. ₹ {{ number_format(abs($balance), 2) }}
                                         </span>
                                     </span>
@@ -77,7 +77,7 @@
 
                             </div>
 
-                            <div
+                            {{-- <div
                                 class="w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
                                 {{ number_format(abs($balance), 2) }}
 
@@ -86,7 +86,7 @@
                                     <span
                                         class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
                                 </span>
-                            </div>
+                            </div> --}}
 
                         </a>
                     </div>
@@ -100,19 +100,6 @@
                     @endphp
                 @endforeach
             @endforeach
-
-            {{-- @foreach ($transactions as $date => $groupedTransaction)
-                <h2>{{ $date }}</h2>
-            @endforeach --}}
-
-            {{-- @foreach ($transactions as $date => $dailyTransactions)
-                <h3>{{ $date }}</h3>
-                <ul>
-                    @foreach ($dailyTransactions as $transaction)
-                        <li>{{ $transaction->particulars }}: {{ $transaction->amount }}</li>
-                    @endforeach
-                </ul>
-            @endforeach --}}
 
         </div>
 
