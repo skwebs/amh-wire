@@ -23,15 +23,11 @@
             </a>
 
         </x-header-all>
-        <div class="flex font-semibold p-2 w-full py-1 border-b text-xs flex-col">
-            <div class="flex w-full ">
-                <div wire:click="sortBy('date')" class="flex-[2]">Date</div>
-                <div class="text-center flex-1 ">
-                    <span class="text-red-600">Dr</span>/<span class="text-green-600 ">Cr</span>
-                </div>
-                <div class="w-24 text-gray-600 text-nowrap ">Balance</div>
-            </div>
-            <div class="w-full text-gray-400">Description</div>
+        <div class="flex font-semibold p-2 w-full py-1 border-b ">
+            <div wire:click="sortBy('date')" class="flex-[2] py-2">Date</div>
+            <div class="text-center flex-1 py-2 text-red-700">Given</div>
+            <div class="text-center flex-1 py-2 text-green-600">Taken</div>
+            {{-- <div class="w-16 py-2 text-gray-600 text-nowrap">Balance</div> --}}
         </div>
     </x-slot:header>
 
@@ -51,37 +47,47 @@
             @endphp
 
             @foreach ($transactions as $date => $groupedTransaction)
-                <span
-                    class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
+                <span class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
                 @foreach ($groupedTransaction as $transaction)
                     <div
                         class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
                         <a class="relative  w-full rounded h-full flex"
                             href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
                             wire:navigate>
-                            <div class="flex w-full flex-col p-2">
-                                <div class="flex ">
-                                    <div class="flex-[2]  flex flex-col justify-around">
-                                        <div class="text-gray-700">
-                                            {{ date('d-m-Y', strtotime($transaction->date)) }}
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="{{ $transaction->type === 'credit' ? 'text-green-600' : 'text-red-600' }} flex-1 px-2 flex items-center justify-end font-semibold   text-right">
-                                        {{ '₹ ' . number_format($transaction->amount, 2) }}
-                                    </div>
-                                    <div
-                                        class=" w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
-                                        {{ number_format(abs($balance), 2) }}
+
+                            <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
+                                <div class="text-gray-700">{{ date('d-m-Y', strtotime($transaction->date)) }}</div>
+                                <div>
+                                    <span class="bg-amber-50 text-amber-600">
                                         <span
-                                            class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
-                                            <span
-                                                class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
+                                            class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-1">
+                                            Bal. ₹ {{ number_format(abs($balance), 2) }}
                                         </span>
-                                    </div>
+                                    </span>
                                 </div>
-                                <div class="text-gray-400">{{ $transaction->particulars }}</div>
                             </div>
+                            <div
+                                class="flex-1 px-2 flex items-center justify-end font-semibold bg-red-50/50 text-red-600 text-right">
+                                {{ $transaction->type === 'debit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
+
+                            </div>
+                            <div
+                                class="flex-1 px-2 flex items-center justify-end font-semibold bg-green-50/50 text-green-600 text-right">
+                                {{ $transaction->type === 'credit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
+
+                            </div>
+
+                            {{-- <div
+                                class="w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
+                                {{ number_format(abs($balance), 2) }}
+
+                                <span
+                                    class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
+                                    <span
+                                        class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
+                                </span>
+                            </div> --}}
+
                         </a>
                     </div>
 
