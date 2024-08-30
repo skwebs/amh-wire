@@ -59,8 +59,10 @@
                         <a class="relative  w-full rounded h-full flex"
                             href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
                             wire:navigate>
+
                             <div class="flex w-full flex-col p-2">
-                                <div class="flex ">
+
+                                <div class="flex gap-4">
                                     <div class="flex-[2]  flex flex-col justify-around">
                                         <div class="text-gray-700">
                                             {{ date('d-m-Y', strtotime($transaction->date)) }}
@@ -72,7 +74,7 @@
                                     </div>
                                     <div
                                         class=" w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
-                                        {{ number_format(abs($balance), 2) }}
+                                        ₹ {{ number_format(abs($balance), 2) }}
                                         <span
                                             class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
                                             <span
@@ -80,7 +82,9 @@
                                         </span>
                                     </div>
                                 </div>
+
                                 <div class="text-gray-400">{{ $transaction->particulars }}</div>
+
                             </div>
                         </a>
                     </div>
