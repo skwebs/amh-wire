@@ -83,7 +83,9 @@
                                     </div>
                                 </div>
 
-                                <div class="text-gray-400">{{ $transaction->particulars }}</div>
+                                <div class="text-gray-400">
+                                    {{ $transaction->particulars ?? ucfirst($transaction->type) . 'ed ₹ ' . $transaction->amount }}
+                                </div>
 
                             </div>
                         </a>
