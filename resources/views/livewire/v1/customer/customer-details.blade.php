@@ -61,7 +61,7 @@
                         'customer' => $customer,
                         'd' => strtotime($customer->created_at),
                     ]);
-                    $msg = urlencode('Check out this link: ' . $url);
+                    $msg = urlencode('Open link for statement: ' . $url);
                 @endphp
                 {{-- @dd($customer->created_at->format('d-m-Y H:i:s')); --}}
                 <a class="bg-blue-700 text-white px-4 py-1 rounded w-full" href="sms:?body={{ $msg }}"

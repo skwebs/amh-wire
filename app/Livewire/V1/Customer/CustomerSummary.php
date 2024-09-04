@@ -37,7 +37,7 @@ class CustomerSummary extends Component
     }
 
 
-    #[Title('Customer Summary')]
+    #[Title('Transaction Statement')]
     public function render()
     {
         return view('livewire.v1.customer.customer-summary');

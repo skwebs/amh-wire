@@ -2,9 +2,9 @@
     @if ($validated)
         <x-slot:header>
             @php
-                $cBal = $customer->balance;
+                $balance = $customer->balance;
             @endphp
-            <x-header-all class="{{ $cBal > 0 ? 'bg-red-700' : ($cBal < 0 ? 'bg-green-700' : '') }}">
+            <x-header-all class="{{ $balance > 0 ? 'bg-red-700' : ($balance < 0 ? 'bg-green-700' : '') }}">
                 <span class="flex justify-center items-center ">
                     <div class="aspect-square h-full">
                         <x-icons.user-cirlce />
@@ -13,20 +13,25 @@
                         <div class=" text-nowrap text-sm">{{ $customer->name }}</div>
                         <div class="text-nowrap font-bold text-sm text-center">
                             Bal: ₹
-                            {{ number_format(abs($cBal), 2) }}
-                            <span class="{{ $cBal > 0 ? 'text-red-200' : ($cBal < 0 ? 'text-green-300' : '') }}">
-                                {{ $cBal > 0 ? 'Dr' : ($cBal < 0 ? 'Cr' : '') }}
+                            {{ number_format(abs($balance), 2) }}
+                            <span class="{{ $balance > 0 ? 'text-red-200' : ($balance < 0 ? 'text-green-300' : '') }}">
+                                {{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}
                             </span>
                         </div>
                     </div>
                 </span>
 
             </x-header-all>
-            <div class="flex font-semibold p-2 w-full py-1 border-b ">
-                <div wire:click="sortBy('date')" class="flex-[2] py-2">Date</div>
-                <div class="text-center flex-1 py-2 text-red-700">Dues</div>
-                <div class="text-center flex-1 py-2 text-green-600">Payment</div>
-                {{-- <div class="w-16 py-2 text-gray-600 text-nowrap">Balance</div> --}}
+
+            <div class="flex font-semibold p-2 w-full py-1 border-b text-xs flex-col">
+                <div class="flex w-full ">
+                    <div wire:click="sortBy('date')" class="flex-[2]">Date</div>
+                    <div class="text-center flex-1 ">
+                        <span class="text-red-600">Dues</span>/<span class="text-green-600 ">Paid</span>
+                    </div>
+                    <div class="w-24 text-gray-600 text-nowrap ">Balance</div>
+                </div>
+                <div class="w-full text-gray-400">Description</div>
             </div>
         </x-slot:header>
 
@@ -45,7 +50,7 @@
                     <span
                         class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
                     @foreach ($groupedTransaction as $transaction)
-                        <div
+                        {{-- <div
                             class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
                             <a class="relative  w-full rounded h-full flex"
                                 href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
@@ -56,8 +61,8 @@
                                     <div>
                                         <span class="bg-amber-50 text-amber-600">
                                             <span
-                                                class="{{ $cBal > 0 ? 'bg-red-50 text-red-600' : ($cBal < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-1">
-                                                Bal. ₹ {{ number_format(abs($cBal), 2) }}
+                                                class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-1">
+                                                Bal. ₹ {{ number_format(abs($balance), 2) }}
                                             </span>
                                         </span>
                                     </div>
@@ -73,25 +78,48 @@
 
                                 </div>
 
-                                {{-- <div
-                                class="w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
-                                {{ number_format(abs($cBal), 2) }}
-
-                                <span
-                                    class="{{ $cBal > 0 ? 'text-red-600' : ($cBal < 0 ? 'text-green-600' : '') }}">
-                                    <span
-                                        class="ml-1 w-4 inline-block">{{ $cBal > 0 ? 'Dr' : ($cBal < 0 ? 'Cr' : '') }}</span>
-                                </span>
-                            </div> --}}
-
                             </a>
-                        </div>
+                        </div> --}}
 
+                        <div
+                        class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
+                        <span class="relative  w-full rounded h-full flex">
+
+                            <div class="flex w-full flex-col p-2">
+
+                                <div class="flex gap-4">
+                                    <div class="flex-[2]  flex flex-col justify-around">
+                                        <div class="text-gray-700">
+                                            {{ date('d-m-Y', strtotime($transaction->date)) }}
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="{{ $transaction->type === 'credit' ? 'text-green-600' : 'text-red-600' }} flex-1 px-2 flex items-center justify-end font-semibold   text-right">
+                                        {{ '₹ ' . number_format($transaction->amount, 2) }}
+                                    </div>
+                                    <div
+                                        class=" w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
+                                        ₹ {{ number_format(abs($balance), 2) }}
+                                        <span
+                                            class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
+                                            <span
+                                                class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="text-gray-400">
+                                    {{ $transaction->particulars ?? ucfirst($transaction->type) . 'ed ₹ ' . $transaction->amount }}
+                                </div>
+
+                            </div>
+                        </span>
+                    </div>
                         @php
                             if ($transaction->type === 'credit') {
-                                $cBal += $transaction->amount;
+                                $balance += $transaction->amount;
                             } else {
-                                $cBal -= $transaction->amount;
+                                $balance -= $transaction->amount;
                             }
                         @endphp
                     @endforeach
