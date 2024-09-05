@@ -14,7 +14,7 @@
                 {{ $customer->name }}</h2>
 
             <form class="flex flex-col gap-2" wire:submit="updateTransaction">
-                <x-input name="number" label="Amount" placeholder="Amount" model="amount" />
+                <x-input name="amount" label="Amount" type="number" placeholder="Amount" model="amount" />
                 <x-input name="date" label="Transaction Date" type="date" placeholder="Date" model="date" />
                 <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" />
                 <div>
@@ -37,57 +37,6 @@
                         @enderror
                     </div>
                 </div>
-                {{-- <div class="">
-
-                    <div class="">
-                        <input type="text" name="amount" id="amount" autocomplete="currency"
-                            placeholder="Getting Amount" wire:model="amount"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="h-4">
-                        @error('amount')
-                            <div class="text-red-600 text-xs">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                </div>
-                <div class="">
-
-                    <div class="">
-                        <label for="date" class="block text-sm font-medium leading-6 text-gray-600">Transaction
-                            Date</label>
-                        <input type="date" name="date" id="date" autocomplete="date" placeholder="Date"
-                            wire:model="date"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="h-4">
-                        @error('date')
-                            <div class="text-red-600 text-xs">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                </div>
-
-                <div class="">
-                    <div>Existing Txn type : <span
-                            class="capitalize font-bold {{ $transaction->type == 'credit' ? ' text-green-700 ' : ' text-red-700  ' }}">{{ $transaction->type }}</span>
-                    </div>
-                    <div class="">
-                        <label for="type" class="block text-sm font-medium leading-6 text-gray-600">Transaction
-                            Type</label>
-                        <select id="type" wire:model.change="type"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                            <option @if ($type == 'debit') selected @endif value="debit">Debit</option>
-                            <option @if ($type == 'credit') selected @endif value="credit">Credit</option>
-                        </select>
-                    </div>
-
-                    <div class="h-4">
-                        @error('date')
-                            <div class="text-red-600 text-xs">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> --}}
 
                 <div class="w-full flex justify-around mt-2 gap-2">
                     <button type="submit"

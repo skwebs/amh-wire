@@ -12,7 +12,7 @@
                 {{ $transactionType === 'credit' ? 'Receiving from' : 'Giving to' }} {{ $customer->name }}
             </h2>
             <form class="flex flex-col gap-2" wire:submit.prevent="saveTransaction">
-                <x-input name="number" label="Amount" placeholder="Amount" model="amount" />
+                <x-input name="amount" label="Amount" type="number" placeholder="Amount" model="amount" />
                 <x-input name="date" label="Transaction Date" type="date" placeholder="Date" model="date" />
                 <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" />
                 <div class="w-full flex justify-around">
