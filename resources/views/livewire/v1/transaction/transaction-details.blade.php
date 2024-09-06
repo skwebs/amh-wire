@@ -33,17 +33,33 @@
                 <tr class="border">
                     <th class="text-left p-2">Txn Date</th>
                     <td>:</td>
-                    <td>{{ date('d M Y H:i', strtotime($transaction->datetime)) }}</td>
+                    <td>
+                        <div class=" py-1">
+                            <span class="text-nowrap">
+                                {{ date('d M Y-H:i', strtotime($transaction->datetime)) }}
+                            </span>
+                            <span class="text-xs font-semibold text-nowrap">
+                                ({{ \Carbon\Carbon::parse($transaction->datetime)->diffForHumans() }})</span>
+                        </div>
+                    </td>
                 </tr>
                 <tr class="border">
-                    <th class="text-left p-2">Txn Remarks</th>
+                    <th class="text-left text-nowrap p-2">Txn Remarks</th>
                     <td>:</td>
                     <td>{{ $transaction->particulars }}</td>
                 </tr>
                 <tr class="border">
                     <th class="text-left p-2">Created At</th>
                     <td>:</td>
-                    <td>{{ date('d M Y - H:i', strtotime($transaction->created_at)) }} | {{ \Carbon\Carbon::parse($transaction->created_at)->diffForHumans() }}</td>
+                    <td>
+                        <div class=" py-1">
+                            <span class="text-nowrap">
+                                {{ date('d M Y-H:i', strtotime($transaction->created_at)) }}
+                            </span>
+                            <span class="text-xs font-semibold text-nowrap">
+                                ({{ \Carbon\Carbon::parse($transaction->created_at)->diffForHumans() }})</span>
+                        </div>
+                    </td>
                 </tr>
 
             </table>
