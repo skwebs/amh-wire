@@ -15,7 +15,7 @@
 
             <form class="flex flex-col gap-2" wire:submit="updateTransaction">
                 <x-input name="amount" label="Amount" type="number" placeholder="Amount" model="amount" />
-                <x-input name="date" label="Transaction Date" type="date" placeholder="Date" model="date" />
+                <x-input name="datetime" label="Transaction Datetime" type="datetime-local" placeholder="Date" model="datetime" />
                 <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" />
                 <div>
                     <div>Existing Txn type : <span
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="h-4">
-                        @error('date')
+                        @error('type')
                             <div class="text-red-600 text-xs">{{ $message }}</div>
                         @enderror
                     </div>

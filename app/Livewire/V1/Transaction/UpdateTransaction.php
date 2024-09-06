@@ -15,7 +15,7 @@ class UpdateTransaction extends Component
     public $transaction;
     public $type;
     public $amount;
-    public $date;
+    public $datetime;
     public $particulars;
 
     public function mount(Customer $customer, Transaction $transaction)
@@ -24,22 +24,26 @@ class UpdateTransaction extends Component
         $this->transaction = $transaction;
         $this->type = $transaction->type;
         $this->amount = $transaction->amount;
-        $this->date = $transaction->date;
+        $this->datetime = date('Y-m-d\TH:i', strtotime($transaction->datetime));
         $this->particulars = $transaction->particulars;
+
+        // dd($this->datetime);
         // $this->type = request('type') === 'd' ? 'debit' : (request('type') === 'c' ? 'credit' : null); // 'debit' or 'credit'
-        // $this->date = now()->format('Y-m-d'); // default to current date if not provided by the user
+        // $this->datetime = now()->format('Y-m-d'); // default to current datetime if not provided by the user
     }
     public function updateTransaction()
     {
+
+        // dd($this->datetime);
         $this->validate([
             'amount' => 'required|numeric|min:0',
-            'date' => 'required|date',
+            'datetime' => 'required|date_format:Y-m-d\TH:i',
             'particulars' => 'nullable|string|max:255',
         ]);
 
         $this->transaction->update([
             'amount' => $this->amount,
-            'date' => $this->date,
+            'datetime' => $this->datetime,
             'particulars' => $this->particulars,
             'type' => $this->type,
         ]);

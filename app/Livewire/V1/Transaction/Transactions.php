@@ -14,7 +14,7 @@ class Transactions extends Component
     public $customer;
     public $transactions;
     public $sortDir = 'desc';
-    public $sortField = 'date';
+    public $sortField = 'datetime';
 
     public function calculateBalance()
     {
@@ -40,13 +40,15 @@ class Transactions extends Component
         // Fetch transactions with the desired ordering
         $transactions = $this->customer->transactions()
             ->orderBy($this->sortField, $this->sortDir)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('datetime', 'desc')
             ->get(); // Fetches data and returns a collection
 
         // Now group the fetched collection by date
         $this->transactions = $transactions->groupBy(function ($txn) {
-            return date('Y-m-d', strtotime($txn->created_at));
+            return date('Y-m-d', strtotime($txn->datetime));
         })->all();
+
+        // dd($this->transactions);
     }
 
 

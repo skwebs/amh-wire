@@ -13,7 +13,7 @@
             </h2>
             <form class="flex flex-col gap-2" wire:submit.prevent="saveTransaction">
                 <x-input name="amount" label="Amount" type="number" placeholder="Amount" model="amount" />
-                <x-input name="date" label="Transaction Date" type="date" placeholder="Date" model="date" />
+                <x-input name="datetime" label="Transaction Datetime" type="datetime-local" placeholder="Datetime" model="datetime" />
                 <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" />
                 <div class="w-full flex justify-around">
                     <button type="submit"

@@ -11,27 +11,28 @@ class CreateTransaction extends Component
     public $customer;
     public $type;
     public $amount;
-    public $date;
+    public $datetime;
     public $particulars;
 
     public function mount(Customer $customer)
     {
         $this->customer = $customer;
         $this->type = request('type') === 'd' ? 'debit' : (request('type') === 'c' ? 'credit' : null);
-        $this->date = now()->format('Y-m-d');
+        $this->datetime = now()->format('Y-m-d\TH:i');
     }
 
     public function saveTransaction()
     {
+        // dd($this->datetime);
         $this->validate([
             'amount' => 'required|numeric|min:0',
-            'date' => 'required|date',
+            'datetime' => 'required|date_format:Y-m-d\TH:i',
             'particulars' => 'nullable|string|max:255',
         ]);
 
         $this->customer->transactions()->create([
             'amount' => $this->amount,
-            'date' => $this->date,
+            'datetime' => $this->datetime,
             'particulars' => $this->particulars,
             'type' => $this->type,
         ]);

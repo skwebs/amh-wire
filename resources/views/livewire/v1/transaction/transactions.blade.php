@@ -25,7 +25,7 @@
         </x-header-all>
         <div class="flex font-semibold p-2 w-full py-1 border-b text-xs flex-col">
             <div class="flex w-full ">
-                <div wire:click="sortBy('date')" class="flex-[2]">Date</div>
+                <div wire:click="sortBy('date')" class="flex-[2]">DateTime</div>
                 <div class="text-center flex-1 ">
                     <span class="text-red-600">Dr</span>/<span class="text-green-600 ">Cr</span>
                 </div>
@@ -65,7 +65,7 @@
                                 <div class="flex gap-4">
                                     <div class="flex-[2]  flex flex-col justify-around">
                                         <div class="text-gray-700">
-                                            {{ date('d-m-Y', strtotime($transaction->date)) }}
+                                            {{ date('d M Y - h:i A', strtotime($transaction->datetime)) }}
                                         </div>
                                     </div>
                                     <div
@@ -84,7 +84,7 @@
                                 </div>
 
                                 <div class="text-gray-400">
-                                    {{ $transaction->particulars ?? ucfirst($transaction->type) . 'ed ₹ ' . $transaction->amount }}
+                                    {{ $transaction->particulars == '' ? ucfirst($transaction->type) . 'ed ₹ ' . $transaction->amount : $transaction->particulars }}
                                 </div>
 
                             </div>
