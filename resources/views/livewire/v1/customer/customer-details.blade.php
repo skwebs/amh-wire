@@ -23,28 +23,40 @@
             <table class="w-full">
                 <tr class="border">
                     <th class="text-left p-2">Name</th>
+                    <td>:</td>
                     <td>{{ $customer->name }}</td>
                 </tr>
                 <tr class="border">
                     <th class="text-left p-2">Email</th>
+                    <td>:</td>
                     <td>{{ $customer->email }}</td>
                 </tr>
                 <tr class="border">
                     <th class="text-left p-2">Phone</th>
+                    <td>:</td>
                     <td>{{ $customer->phone }}</td>
                 </tr>
                 <tr class="border">
                     <th class="text-left p-2">Address</th>
+                    <td>:</td>
                     <td>{{ $customer->address }}</td>
                 </tr>
                 <tr class="border">
                     <th class="text-left p-2">Last Txn</th>
-                    <td>{{ $customer->latestTransaction->date }} |
-                        {{ $customer->latestTransaction->amount }} | {{ $customer->latestTransaction->type }}
+                    <td>:</td>
+                    <td>
+                        @if ($customer->latestTransaction)
+                            {{ $customer->latestTransaction->datetime }} |
+                            {{ $customer->latestTransaction->amount }} |
+                            {{ $customer->latestTransaction->type }}
+                        @else
+                            No
+                        @endif
                     </td>
                 </tr>
                 <tr class="border">
                     <th class="text-left p-2">Balance</th>
+                    <td>:</td>
                     <td
                         class="{{ $customer->balance > 0 ? 'text-red-600' : ($customer->balance < 0 ? 'text-green-600' : '') }}">
                         {{ abs($customer->balance) }}

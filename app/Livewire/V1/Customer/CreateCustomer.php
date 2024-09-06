@@ -26,7 +26,7 @@ class CreateCustomer extends Component
      *
      * @throws \Illuminate\Validation\ValidationException if validation fails
      */
-    public function addCustomer(): void
+    public function addCustomer()
     {
         $this->validate([
             'name' => 'required|min:0',

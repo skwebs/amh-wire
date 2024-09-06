@@ -64,7 +64,7 @@
 
             </table>
             <div class="w-full flex justify-around p-4 border-t gap-4">
-                <button wire:click="delete()"
+                <button wire:confirm="Are you sure to delete?" wire:click="delete()"
                     class=" w-full
                 bg-red-700 hover:bg-red-800 text-white rounded-md px-3 py-2 font-semibold">Delete</button>
 

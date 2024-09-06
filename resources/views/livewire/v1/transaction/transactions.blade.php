@@ -47,59 +47,63 @@
 
             @php
                 $balance = $this->calculateBalance();
-
             @endphp
+            @if ($transactions)
+                @foreach ($transactions as $date => $groupedTransaction)
+                    <span
+                        class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
 
-            @foreach ($transactions as $date => $groupedTransaction)
-                <span
-                    class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
-                @foreach ($groupedTransaction as $transaction)
-                    <div
-                        class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
-                        <a class="relative  w-full rounded h-full flex"
-                            href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
-                            wire:navigate>
+                    @foreach ($groupedTransaction as $transaction)
+                        <div
+                            class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
+                            <a class="relative  w-full rounded h-full flex"
+                                href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
+                                wire:navigate>
 
-                            <div class="flex w-full flex-col p-2">
+                                <div class="flex w-full flex-col p-2">
 
-                                <div class="flex gap-4">
-                                    <div class="flex-[2]  flex flex-col justify-around">
-                                        <div class="text-gray-700">
-                                            {{ date('d M Y - h:i A', strtotime($transaction->datetime)) }}
+                                    <div class="flex gap-4">
+                                        <div class="flex-[2]  flex flex-col justify-around">
+                                            <div class="text-gray-700">
+                                                {{ date('d M Y - h:i A', strtotime($transaction->datetime)) }}
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="{{ $transaction->type === 'credit' ? 'text-green-600' : 'text-red-600' }} flex-1 px-2 flex items-center justify-end font-semibold   text-right">
+                                            {{ '₹ ' . number_format($transaction->amount, 2) }}
+                                        </div>
+                                        <div
+                                            class=" w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
+                                            ₹ {{ number_format(abs($balance), 2) }}
+                                            <span
+                                                class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
+                                                <span
+                                                    class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div
-                                        class="{{ $transaction->type === 'credit' ? 'text-green-600' : 'text-red-600' }} flex-1 px-2 flex items-center justify-end font-semibold   text-right">
-                                        {{ '₹ ' . number_format($transaction->amount, 2) }}
+
+                                    <div class="text-gray-400">
+                                        {{ $transaction->particulars == '' ? ucfirst($transaction->type) . 'ed ₹ ' . $transaction->amount : $transaction->particulars }}
                                     </div>
-                                    <div
-                                        class=" w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
-                                        ₹ {{ number_format(abs($balance), 2) }}
-                                        <span
-                                            class="{{ $balance > 0 ? 'text-red-600' : ($balance < 0 ? 'text-green-600' : '') }}">
-                                            <span
-                                                class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
-                                        </span>
-                                    </div>
+
                                 </div>
+                            </a>
+                        </div>
 
-                                <div class="text-gray-400">
-                                    {{ $transaction->particulars == '' ? ucfirst($transaction->type) . 'ed ₹ ' . $transaction->amount : $transaction->particulars }}
-                                </div>
-
-                            </div>
-                        </a>
-                    </div>
-
-                    @php
-                        if ($transaction->type === 'credit') {
-                            $balance += $transaction->amount;
-                        } else {
-                            $balance -= $transaction->amount;
-                        }
-                    @endphp
+                        @php
+                            if ($transaction->type === 'credit') {
+                                $balance += $transaction->amount;
+                            } else {
+                                $balance -= $transaction->amount;
+                            }
+                        @endphp
+                    @endforeach
                 @endforeach
-            @endforeach
+            @else
+                <div class="text-sm text-center text-gray-400 font-semibold">No Transaction</div>
+            @endif
+
 
         </div>
 

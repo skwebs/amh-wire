@@ -30,7 +30,7 @@ class CreateTransaction extends Component
 
         $this->validate([
             'amount' => 'required|numeric|min:0',
-            'datetime' => 'required|date_format:Y-m-d\TH:i',
+            'datetime' => 'required|date_format:Y-m-d\TH:i|before_or_equal:now',
             'particulars' => 'nullable|string|max:255',
         ]);
 
