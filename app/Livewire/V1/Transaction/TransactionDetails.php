@@ -23,6 +23,13 @@ class TransactionDetails extends Component
         // $this->transactions = $customer->transactions()->get();
     }
 
+    public function delete(){
+
+        $this->transaction->delete();
+        session()->flash('message', 'Transaction deleted successfully.');
+        return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
+    }
+
     // #[Layout('layouts.wire')]
     #[Title('Transaction Details')]
     public function render()
