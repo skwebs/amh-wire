@@ -10,8 +10,11 @@ use Livewire\Component;
 class CustomerDetails extends Component
 {
     public $customer;
+
     public $balance;
+
     public $latestTransaction;
+
     // #[Layout('layouts.wire')]
     public function mount(Customer $customer)
     {

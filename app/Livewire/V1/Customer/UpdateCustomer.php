@@ -9,13 +9,22 @@ use Livewire\Component;
 class UpdateCustomer extends Component
 {
     public $customer;
+
     public $name;
+
     public $email;
+
     public $phone;
+
     public $address;
+
     public $type;
 
-
+    /**
+     * Initializes the component with a customer object.
+     *
+     * @param  Customer  $customer  The customer object to initialize with.
+     */
     public function mount(Customer $customer)
     {
 
@@ -27,6 +36,7 @@ class UpdateCustomer extends Component
         $this->address = $customer->address;
         $this->type = $customer->type;
     }
+
     public function updateCustomer()
     {
         $this->validate([
@@ -50,12 +60,13 @@ class UpdateCustomer extends Component
         // $this->dispatch('customer-created');
 
         session()->flash('message', 'Customer updated successfully.');
+
         // dd($this->customer);
         return $this->redirect(route('customer.details', $this->customer->id), navigate: true);
 
-
         // href="{{ route('customer.transaction.details', ['customer' => $customer->id, 'transaction' => $transaction]) }}"
     }
+
     #[Title('Update Customer')]
     public function render()
     {

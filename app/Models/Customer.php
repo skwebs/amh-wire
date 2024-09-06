@@ -12,16 +12,10 @@ class Customer extends Model
 
     protected $fillable = ['name', 'email', 'phone', 'address'];
 
-
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
     }
-
-    // public function latestTransaction()
-    // {
-    //     return $this->hasOne(Transaction::class)->latest();
-    // }
 
     // Method to get the latest transaction
     public function latestTransaction()
@@ -33,6 +27,7 @@ class Customer extends Model
     {
         $debits = $this->transactions()->where('type', 'debit')->sum('amount');
         $credits = $this->transactions()->where('type', 'credit')->sum('amount');
-        return   $debits - $credits;
+
+        return $debits - $credits;
     }
 }

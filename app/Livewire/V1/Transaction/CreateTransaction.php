@@ -9,9 +9,13 @@ use Livewire\Component;
 class CreateTransaction extends Component
 {
     public $customer;
+
     public $type;
+
     public $amount;
+
     public $datetime;
+
     public $particulars;
 
     public function mount(Customer $customer)
@@ -23,7 +27,7 @@ class CreateTransaction extends Component
 
     public function saveTransaction()
     {
-        // dd($this->datetime);
+
         $this->validate([
             'amount' => 'required|numeric|min:0',
             'datetime' => 'required|date_format:Y-m-d\TH:i',
@@ -38,6 +42,7 @@ class CreateTransaction extends Component
         ]);
 
         session()->flash('message', 'Transaction created successfully.');
+
         return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
     }
 

@@ -9,15 +9,24 @@ use Livewire\Component;
 
 class CreateCustomer extends Component
 {
-    public $name;
-    public $email;
+    public string $name;
+
+    public string $email;
+
     public $phone;
+
     public $address;
+
     public $type;
 
-
-
-    public function addCustomer()
+    /**
+     * Creates a new customer and redirects to the customers page.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws \Illuminate\Validation\ValidationException if validation fails
+     */
+    public function addCustomer(): void
     {
         $this->validate([
             'name' => 'required|min:0',
@@ -36,14 +45,12 @@ class CreateCustomer extends Component
         // Optionally, clear the form fields
         $this->reset();
 
-        // Emit an event to notify success
-        // $this->dispatch('customer-created');
+        $this->dispatch('customer-created');
 
         session()->flash('message', 'Customer added successfully.');
 
         return $this->redirect(route('customers'), navigate: true);
     }
-
 
     // #[Layout('layouts.wire')]
     #[Title('Create Customer')]

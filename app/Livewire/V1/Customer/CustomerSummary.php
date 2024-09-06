@@ -10,13 +10,20 @@ use Livewire\Component;
 class CustomerSummary extends Component
 {
     public $customer;
+
     public $transactions;
+
     public $validated = false;
 
     #[Url]
     public $d = '';
 
-
+    /**
+     * Mounts the component with the provided customer data.
+     *
+     * @param  Customer  $customer  The customer instance to mount with.
+     * @return void
+     */
     public function mount(Customer $customer)
     {
         if (strtotime($customer->created_at) === $this->d) {
@@ -36,11 +43,9 @@ class CustomerSummary extends Component
 
     }
 
-
     #[Title('Transaction Statement')]
     public function render()
     {
         return view('livewire.v1.customer.customer-summary');
     }
 }
-

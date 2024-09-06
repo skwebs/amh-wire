@@ -33,4 +33,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers/{customer}/transactions/{transaction}', TransactionDetails::class)->name('customer.transaction.details');
     Route::get('/customers/{customer}/transactions/{transaction}/edit', UpdateTransaction::class)->name('customer.transaction.update');
 });
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
