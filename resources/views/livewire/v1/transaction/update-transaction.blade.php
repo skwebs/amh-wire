@@ -14,9 +14,40 @@
                 {{ $customer->name }}</h2>
 
             <form class="flex flex-col gap-2" wire:submit="updateTransaction">
-                <x-input name="amount" label="Amount" type="number" placeholder="Amount" model="amount" />
+                {{-- <x-input name="amount" label="Amount" step=".01" type="number" placeholder="Amount" model="amount" />
                 <x-input name="datetime" label="Transaction Datetime" type="datetime-local" placeholder="Date" model="datetime" />
-                <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" />
+                <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" /> --}}
+                <!-- /added above code -->
+                <!-- Amount -->
+                <div>
+                    <x-input-label for="amount" :value="__('Amount')" />
+                    <x-text-input wire:model="amount" id="amount" class="block mt-1 w-full" type="number"
+                        step=".01" name="amount" required autofocus autocomplete="transaction-amount" />
+                    <div class="min-h-4">
+                        <x-input-error :messages="$errors->get('amount')" class="text-xs" />
+                    </div>
+                </div>
+
+                <!-- Date time -->
+                <div>
+                    <x-input-label for="datetime" :value="__('Txn DateTime')" />
+                    <x-text-input wire:model="datetime" id="datetime" class="block mt-1 w-full" type="datetime-local"
+                        name="datetime" required autocomplete="current-datetime" />
+                    <div class="min-h-4">
+                        <x-input-error :messages="$errors->get('datetime')" class="text-xs" />
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <x-input-label for="particulars" :value="__('Particulars')" />
+                    <x-text-input wire:model="particulars" id="particulars" class="block mt-1 w-full" type="text"
+                        step=".01" name="particulars" autofocus autocomplete="transaction-description" />
+                    <div class="min-h-4">
+                        <x-input-error :messages="$errors->get('particulars')" class="text-xs" />
+                    </div>
+                </div>
+
                 <div>
                     <div>Existing Txn type : <span
                             class="capitalize font-bold {{ $transaction->type == 'credit' ? ' text-green-700 ' : ' text-red-700  ' }}">{{ $transaction->type }}</span>
