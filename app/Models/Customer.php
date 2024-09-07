@@ -20,7 +20,7 @@ class Customer extends Model
     // Method to get the latest transaction
     public function latestTransaction()
     {
-        return $this->hasOne(Transaction::class)->latestOfMany();
+        return $this->hasOne(Transaction::class)->latestOfMany('datetime');
     }
 
     public function getBalanceAttribute()

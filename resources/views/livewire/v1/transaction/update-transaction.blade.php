@@ -24,9 +24,9 @@
                     </div>
                 </div>
 
-                <!-- Date time -->
+                <!-- Transaction Date time -->
                 <div>
-                    <x-input-label for="datetime" :value="__('Txn DateTime')" />
+                    <x-input-label for="datetime" :value="__('Transaction DateTime')" />
                     <x-text-input wire:model="datetime" id="datetime" class="block mt-1 w-full" type="datetime-local"
                         name="datetime" required autocomplete="current-datetime" />
                     <div class="min-h-4">
@@ -44,12 +44,12 @@
                     </div>
                 </div>
 
-                <!-- Txn Type -->
+                <!-- Trasaction Type -->
                 <div>
                     <div class="text-sm">Existing Txn type : <span
                             class="capitalize font-bold {{ $transaction->type == 'credit' ? ' text-green-700 ' : ' text-red-700  ' }}">{{ $transaction->type }}</span>
                     </div>
-                    <x-input-label for="type" :value="__('Txn Type')" />
+                    <x-input-label for="type" :value="__('Transaction Type')" />
                     <select id="type" wire:model.change="type"
                         class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
                         <option @if ($type == 'debit') selected @endif value="debit">Debit</option>

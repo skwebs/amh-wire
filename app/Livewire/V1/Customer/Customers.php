@@ -14,6 +14,8 @@ class Customers extends Component
     {
         // Load customers with their latest transaction date and balance
         $this->customers = Customer::with('latestTransaction')->get();
+
+        // dd($this->customers[0]->latest_transaction);
     }
 
     #[Title('Customer List')]
