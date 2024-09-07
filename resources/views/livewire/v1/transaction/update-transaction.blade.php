@@ -14,10 +14,6 @@
                 {{ $customer->name }}</h2>
 
             <form class="flex flex-col gap-2" wire:submit="updateTransaction">
-                {{-- <x-input name="amount" label="Amount" step=".01" type="number" placeholder="Amount" model="amount" />
-                <x-input name="datetime" label="Transaction Datetime" type="datetime-local" placeholder="Date" model="datetime" />
-                <x-input name="particulars" label="Particulars" placeholder="Particulars" model="particulars" /> --}}
-                <!-- /added above code -->
                 <!-- Amount -->
                 <div>
                     <x-input-label for="amount" :value="__('Amount')" />
@@ -48,26 +44,22 @@
                     </div>
                 </div>
 
+                <!-- Txn Type -->
                 <div>
-                    <div>Existing Txn type : <span
+                    <div class="text-sm">Existing Txn type : <span
                             class="capitalize font-bold {{ $transaction->type == 'credit' ? ' text-green-700 ' : ' text-red-700  ' }}">{{ $transaction->type }}</span>
                     </div>
-                    <div class="">
-                        <label for="type" class="block text-sm font-medium leading-6 text-gray-600">Transaction
-                            Type</label>
-                        <select id="type" wire:model.change="type"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                            <option @if ($type == 'debit') selected @endif value="debit">Debit</option>
-                            <option @if ($type == 'credit') selected @endif value="credit">Credit</option>
-                        </select>
-                    </div>
-
-                    <div class="h-4">
-                        @error('type')
-                            <div class="text-red-600 text-xs">{{ $message }}</div>
-                        @enderror
+                    <x-input-label for="type" :value="__('Txn Type')" />
+                    <select id="type" wire:model.change="type"
+                        class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
+                        <option @if ($type == 'debit') selected @endif value="debit">Debit</option>
+                        <option @if ($type == 'credit') selected @endif value="credit">Credit</option>
+                    </select>
+                    <div class="min-h-4">
+                        <x-input-error :messages="$errors->get('type')" class="text-xs" />
                     </div>
                 </div>
+                <!-- /added above code -->
 
                 <div class="w-full flex justify-around mt-2 gap-2">
                     <button type="submit"
