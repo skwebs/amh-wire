@@ -31,7 +31,7 @@ class CustomerSummary extends Component
             $this->customer = $customer;
             // $this->transactions = $customer->transactions()->orderBy('date', 'desc')->orderBy('created_at', 'desc')->get();
             $transactions = $this->customer->transactions()
-                ->orderBy('date', 'desc')
+                ->orderBy('datetime', 'desc')
                 ->orderBy('created_at', 'desc')
                 ->get(); // Fetches data and returns a collection
 

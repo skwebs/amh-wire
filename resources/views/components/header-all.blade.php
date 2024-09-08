@@ -14,7 +14,7 @@
         {{ $slot }}
     </x-header.item>
     <x-header.item>
-        <div x-data="{ isOpen: false }" class="relative">
+        {{-- <div x-data="{ isOpen: false }" class="relative">
             <div class="flex hover:bg-black/20 aspect-square p-1 rounded-full me-1">
                 <button type="button" @click="isOpen = !isOpen">
                     <x-icons.ellipsis-vertical />
@@ -32,7 +32,7 @@
                     <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                     <livewire:v1.auth.logout>
                 </div>
-        </div>
+        </div> --}}
 
     </x-header.item>
 </x-header>
