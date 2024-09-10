@@ -23,11 +23,17 @@
                         <div class=" flex flex-col justify-center  flex-grow px-1">
                             <div>{{ $customer->name }}</div>
                             <div class="text-xs font-semibold">
-                                {{-- <span>{{ date('d M Y', strtotime($customer->latestTransaction->datetime)) }}</span> --}}
-                                Last txn : <span class="{{ $customer->latestTransaction->type === 'credit' ? 'text-green-600' : 'text-red-600' }}">
-                                    {{$customer->latestTransaction->amount}}
-                                </span>
-                                ({{ \Carbon\Carbon::parse($customer->latestTransaction->datetime)->diffForHumans() }})
+                                @if ($customer->latestTransaction)
+                                    {{-- <span>{{ date('d M Y', strtotime($customer->latestTransaction->datetime)) }}</span> --}}
+                                    Last txn : <span
+                                        class="{{ $customer->latestTransaction?->type === 'credit' ? 'text-green-600' : 'text-red-600' }}">
+                                        {{ $customer->latestTransaction?->amount }}
+                                    </span>
+                                    ({{ \Carbon\Carbon::parse($customer->latestTransaction?->datetime)->diffForHumans() }})
+                                @else
+                                    <span class="text-gray-400">No transaction</span>
+                                @endif
+
                             </div>
                         </div>
 
