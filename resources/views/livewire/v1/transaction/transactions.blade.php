@@ -65,7 +65,15 @@
                                     <div class="flex gap-4">
                                         <div class="flex-[2]  flex flex-col justify-around">
                                             <div class="text-gray-700">
-                                                {{ date('d M Y - h:i A', strtotime($transaction->datetime)) }}
+                                                @php
+                                                    $transactionDate = strtotime($transaction->datetime);
+                                                @endphp
+                                                <span
+                                                    class="{{ date('w', $transactionDate) == 0 ? 'text-red-600' : '' }}">
+                                                    {{ date('D', $transactionDate) }}
+                                                </span>
+                                                {{ date('d M Y - h:i A', $transactionDate) }}
+
                                             </div>
                                         </div>
                                         <div
