@@ -51,7 +51,7 @@
             @if ($transactions)
                 @foreach ($transactions as $date => $groupedTransaction)
                     <span
-                        class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
+                        class="{{ date('w', strtotime($date)) == 0 ? 'text-red-600' : '' }} inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('D, d M Y', strtotime($date)) }}</span>
 
                     @foreach ($groupedTransaction as $transaction)
                         <div
@@ -69,10 +69,10 @@
                                                     $transactionDate = strtotime($transaction->datetime);
                                                 @endphp
                                                 <span
-                                                    class="{{ date('w', $transactionDate) == 0 ? 'text-red-600' : '' }}">
-                                                    {{ date('D', $transactionDate) }}
+                                                    class="{{ date('w', $transactionDate) == 0 ? 'text-red-600' : '' }} text-xs">
+                                                    {{-- {{ date('D', $transactionDate) }} --}}
+                                                    {{ date('d M Y-h:iA', $transactionDate) }}
                                                 </span>
-                                                {{ date('d M Y - h:i A', $transactionDate) }}
 
                                             </div>
                                         </div>
