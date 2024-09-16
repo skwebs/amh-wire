@@ -68,11 +68,11 @@
                                                 @php
                                                     $transactionDate = strtotime($transaction->datetime);
                                                 @endphp
-                                                <span
+                                                {{-- <span
                                                     class="{{ date('w', $transactionDate) == 0 ? 'text-red-600' : '' }} text-xs">
-                                                    {{-- {{ date('D', $transactionDate) }} --}}
-                                                    {{ date('d M Y-h:iA', $transactionDate) }}
-                                                </span>
+                                                    {{ date('D', $transactionDate) }}
+                                                </span> --}}
+                                                {{ date('d M Y-h:iA', $transactionDate) }}
 
                                             </div>
                                         </div>
