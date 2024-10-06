@@ -25,6 +25,16 @@ class CustomerDetails extends Component
         $this->latestTransaction = $customer->transactions()->first();
     }
 
+
+    public function delete()
+    {
+        $this->customer->delete();
+        session()->flash('message', 'Customer deleted successfully.');
+
+        return $this->redirect(route('customers'));
+
+    }
+
     #[Title('Customers Details')]
     public function render()
     {

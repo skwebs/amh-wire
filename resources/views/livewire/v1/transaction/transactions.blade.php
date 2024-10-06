@@ -46,7 +46,7 @@
             @if ($transactions)
                 @foreach ($transactions as $date => $groupedTransaction)
                     <span
-                        class="{{ date('w', strtotime($date)) == 0 ? 'text-red-600' : '' }} inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto sticky top-24">{{ date('D, d M Y', strtotime($date)) }}</span>
+                        class="{{ date('w', strtotime($date)) == 0 ? 'text-red-600' : '' }} inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('D, d M Y', strtotime($date)) }}</span>
 
                     @foreach ($groupedTransaction as $transaction)
                         <div

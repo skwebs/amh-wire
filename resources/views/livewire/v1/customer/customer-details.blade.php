@@ -63,9 +63,13 @@
                         {{ $customer->balance > 0 ? 'Dr' : ($customer->balance < 0 ? 'Cr' : '') }}</td>
                 </tr>
             </table>
-            <div class="mt-5">
-                <button href="{{ route('customer.update', $customer) }}" wire:navigate
-                    class="bg-blue-700 text-white px-4 py-1 rounded w-full">Edit</button>
+
+            <div class="mt-5 flex gap-x-4">
+                <button wire:confirm="Are you sure to delete?" wire:click="delete()"
+                    class="bg-red-700 text-white px-4 py-1 rounded w-full text-center">Delete</button>
+
+                <a href="{{ route('customer.update', $customer) }}" wire:navigate
+                    class="bg-blue-700 text-white px-4 py-1 rounded w-full text-center">Edit</a>
             </div>
             <div class="mt-5">
                 @php
