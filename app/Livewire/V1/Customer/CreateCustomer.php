@@ -9,15 +9,15 @@ use Livewire\Component;
 
 class CreateCustomer extends Component
 {
-    public string $name;
+    public string $name = '';
 
     public string $email = '';
 
-    public ?string $phone;
+    public string $phone = '';
 
-    public ?string $address;
+    public string $address = '';
 
-    public ?string $type;
+    public string $type;
 
     /**
      * Creates a new customer and redirects to the customers page.
