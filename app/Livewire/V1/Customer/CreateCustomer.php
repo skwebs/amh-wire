@@ -11,13 +11,13 @@ class CreateCustomer extends Component
 {
     public string $name;
 
-    public string $email;
+    public string $email = '';
 
-    public $phone;
+    public ?string $phone;
 
-    public $address;
+    public ?string $address;
 
-    public $type;
+    public ?string $type;
 
     /**
      * Creates a new customer and redirects to the customers page.

@@ -38,12 +38,7 @@
 
     <main class="flex-grow bg-blue-50 overflow-y-auto">
 
-        <div id="transactions-table-body" x-data x-init="$nextTick(() => {
-            const el = document.getElementById('transactions-table-body');
-            el.scrollTop = el.scrollHeight;
-        })"
-            @transactionsUpdated.window="$nextTick(() => { const el = document.getElementById('transactions-table-body'); el.scrollTop = el.scrollHeight; })"
-            class="bg-gray-100 flex flex-col gap-y-2 grow overflow-y-auto overflow-x-hidden p-2">
+        <div class="relative bg-gray-100 flex flex-col gap-y-2 grow overflow-y-auto overflow-x-hidden p-2">
 
             @php
                 $balance = $this->calculateBalance();
@@ -51,12 +46,12 @@
             @if ($transactions)
                 @foreach ($transactions as $date => $groupedTransaction)
                     <span
-                        class="{{ date('w', strtotime($date)) == 0 ? 'text-red-600' : '' }} inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('D, d M Y', strtotime($date)) }}</span>
+                        class="{{ date('w', strtotime($date)) == 0 ? 'text-red-600' : '' }} inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto sticky top-24">{{ date('D, d M Y', strtotime($date)) }}</span>
 
                     @foreach ($groupedTransaction as $transaction)
                         <div
-                            class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
-                            <a class="relative  w-full rounded h-full flex"
+                            class="text-xs rounded bg-white overflow-hidden group/customer   w-full shadow hover:bg-gray-50  transition-all duration-100 ">
+                            <a class="  w-full rounded h-full flex"
                                 href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
                                 wire:navigate>
 
