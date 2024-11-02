@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\CropImageController;
 use App\Livewire\V1\Customer\CreateCustomer;
+use App\Livewire\V1\Customer\Crop;
+use App\Livewire\V1\Customer\CropCustomerImage;
+use App\Livewire\V1\Customer\CropImage;
 use App\Livewire\V1\Customer\CustomerDetails;
 use App\Livewire\V1\Customer\Customers;
 use App\Livewire\V1\Customer\CustomerSummary;
 use App\Livewire\V1\Customer\UpdateCustomer;
+use App\Livewire\V1\Customer\UpdateCustomerPhoto;
 use App\Livewire\V1\Homepage;
 use App\Livewire\V1\Transaction\CreateTransaction;
 use App\Livewire\V1\Transaction\TransactionDetails;
@@ -25,6 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers', Customers::class)->name('customers');
     Route::get('/customers/create', CreateCustomer::class)->name('customer.create');
     Route::get('/customers/{customer}/details', CustomerDetails::class)->name('customer.details');
+    // Route::get('/customers/{customer}/update-photo', UpdateCustomerPhoto::class)->name('customer.update-photo');
+    Route::get('/customers/{customer}/update-photo',CropCustomerImage::class)->name('customer.update-photo');
+    // Route::get('/customers/{customer}/update-photo', CropImage::class)->name('customer.update-photo');
+    // Route::get('/customers/{customer}/update-photo', Crop::class)->name('customer.update-photo');
+    // Route::get('/customers/{customer}/update-photo',[CropImageController::class, 'crop'])->name('customer.update-photo');
     Route::get('/customers/{customer}/edit', UpdateCustomer::class)->name('customer.update');
 
     // Transaction routes

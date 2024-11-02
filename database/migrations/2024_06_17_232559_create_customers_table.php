@@ -24,14 +24,6 @@ return new class extends Migration
         });
     }
 
-    // $table->id();
-    // $table->string('name');
-    // $table->string('email')->unique();
-    // $table->string('phone');
-    // $table->decimal('balance', 15, 2)->default(0);
-    // $table->softDeletes();
-    // $table->timestamps();
-
     /**
      * Reverse the migrations.
      */

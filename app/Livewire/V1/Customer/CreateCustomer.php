@@ -3,7 +3,6 @@
 namespace App\Livewire\V1\Customer;
 
 use App\Models\Customer;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 

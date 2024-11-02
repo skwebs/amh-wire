@@ -2,7 +2,7 @@
     <x-slot:header class="bg-red-300">
 
         <x-header-all href="{{ route('customer.transactions', $customer->id) }}">
-            <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex justify-center items-center ">
+            <a wire:navigate href="{{ route('customer.update-photo', $customer) }}" class="flex justify-center items-center ">
                 <div class="aspect-square h-full">
                     <x-icons.user-cirlce />
                 </div>
@@ -86,6 +86,10 @@
                 <a class="bg-blue-700 text-white px-4 py-1 rounded w-full"
                     href="https://api.whatsapp.com/send?text={{ $msg }}"
                     class="share-button whatsapp-button">Share via WhatsApp</a>
+            </div>
+
+            <div>
+                <a href="#">Add image</a>
             </div>
 
         </div>
