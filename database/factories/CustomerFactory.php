@@ -19,9 +19,12 @@ class CustomerFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'phone' => fake()->numerify('##########'),
-            'address' => fake()->address(),
-            'is_active' => fake()->boolean(),
+            'phone' => fake()->numerify('##########'), // Random 10-digit number
+            'address' => fake()->optional()->address(), // Optional address
+            'ledger_number' => fake()->optional()->numberBetween(100000, 999999), // Optional unique ledger number
+            'is_active' => fake()->boolean(80), // 80% chance of being active
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
