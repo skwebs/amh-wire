@@ -1,7 +1,10 @@
 <x-wrapper-layout class=" bg-blue-50">
 
     <x-slot:header>
-        <x-header-all class="{{ $transaction->type == 'credit' ? ' bg-green-700 ' : ' bg-red-700  ' }}"
+        <x-header-all @class([
+            'bg-green-700 ' => $transaction->type == 'credit',
+            'bg-red-700 ' => $transaction->type == 'debit',
+        ])
             href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}">
             Update Transaction Details
         </x-header-all>
@@ -10,7 +13,10 @@
 
     <main class="flex-grow bg-blue-50 overflow-y-auto">
         <div class="p-5">
-            <h2 class="mb-5 text-2xl {{ $type == 'credit' ? ' text-green-700 ' : ' text-red-700  ' }}">
+            <h2 @class([
+                ' text-green-700 ' => $type == 'credit',
+                ' text-red-700 ' => $type == 'debit',
+            ])>
                 {{ $customer->name }}</h2>
 
             <form class="flex flex-col gap-2" wire:submit="updateTransaction">
@@ -52,8 +58,8 @@
                     <x-input-label for="type" :value="__('Transaction Type')" />
                     <select id="type" wire:model.change="type"
                         class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                        <option @if ($type == 'debit') selected @endif value="debit">Debit</option>
-                        <option @if ($type == 'credit') selected @endif value="credit">Credit</option>
+                        <option value="debit" @selected($type == 'debit')>Debit</option>
+                        <option value="credit" @selected($type == 'credit')>Crebit</option>
                     </select>
                     <div class="min-h-4">
                         <x-input-error :messages="$errors->get('type')" class="text-xs" />
@@ -62,8 +68,11 @@
                 <!-- /added above code -->
 
                 <div class="w-full flex justify-around mt-2 gap-2">
-                    <button type="submit"
-                        class="{{ $type == 'credit' ? ' bg-green-700 hover:bg-green-800 ' : ' bg-red-700 hover:bg-red-800 ' }} w-full  text-white rounded-md px-3 py-2 font-semibold">Update</button>
+                    <button type="submit" @class([
+                        'w-full  text-white rounded-md px-3 py-2 font-semibold',
+                        'bg-green-700 hover:bg-green-800 ' => $type == 'credit',
+                        'bg-red-700 hover:bg-red-800 ' => $type == 'debit',
+                    ])>Update</button>
                 </div>
             </form>
         </div>

@@ -1,6 +1,9 @@
 <x-wrapper-layout class="{{ $transactionType === 'credit' ? 'bg-green-50' : 'bg-red-50 ' }}">
     <x-slot:header>
-        <x-header-all class="{{ $transactionType === 'credit' ? 'bg-green-700' : 'bg-red-700 ' }}"
+        <x-header-all @class([
+            'bg-green-700 ' => $transaction->type == 'credit',
+            'bg-red-700 ' => $transaction->type == 'debit',
+        ])
             href="{{ route('customer.transactions', $customer) }}">
             {{ $transactionType === 'credit' ? 'Receiving Money' : 'Selling Goods' }}
         </x-header-all>

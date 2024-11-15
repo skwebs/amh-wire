@@ -24,9 +24,10 @@
                             <div>{{ $customer->name }}</div>
                             <div class="text-xs font-semibold">
                                 @if ($customer->latestTransaction)
-                                    {{-- <span>{{ date('d M Y', strtotime($customer->latestTransaction->datetime)) }}</span> --}}
-                                    Last txn : <span
-                                        class="{{ $customer->latestTransaction?->type === 'credit' ? 'text-green-600' : 'text-red-600' }}">
+                                    Last txn : <span @class([
+                                        'text-green-600' => $customer->latestTransaction?->type === 'credit',
+                                        'text-red-600' => $customer->latestTransaction?->type === 'debit',
+                                    ])>
                                         {{ $customer->latestTransaction?->amount }}
                                     </span>
                                     ({{ \Carbon\Carbon::parse($customer->latestTransaction?->datetime)->diffForHumans() }})
@@ -40,14 +41,11 @@
                         <div class="h-full flex justify-center items-center gap-x-2">
                             @php
                                 $balance = abs($customer->balance);
-                                $balanceClass =
-                                    $customer->balance > 0
-                                        ? 'text-red-600'
-                                        : ($customer->balance < 0
-                                            ? 'text-green-600'
-                                            : '');
                             @endphp
-                            <div class="{{ $balanceClass }}">
+                            <div @class([
+                                'text-red-600' => $customer->balance > 0,
+                                'text-green-600' => $customer->balance < 0,
+                            ])>
                                 {{ $balance }}
                             </div>
                             <x-icons.chevron-right />

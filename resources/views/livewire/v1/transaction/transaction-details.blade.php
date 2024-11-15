@@ -1,15 +1,21 @@
 <x-wrapper-layout class=" bg-blue-50">
 
     <x-slot:header>
-        <x-header-all class="{{ $transaction->type == 'credit' ? ' bg-green-700 ' : ' bg-red-700  ' }}"
-            href="{{ route('customer.transactions', $customer) }}">
+        <x-header-all @class([
+            'bg-green-700 ' => $transaction->type == 'credit',
+            'bg-red-700 ' => $transaction->type == 'debit',
+        ]) href="{{ route('customer.transactions', $customer) }}">
             Transaction Details
         </x-header-all>
 
     </x-slot:header>
 
 
-    <main class="flex-grow  overflow-y-auto {{ $transaction->type == 'debit' ? 'bg-red-50/20' : 'bg-green-50/20' }}">
+    <main @class([
+        'flex-grow overflow-y-auto',
+        'bg-red-50/20' => $transaction->type == 'debit',
+        'bg-green-50/20' => $transaction->type == 'credit',
+    ])>
 
         <div class="p-5">
             <table class="w-full">
@@ -26,8 +32,11 @@
                 <tr class="border">
                     <th class="text-left p-2">Txn Type</th>
                     <td>:</td>
-                    <td
-                        class="capitalize font-semibold {{ $transaction->type == 'debit' ? 'text-red-600' : 'text-green-600' }} ">
+                    <td @class([
+                        'capitalize font-semibold ',
+                        'text-green-600 ' => $transaction->type == 'credit',
+                        'text-red-600 ' => $transaction->type == 'debit',
+                    ])>
                         {{ $transaction->type }}</td>
                 </tr>
                 <tr class="border">
