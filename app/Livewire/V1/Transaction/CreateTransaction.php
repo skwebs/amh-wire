@@ -3,6 +3,7 @@
 namespace App\Livewire\V1\Transaction;
 
 use App\Models\Customer;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -41,6 +42,9 @@ class CreateTransaction extends Component
             'type' => $this->type,
         ]);
 
+        Cache::forget('customers_with_balances_and_latest_transactions');
+        Cache::forget('customer_count');
+        
         session()->flash('message', 'Transaction created successfully.');
 
         return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);

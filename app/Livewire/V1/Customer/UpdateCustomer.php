@@ -3,6 +3,7 @@
 namespace App\Livewire\V1\Customer;
 
 use App\Models\Customer;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -58,7 +59,10 @@ class UpdateCustomer extends Component
 
         // Emit an event to notify success
         // $this->dispatch('customer-created');
-
+        
+        Cache::forget('customers_with_balances_and_latest_transactions');
+        Cache::forget('customer_count');
+        
         session()->flash('message', 'Customer updated successfully.');
 
         // dd($this->customer);

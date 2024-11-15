@@ -4,6 +4,7 @@ namespace App\Livewire\V1\Transaction;
 
 use App\Models\Customer;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -33,7 +34,6 @@ class UpdateTransaction extends Component
 
     public function updateTransaction()
     {
-
         $this->validate([
             'amount' => 'required|numeric|min:0',
             'datetime' => 'required|date_format:Y-m-d\TH:i|before_or_equal:now',
@@ -48,6 +48,9 @@ class UpdateTransaction extends Component
         ]);
 
         session()->flash('message', 'Transaction updated successfully.');
+
+        Cache::forget('customers_with_balances_and_latest_transactions');
+        Cache::forget('customer_count');
 
         return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
     }

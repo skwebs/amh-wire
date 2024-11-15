@@ -36,7 +36,7 @@ class Homepage extends Component
         $this->balance = $debits - $credits;
 
         // Retrieve and cache customer count
-        $this->customerNumber = Cache::remember('customer_count', 60, function () {
+        $this->customerNumber = Cache::remember('customer_count', 600, function () {
             return Customer::count();
         });
 
