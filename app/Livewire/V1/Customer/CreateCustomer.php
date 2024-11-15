@@ -3,7 +3,7 @@
 namespace App\Livewire\V1\Customer;
 
 use App\Models\Customer;
-use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -44,6 +44,9 @@ class CreateCustomer extends Component
 
         // Optionally, clear the form fields
         $this->reset();
+
+        Cache::forget('customers_with_balances_and_latest_transactions');
+        Cache::forget('customer_count');
 
         $this->dispatch('customer-created');
 

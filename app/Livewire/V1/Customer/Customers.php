@@ -11,34 +11,10 @@ class Customers extends Component
 {
     public $customers;
 
-    // public function mount()
-    // {
-    //     // Load customers with their latest transaction date and balance
-    //     $this->customers = Customer::with('latestTransaction')->get();
-    // }
-
-    // public function mount()
-    // {
-    //     // Load customers with their latest transaction date and balance, sorted by the latest transaction date
-    //     $this->customers = Customer::select('customers.id', 'customers.name', 'customers.email', 'customers.phone', 'customers.address')
-    //         ->leftJoin('transactions', function ($join) {
-    //             $join->on('customers.id', '=', 'transactions.customer_id')
-    //                 ->whereNull('transactions.deleted_at');  // Handle soft-deleted transactions
-    //         })
-    //         ->selectRaw('MAX(transactions.datetime) as latest_transaction_date')
-    //         ->groupBy('customers.id', 'customers.name', 'customers.email', 'customers.phone', 'customers.address')
-    //         ->orderBy('latest_transaction_date', 'desc')
-    //         ->with('latestTransaction')  // Load the latest transaction relationship
-    //         ->get();
-    // }
-
-
-
-
     public function mount()
     {
         $this->customers = Cache::remember('customers_with_balances_and_latest_transactions', 600, function () {
-            return Customer::select('customers.id', 'customers.name', 'customers.email', 'customers.phone', 'customers.address')
+            return Customer::with('transactions')->select('customers.id', 'customers.name', 'customers.email', 'customers.phone', 'customers.address')
                 ->leftJoin('transactions', function ($join) {
                     $join->on('customers.id', '=', 'transactions.customer_id')
                         ->whereNull('transactions.deleted_at');

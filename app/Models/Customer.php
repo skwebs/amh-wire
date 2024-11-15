@@ -25,8 +25,8 @@ class Customer extends Model
 
     public function getBalanceAttribute()
     {
-        $debits = $this->transactions()->where('type', 'debit')->sum('amount');
-        $credits = $this->transactions()->where('type', 'credit')->sum('amount');
+        $debits = $this->transactions->where('type', 'debit')->sum('amount');
+        $credits = $this->transactions->where('type', 'credit')->sum('amount');
 
         return $debits - $credits;
     }
