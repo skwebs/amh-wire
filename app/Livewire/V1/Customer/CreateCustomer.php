@@ -45,6 +45,7 @@ class CreateCustomer extends Component
         // Optionally, clear the form fields
         $this->reset();
 
+        // refresh token on customer create
         Cache::forget('customers_with_balances_and_latest_transactions');
         Cache::forget('customer_count');
 
