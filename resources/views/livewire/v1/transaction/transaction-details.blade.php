@@ -82,8 +82,8 @@
                     wire:navigate
                     class=" w-full
                 bg-blue-700 hover:bg-blue-800 text-white rounded-md px-3 py-2 font-semibold">Edit</button>
+                
             </div>
-
         </div>
 
 

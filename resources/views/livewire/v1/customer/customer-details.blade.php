@@ -86,6 +86,9 @@
                 <a class="bg-blue-700 text-white px-4 py-1 rounded w-full"
                     href="https://api.whatsapp.com/send?text={{ $msg }}"
                     class="share-button whatsapp-button">Share via WhatsApp</a>
+               
+                <a href="{{ route('exportToCsv', $customer) }}" 
+                    class="bg-blue-700 text-white px-4 py-1 rounded w-full text-center mt-5 inline-block">Export CSV</a>
             </div>
 
         </div>
