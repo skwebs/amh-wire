@@ -12,7 +12,8 @@ use App\Livewire\V1\Transaction\Transactions;
 use App\Livewire\V1\Transaction\UpdateTransaction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExportData;
-
+// use App\Livewire\V1\Transaction\AllTransactions;
+// use App\Livewire\V1\Transaction\AllTransactions;
 
 Route::get('/', function () {
     // return redirect('/c');
@@ -34,10 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers/{customer}/transactions/create', CreateTransaction::class)->name('customer.transaction.create');
     Route::get('/customers/{customer}/transactions/{transaction}', TransactionDetails::class)->name('customer.transaction.details');
     Route::get('/customers/{customer}/transactions/{transaction}/edit', UpdateTransaction::class)->name('customer.transaction.update');
-    
+    // Route::get('/all-transactions', AllTransactions::class)->name('all-transactions');
+    // Route::get('/transactions', AllTransactions::class)->name('transactions');
+
     Route::get('/customer/{customer}/export', [ExportData::class, 'exportToCsv'])->name('exportToCsv');
     Route::get('/customers/{customer}/transactions-export', [ExportData::class, 'getTransaction'])->name('customer.transactions.export-data');
-    
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

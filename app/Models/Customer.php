@@ -10,7 +10,7 @@ class Customer extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'email', 'phone', 'address'];
+    protected $fillable = ['name', 'email', 'phone', 'address', 'user_id', 'type', 'category', 'ledger_number', 'is_active'];
 
     public function transactions()
     {
@@ -29,5 +29,10 @@ class Customer extends Model
         $credits = $this->transactions->where('type', 'credit')->sum('amount');
 
         return $debits - $credits;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

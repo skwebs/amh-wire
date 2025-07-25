@@ -14,7 +14,7 @@ class Customers extends Component
     public function mount()
     {
         $this->customers = Cache::remember('customers_with_balances_and_latest_transactions', 600, function () {
-            return Customer::with('transactions')->select('customers.id', 'customers.name', 'customers.email', 'customers.phone', 'customers.address')
+            return Customer::with('transactions')->select('customers.id', 'customers.name', 'customers.type', 'customers.email', 'customers.phone', 'customers.address')
                 ->leftJoin('transactions', function ($join) {
                     $join->on('customers.id', '=', 'transactions.customer_id')
                         ->whereNull('transactions.deleted_at');
@@ -22,7 +22,7 @@ class Customers extends Component
                 ->selectRaw('MAX(transactions.datetime) as latest_transaction_date')
                 ->selectRaw('SUM(CASE WHEN transactions.type = "debit" THEN transactions.amount ELSE 0 END) as total_debit')
                 ->selectRaw('SUM(CASE WHEN transactions.type = "credit" THEN transactions.amount ELSE 0 END) as total_credit')
-                ->groupBy('customers.id', 'customers.name', 'customers.email', 'customers.phone', 'customers.address')
+                ->groupBy('customers.id', 'customers.name', 'customers.type', 'customers.email', 'customers.phone', 'customers.address')
                 ->orderBy('latest_transaction_date', 'desc')
                 ->get();
         });

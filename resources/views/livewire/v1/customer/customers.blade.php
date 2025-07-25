@@ -1,27 +1,28 @@
-<x-wrapper-layout class=" bg-blue-50">
+<x-wrapper-layout class="bg-blue-50">
     <x-slot:header class="bg-red-300">
 
         <x-header-all href="{{ route('homepage') }}">
-            Customers List
+            {{ auth()->user()->name }} | Accounts
         </x-header-all>
 
     </x-slot:header>
 
 
-    <main class="flex-grow bg-blue-50 overflow-y-auto">
-        <div class="flex flex-col grow overflow-y-auto overflow-x-hidden divide-y">
+    <main class="flex-grow overflow-y-auto bg-blue-50">
+        <div class="flex grow flex-col divide-y overflow-y-auto overflow-x-hidden">
 
             @foreach ($customers as $customer)
                 <a href="{{ route('customer.transactions', $customer) }}" wire:navigate>
-                    <div class="w-full bg-white rounded flex h-14 hover:bg-gray-50">
+                    <div class="flex h-14 w-full rounded bg-white hover:bg-gray-50">
                         <div class="p-[2px]">
                             <div
-                                class="bg-green-50 aspect-square h-full rounded-full border flex justify-center items-center">
+                                class="flex aspect-square h-full items-center justify-center rounded-full border bg-green-50">
                                 <x-icons.user-cirlce class="size-10" />
                             </div>
                         </div>
-                        <div class=" flex flex-col justify-center  flex-grow px-1">
-                            <div>{{ $customer->name }}</div>
+                        <div class="flex flex-grow flex-col justify-center px-1">
+                            <div>{{ $customer->name }} ({{ ucwords(str_replace('_', ' ', $customer->type)) }})</div>
+
                             <div class="text-xs font-semibold">
                                 @if ($customer->latestTransaction)
                                     Last txn : <span @class([
@@ -38,7 +39,7 @@
                             </div>
                         </div>
 
-                        <div class="h-full flex justify-center items-center gap-x-2">
+                        <div class="flex h-full items-center justify-center gap-x-2">
                             @php
                                 $balance = abs($customer->balance);
                             @endphp
@@ -60,9 +61,9 @@
 
 
     <x-slot:footer>
-        <div class="w-full flex justify-around p-4 border-t gap-4">
+        <div class="flex w-full justify-around gap-4 border-t p-4">
             <button href="{{ route('customer.create') }}" wire:navigate
-                class="bg-red-700 text-white px-4 py-2 rounded flex-grow">Add New Customer</button>
+                class="flex-grow rounded bg-red-700 px-4 py-2 text-white">Add New Customer</button>
         </div>
     </x-slot:footer>
 

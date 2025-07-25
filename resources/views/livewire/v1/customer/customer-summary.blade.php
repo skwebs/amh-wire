@@ -1,4 +1,4 @@
-<x-wrapper-layout class=" bg-blue-50">
+<x-wrapper-layout class="bg-blue-50">
     @if ($validated)
         <x-slot:header>
             @php
@@ -6,13 +6,13 @@
             @endphp
             <x-header-all @class(['bg-red-700' => $balance > 0, 'bg-green-700' => $balance < 0])>
 
-                <span class="flex justify-center items-center ">
+                <span class="flex items-center justify-center">
                     <div class="aspect-square h-full">
                         <x-icons.user-cirlce />
                     </div>
                     <div>
-                        <div class=" text-nowrap text-sm">{{ $customer->name }}</div>
-                        <div class="text-nowrap font-bold text-sm text-center">
+                        <div class="text-nowrap text-sm">{{ $customer->name }}</div>
+                        <div class="text-nowrap text-center text-sm font-bold">
                             Bal: ₹
                             {{ number_format(abs($balance), 2) }}
                             <span @class([
@@ -27,74 +27,43 @@
 
             </x-header-all>
 
-            <div class="flex font-semibold p-2 w-full py-1 border-b text-xs flex-col">
-                <div class="flex w-full ">
+            <div class="flex w-full flex-col border-b p-2 py-1 text-xs font-semibold">
+                <div class="flex w-full">
                     <div wire:click="sortBy('date')" class="flex-[2]">Date</div>
-                    <div class="text-center flex-1 ">
-                        <span class="text-red-600">Dues</span>/<span class="text-green-600 ">Paid</span>
+                    <div class="flex-1 text-center">
+                        <span class="text-red-600">Dues</span>/<span class="text-green-600">Paid</span>
                     </div>
-                    <div class="w-24 text-gray-600 text-nowrap ">Balance</div>
+                    <div class="w-24 text-nowrap text-gray-600">Balance</div>
                 </div>
                 <div class="w-full text-gray-400">Description</div>
             </div>
         </x-slot:header>
 
 
-        <main class="flex-grow bg-blue-50 overflow-y-auto">
+        <main class="flex-grow overflow-y-auto bg-blue-50">
 
             <div id="transactions-table-body" x-data x-init="$nextTick(() => {
                 const el = document.getElementById('transactions-table-body');
                 el.scrollTop = el.scrollHeight;
             })"
                 @transactionsUpdated.window="$nextTick(() => { const el = document.getElementById('transactions-table-body'); el.scrollTop = el.scrollHeight; })"
-                class="bg-gray-100 flex flex-col gap-y-2 grow overflow-y-auto overflow-x-hidden p-2">
+                class="flex grow flex-col gap-y-2 overflow-y-auto overflow-x-hidden bg-gray-100 p-2">
 
 
                 @foreach ($transactions as $date => $groupedTransaction)
                     <span
-                        class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
+                        class="mx-auto inline-block w-fit rounded bg-white px-2 py-1 text-center text-xs">{{ date('d M Y', strtotime($date)) }}</span>
                     @foreach ($groupedTransaction as $transaction)
-                        {{-- <div
-                            class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
-                            <a class="relative  w-full rounded h-full flex"
-                                href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
-                                wire:navigate>
-
-                                <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
-                                    <div class="text-gray-700">{{ date('d-m-Y', strtotime($transaction->date)) }}</div>
-                                    <div>
-                                        <span class="bg-amber-50 text-amber-600">
-                                            <span
-                                                class="{{ $balance > 0 ? 'bg-red-50 text-red-600' : ($balance < 0 ? 'bg-green-50 text-green-600' : '') }} w-fit px-1">
-                                                Bal. ₹ {{ number_format(abs($balance), 2) }}
-                                            </span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div
-                                    class="flex-1 px-2 flex items-center justify-end font-semibold bg-red-50/50 text-red-600 text-right">
-                                    {{ $transaction->type === 'debit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
-
-                                </div>
-                                <div
-                                    class="flex-1 px-2 flex items-center justify-end font-semibold bg-green-50/50 text-green-600 text-right">
-                                    {{ $transaction->type === 'credit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
-
-                                </div>
-
-                            </a>
-                        </div> --}}
-
                         <div
-                            class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
-                            <span class="relative  w-full rounded h-full flex">
+                            class="group/customer relative w-full overflow-hidden rounded bg-white text-xs shadow transition-all duration-100 hover:bg-gray-50">
+                            <span class="relative flex h-full w-full rounded">
 
                                 <div class="flex w-full flex-col p-2">
 
                                     <div class="flex gap-4">
-                                        <div class="flex-[2]  flex flex-col justify-around">
+                                        <div class="flex flex-[2] flex-col justify-around">
                                             <div class="text-gray-700">
-                                                {{ date('d-m-Y', strtotime($transaction->date)) }}
+                                                {{ date('d-m-Y', strtotime($transaction->datetime)) }}
                                             </div>
                                         </div>
                                         <div @class([
@@ -105,14 +74,14 @@
                                             {{ '₹ ' . number_format($transaction->amount, 2) }}
                                         </div>
                                         <div
-                                            class=" w-24 px-2 text-gray-600 text-nowrap flex items-center justify-end font-semibold  text-right">
+                                            class="flex w-24 items-center justify-end text-nowrap px-2 text-right font-semibold text-gray-600">
                                             ₹ {{ number_format(abs($balance), 2) }}
                                             <span @class([
                                                 'text-red-600' => $balance > 0,
                                                 'text-green-600' => $balance < 0,
                                             ])>
                                                 <span
-                                                    class="ml-1 w-4 inline-block">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
+                                                    class="ml-1 inline-block w-4">{{ $balance > 0 ? 'Dr' : ($balance < 0 ? 'Cr' : '') }}</span>
                                             </span>
                                         </div>
                                     </div>
@@ -139,13 +108,13 @@
         </main>
 
         <x-slot:footer>
-            <div class="w-full flex justify-around p-1 border-t text-gray-600 bg-white">
+            <div class="flex w-full justify-around border-t bg-white p-1 text-gray-600">
                 This is online generated statement.
             </div>
         </x-slot:footer>
     @else
         <div class="">
-            <div class="bg-red-600 text-white p-3">Invalid link</div>
+            <div class="bg-red-600 p-3 text-white">Invalid link</div>
         </div>
     @endif
 

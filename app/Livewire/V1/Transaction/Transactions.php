@@ -43,12 +43,15 @@ class Transactions extends Component
             ->get(); // Fetches data and returns a collection
 
         // Now group the fetched collection by date
-        $this->transactions = $transactions->groupBy(function ($txn) {
-            return date('Y-m-d', strtotime($txn->datetime));
-        })->all();
+        $this->transactions = $transactions->groupBy(fn($txn) => date('Y-m-d', strtotime($txn->datetime)))->all();
+
+        // $this->transactions = $transactions->groupBy(function ($txn) {
+        //     return date('Y-m-d', strtotime($txn->datetime));
+        // })->all();
 
         // dd($this->transactions);
     }
+
 
     #[Title('Transactions')]
     public function render()
