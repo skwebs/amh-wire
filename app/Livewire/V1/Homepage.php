@@ -57,7 +57,7 @@ class Homepage extends Component
         $this->otherBalance = $this->balance(AccountType::OTHER->value);
         $this->transactions = Transaction::whereHas('customer', function ($query) {
             $query->where('user_id', $this->user->id);
-        })->with('customer')->latest()->take(10)->get();
+        })->with('customer')->latest()->take(5)->get();
     }
 
     /**
