@@ -24,9 +24,10 @@
                     ₹{{ number_format(abs($creditCardsExpenses), 2, '.', ',') }}</span>
             </div>
             <div
-                class="{{ $otherBalance < 0 ? 'bg-red-600' : 'bg-green-600' }} flex items-center rounded-md px-2 py-2 text-sm text-white">
+                class="{{ $otherBalance >= 0 ? 'bg-red-600' : 'bg-green-600' }} flex items-center rounded-md px-2 py-2 text-sm text-white">
                 <x-icons.other class="mr-2 h-5 w-5" />
-                <span class="ml-2">Other Balance: ₹{{ number_format($otherBalance, 2, '.', ',') }}</span>
+                <span class="ml-2">Other Balance: ₹{{ number_format($otherBalance, 2, '.', ',') }}
+                    |<strong> {{ $otherBalance < 0 ? 'To be receive' : 'To be paid' }}</strong> </span>
             </div>
         </div>
 

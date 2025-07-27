@@ -18,6 +18,8 @@ enum AccountType: string
     case CASH = 'cash';
     case BANK = 'bank';
     case OTHER = 'other';
+    case INCOME = 'income';
+    case EXPENSE = 'expense';
 }
 
 class Homepage extends Component
