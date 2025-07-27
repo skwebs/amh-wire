@@ -16,4 +16,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    protected $casts = [
+        'amount' => 'decimal:2', // Assuming amount is stored in rupees
+        'created_at' => 'datetime',
+        'datetime' => 'datetime',
+    ];
 }
