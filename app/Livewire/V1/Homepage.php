@@ -60,6 +60,8 @@ class Homepage extends Component
         $this->transactions = Transaction::whereHas('customer', function ($query) {
             $query->where('user_id', $this->user->id);
         })->with('customer')->latest()->take(5)->get();
+
+        // dd($this->transactions);
     }
 
     /**

@@ -36,14 +36,17 @@
             @if ($transactions->isEmpty())
                 <p class="text-sm text-gray-600">No transactions found.</p>
             @else
-                <ul class="space-y-2">
+                <ul class="space-y-1">
                     @foreach ($transactions as $transaction)
                         <li
-                            class="{{ $transaction->type == 'credit' ? 'text-green-600' : 'text-red-600' }} rounded-md bg-white p-2 text-sm shadow">
+                            class="{{ $transaction->type == 'credit' ? 'text-green-600' : 'text-red-600' }} truncate rounded-md bg-white px-2 py-1 text-sm shadow">
                             {{ $transaction->type == 'credit' ? '+' : '-' }}
                             ₹{{ number_format($transaction->amount, 2, '.', ',') }}
-                            ({{ $transaction->created_at->format('M d, Y') }})
-                            <span class="text-gray-500">by {{ $transaction->customer->name }}</span>
+
+                            <span class="text-xs text-gray-500">
+                                [{{ $transaction->created_at->format('d-m H:i') }}]
+                                [{{ $transaction->customer->name }}]
+                                {{ $transaction->particulars ?? '' }}</span>
                         </li>
                     @endforeach
                 </ul>
