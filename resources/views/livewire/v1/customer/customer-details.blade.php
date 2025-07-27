@@ -4,7 +4,7 @@
         <x-header-all href="{{ route('customer.transactions', $customer->id) }}">
             <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex items-center justify-center">
                 <div class="aspect-square h-full">
-                    <x-icons.user-cirlce />
+                    <x-icons.user-circle />
                 </div>
                 <div>
                     <div class="text-nowrap text-sm">{{ $customer->name }}</div>

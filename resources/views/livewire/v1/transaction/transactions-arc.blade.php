@@ -1,4 +1,4 @@
-<x-wrapper-layout class=" bg-blue-50">
+<x-wrapper-layout class="bg-blue-50">
 
     <x-slot:header>
         @php
@@ -6,13 +6,13 @@
         @endphp
         <x-header-all href="{{ route('customers') }}"
             class="{{ $cBal > 0 ? 'bg-red-700' : ($cBal < 0 ? 'bg-green-700' : '') }}">
-            <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex justify-center items-center ">
+            <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex items-center justify-center">
                 <div class="aspect-square h-full">
-                    <x-icons.user-cirlce />
+                    <x-icons.user-circle />
                 </div>
                 <div>
-                    <div class=" text-nowrap text-sm">{{ $customer->name }}</div>
-                    <div class="text-nowrap font-bold text-sm text-center">
+                    <div class="text-nowrap text-sm">{{ $customer->name }}</div>
+                    <div class="text-nowrap text-center text-sm font-bold">
                         Bal: ₹
                         {{ number_format(abs($this->calculateBalance()), 2) }}
                         <span class="{{ $cBal > 0 ? 'text-red-200' : ($cBal < 0 ? 'text-green-300' : '') }}">
@@ -23,23 +23,23 @@
             </a>
 
         </x-header-all>
-        <div class="flex font-semibold p-2 w-full py-1 border-b ">
+        <div class="flex w-full border-b p-2 py-1 font-semibold">
             <div wire:click="sortBy('date')" class="flex-[2] py-2">Date</div>
-            <div class="text-center flex-1 py-2 text-red-700">Given</div>
-            <div class="text-center flex-1 py-2 text-green-600">Taken</div>
+            <div class="flex-1 py-2 text-center text-red-700">Given</div>
+            <div class="flex-1 py-2 text-center text-green-600">Taken</div>
             {{-- <div class="w-16 py-2 text-gray-600 text-nowrap">Balance</div> --}}
         </div>
     </x-slot:header>
 
 
-    <main class="flex-grow bg-blue-50 overflow-y-auto">
+    <main class="flex-grow overflow-y-auto bg-blue-50">
 
         <div id="transactions-table-body" x-data x-init="$nextTick(() => {
             const el = document.getElementById('transactions-table-body');
             el.scrollTop = el.scrollHeight;
         })"
             @transactionsUpdated.window="$nextTick(() => { const el = document.getElementById('transactions-table-body'); el.scrollTop = el.scrollHeight; })"
-            class="bg-gray-100 flex flex-col gap-y-2 grow overflow-y-auto overflow-x-hidden p-2">
+            class="flex grow flex-col gap-y-2 overflow-y-auto overflow-x-hidden bg-gray-100 p-2">
 
             @php
                 $balance = $this->calculateBalance();
@@ -47,15 +47,16 @@
             @endphp
 
             @foreach ($transactions as $date => $groupedTransaction)
-                <span class="inline-block rounded text-center text-xs bg-white w-fit px-2 py-1 mx-auto">{{ date('d M Y', strtotime($date)) }}</span>
+                <span
+                    class="mx-auto inline-block w-fit rounded bg-white px-2 py-1 text-center text-xs">{{ date('d M Y', strtotime($date)) }}</span>
                 @foreach ($groupedTransaction as $transaction)
                     <div
-                        class="text-xs rounded bg-white overflow-hidden group/customer relative  w-full shadow hover:bg-gray-50  transition-all duration-100 ">
-                        <a class="relative  w-full rounded h-full flex"
+                        class="group/customer relative w-full overflow-hidden rounded bg-white text-xs shadow transition-all duration-100 hover:bg-gray-50">
+                        <a class="relative flex h-full w-full rounded"
                             href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
                             wire:navigate>
 
-                            <div class="flex-[2] px-2 py-2 flex flex-col justify-around">
+                            <div class="flex flex-[2] flex-col justify-around px-2 py-2">
                                 <div class="text-gray-700">{{ date('d-m-Y', strtotime($transaction->date)) }}</div>
                                 <div>
                                     <span class="bg-amber-50 text-amber-600">
@@ -67,12 +68,12 @@
                                 </div>
                             </div>
                             <div
-                                class="flex-1 px-2 flex items-center justify-end font-semibold bg-red-50/50 text-red-600 text-right">
+                                class="flex flex-1 items-center justify-end bg-red-50/50 px-2 text-right font-semibold text-red-600">
                                 {{ $transaction->type === 'debit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
 
                             </div>
                             <div
-                                class="flex-1 px-2 flex items-center justify-end font-semibold bg-green-50/50 text-green-600 text-right">
+                                class="flex flex-1 items-center justify-end bg-green-50/50 px-2 text-right font-semibold text-green-600">
                                 {{ $transaction->type === 'credit' ? '₹ ' . number_format($transaction->amount, 2) : '' }}
 
                             </div>
@@ -106,12 +107,12 @@
     </main>
 
     <x-slot:footer>
-        <div class="w-full flex justify-around p-4 border-t gap-4 bg-white">
+        <div class="flex w-full justify-around gap-4 border-t bg-white p-4">
             <button href="{{ route('customer.transaction.create', ['customer' => $customer, 'type' => 'd']) }}"
-                wire:navigate class="bg-red-600 text-white px-4 py-2 rounded flex-grow">You
+                wire:navigate class="flex-grow rounded bg-red-600 px-4 py-2 text-white">You
                 Gave ₹</button>
             <button href="{{ route('customer.transaction.create', ['customer' => $customer, 'type' => 'c']) }}"
-                wire:navigate class="bg-green-700 text-white px-4 py-2 rounded flex-grow">You
+                wire:navigate class="flex-grow rounded bg-green-700 px-4 py-2 text-white">You
                 Got ₹</button>
         </div>
     </x-slot:footer>

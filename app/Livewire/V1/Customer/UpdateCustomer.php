@@ -62,7 +62,7 @@ class UpdateCustomer extends Component
         // Optionally, clear the form fields
         // $this->reset();
 
-        // Emit an event to notify success
+        // Dispatch an event to notify success
         // $this->dispatch('customer-created');
 
         Cache::forget('customers_with_balances_and_latest_transactions');
