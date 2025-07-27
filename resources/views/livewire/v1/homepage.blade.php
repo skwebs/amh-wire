@@ -49,22 +49,21 @@
             @endif
         </div>
 
-        <div class="mt-4">
-            <a href="{{ route('customers') }}" wire:navigate
-                class="flex items-center justify-between rounded bg-blue-600 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label="View customer list">
-                View Customers <x-icons.arrow-right class="h-5 w-5" />
-            </a>
-        </div>
+
     </main>
 
     <x-slot:footer>
-        <div class="m-3 flex">
+        <div class="flex gap-2 p-4">
             <button wire:click="logout"
-                class="w-full rounded bg-red-600 px-4 py-3 text-sm text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                class="rounded bg-red-600 px-4 py-3 text-sm text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                 aria-label="Log out">
                 Logout
             </button>
+            <a href="{{ route('customers') }}" wire:navigate
+                class="flex flex-1 items-center justify-between rounded bg-blue-600 px-4 py-3 text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="View customer list">
+                View Customers <x-icons.arrow-right class="h-5 w-5" />
+            </a>
         </div>
     </x-slot:footer>
 </x-wrapper-layout>
