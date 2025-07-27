@@ -9,53 +9,47 @@ use Livewire\Component;
 class Transactions extends Component
 {
     public $customer;
-
     public $transactions;
-
     public $sortDir = 'desc';
-
     public $sortField = 'datetime';
 
     public function calculateBalance()
     {
-        return $this->customer->balance;
+        // Optionally compute balance dynamically if not stored in the model
+        return $this->customer->balance ?? $this->customer->transactions()->sum('amount');
     }
 
     public function sortBy($field)
     {
-        $this->sortDir = ($field == $this->sortField) ? ($this->sortDir == 'asc' ? 'desc' : 'asc') : 'asc';
+        $this->sortDir = ($field === $this->sortField) ? ($this->sortDir === 'asc' ? 'desc' : 'asc') : 'asc';
         $this->sortField = $field;
         $this->fetchTransactions();
     }
 
     public function mount(Customer $customer)
     {
+        if (!$customer->exists) {
+            // Handle invalid customer (e.g., redirect or show error)
+            abort(404, 'Customer not found');
+        }
         $this->customer = $customer;
         $this->fetchTransactions();
     }
 
     public function fetchTransactions()
     {
-        // Fetch transactions with the desired ordering
-        $transactions = $this->customer->transactions()
+        $this->transactions = $this->customer->transactions()
             ->orderBy($this->sortField, $this->sortDir)
-            ->orderBy('datetime', 'desc')
-            ->get(); // Fetches data and returns a collection
-
-        // Now group the fetched collection by date
-        $this->transactions = $transactions->groupBy(fn($txn) => date('Y-m-d', strtotime($txn->datetime)))->all();
-
-        // $this->transactions = $transactions->groupBy(function ($txn) {
-        //     return date('Y-m-d', strtotime($txn->datetime));
-        // })->all();
-
-        // dd($this->transactions);
+            ->get()
+            ->groupBy(fn($txn) => $txn->datetime->format('Y-m-d'))
+            ->all();
     }
-
 
     #[Title('Transactions')]
     public function render()
     {
-        return view('livewire.v1.transaction.transactions');
+        return view('livewire.v1.transaction.transactions', [
+            'balance' => $this->calculateBalance(),
+        ]);
     }
 }

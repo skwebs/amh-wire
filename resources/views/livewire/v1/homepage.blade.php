@@ -32,7 +32,12 @@
         </div>
 
         <div class="mt-4">
-            <h2 class="mb-2 text-base font-semibold">Recent Transactions</h2>
+            <div class="mb-2 flex justify-between text-base font-semibold">
+                <h2 class="">Recent Transactions</h2>
+                <a href="{{ route('transactions') }}" wire:navigate
+                    class="block justify-end text-sm text-blue-600">View All
+                    Transactions</a>
+            </div>
             @if ($transactions->isEmpty())
                 <p class="text-sm text-gray-600">No transactions found.</p>
             @else
@@ -50,6 +55,7 @@
                         </li>
                     @endforeach
                 </ul>
+
             @endif
         </div>
 
