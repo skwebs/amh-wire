@@ -1,4 +1,4 @@
-<x-wrapper-layout class=" bg-blue-50">
+<x-wrapper-layout class="bg-blue-50">
 
     <x-slot:header>
         <x-header-all @class([
@@ -11,7 +11,7 @@
     </x-slot:header>
 
 
-    <main class="flex-grow bg-blue-50 overflow-y-auto">
+    <main class="flex-grow overflow-y-auto bg-blue-50">
         <div class="p-5">
             <h2 @class([
                 ' text-green-700 ' => $type == 'credit',
@@ -23,7 +23,7 @@
                 <!-- Amount -->
                 <div>
                     <x-input-label for="amount" :value="__('Amount')" />
-                    <x-text-input wire:model="amount" id="amount" class="block mt-1 w-full" type="number"
+                    <x-text-input wire:model="amount" id="amount" class="mt-1 block w-full" type="number"
                         step=".01" name="amount" required autofocus autocomplete="transaction-amount" />
                     <div class="min-h-4">
                         <x-input-error :messages="$errors->get('amount')" class="text-xs" />
@@ -33,7 +33,7 @@
                 <!-- Transaction Date time -->
                 <div>
                     <x-input-label for="datetime" :value="__('Transaction DateTime')" />
-                    <x-text-input wire:model="datetime" id="datetime" class="block mt-1 w-full" type="datetime-local"
+                    <x-text-input wire:model="datetime" id="datetime" class="mt-1 block w-full" type="datetime-local"
                         name="datetime" required autocomplete="current-datetime" />
                     <div class="min-h-4">
                         <x-input-error :messages="$errors->get('datetime')" class="text-xs" />
@@ -43,7 +43,7 @@
                 <!-- Description -->
                 <div>
                     <x-input-label for="particulars" :value="__('Particulars')" />
-                    <x-text-input wire:model="particulars" id="particulars" class="block mt-1 w-full" type="text"
+                    <x-text-input wire:model="particulars" id="particulars" class="mt-1 block w-full" type="text"
                         step=".01" name="particulars" autofocus autocomplete="transaction-description" />
                     <div class="min-h-4">
                         <x-input-error :messages="$errors->get('particulars')" class="text-xs" />
@@ -53,7 +53,7 @@
                 <!-- Trasaction Type -->
                 <div>
                     <div class="text-sm">Existing Txn type : <span
-                            class="capitalize font-bold {{ $transaction->type == 'credit' ? ' text-green-700 ' : ' text-red-700  ' }}">{{ $transaction->type }}</span>
+                            class="{{ $transaction->type == 'credit' ? ' text-green-700 ' : ' text-red-700  ' }} font-bold capitalize">{{ $transaction->type }}</span>
                     </div>
                     <x-input-label for="type" :value="__('Transaction Type')" />
                     <select id="type" wire:model.change="type"
@@ -67,7 +67,7 @@
                 </div>
                 <!-- /added above code -->
 
-                <div class="w-full flex justify-around mt-2 gap-2">
+                <div class="mt-2 flex w-full justify-around gap-2">
                     <button type="submit" @class([
                         'w-full  text-white rounded-md px-3 py-2 font-semibold',
                         'bg-green-700 hover:bg-green-800 ' => $type == 'credit',
@@ -80,9 +80,9 @@
     </main>
 
     <x-slot:footer>
-        <div class="w-full flex justify-around p-4 border-t gap-4">
+        <div class="flex w-full justify-around gap-4 border-t p-4">
             <a href="{{ route('customer.transaction.details', ['customer' => $customer, 'transaction' => $transaction]) }}"
-                class="text-center w-full inline-block bg-gray-500 hover:bg-gray-600 text-white rounded-md px-3 py-2 font-semibold"
+                class="inline-block w-full rounded-md bg-gray-500 px-3 py-2 text-center font-semibold text-white hover:bg-gray-600"
                 wire:navigate>Go
                 Back</a>
         </div>

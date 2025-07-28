@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CacheController;
 use App\Livewire\V1\Customer\CreateCustomer;
 use App\Livewire\V1\Customer\CustomerDetails;
 use App\Livewire\V1\Customer\Customers;
@@ -21,6 +22,8 @@ Route::get('/', function () {
 Route::get('/customer/{customer}/summary', CustomerSummary::class)->name('customer.summary');
 Route::middleware('auth')->group(function () {
     Route::get('/', Homepage::class)->name('homepage');
+    // clear the cache
+    Route::get('/clear-cache', [CacheController::class, 'clearCache'])->name('clearCache');
     // Customer Public Route
 
     // Customer routes
