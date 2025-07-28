@@ -5,12 +5,10 @@ namespace App\Livewire\V1;
 use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
-
 
 enum AccountType: string
 {
@@ -77,23 +75,19 @@ class Homepage extends Component
             return 0;
         }
 
-        $cacheKey = "balance_{$this->user->id}_{$accountTypeEnum->value}";
+        $customerIds = Customer::where('user_id', $this->user->id)
+            ->where('type', $accountTypeEnum->value)
+            ->pluck('id');
 
-        return Cache::remember($cacheKey, now()->addMinutes(60), function () use ($accountTypeEnum) {
-            $customerIds = Customer::where('user_id', $this->user->id)
-                ->where('type', $accountTypeEnum->value)
-                ->pluck('id');
+        $totalCredits = Transaction::whereIn('customer_id', $customerIds)
+            ->where('type', 'credit')
+            ->sum('amount');
 
-            $totalCredits = Transaction::whereIn('customer_id', $customerIds)
-                ->where('type', 'credit')
-                ->sum('amount');
+        $totalDebits = Transaction::whereIn('customer_id', $customerIds)
+            ->where('type', 'debit')
+            ->sum('amount');
 
-            $totalDebits = Transaction::whereIn('customer_id', $customerIds)
-                ->where('type', 'debit')
-                ->sum('amount');
-
-            return $totalCredits - $totalDebits;
-        });
+        return $totalCredits - $totalDebits;
     }
 
     #[Title('Home page')]

@@ -2,7 +2,6 @@
 
 namespace App\Livewire\V1\Transaction;
 
-use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;

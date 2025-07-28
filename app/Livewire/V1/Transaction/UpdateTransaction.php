@@ -4,22 +4,16 @@ namespace App\Livewire\V1\Transaction;
 
 use App\Models\Customer;
 use App\Models\Transaction;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class UpdateTransaction extends Component
 {
     public $customer;
-
     public $transaction;
-
     public $type;
-
     public $amount;
-
     public $datetime;
-
     public $particulars;
 
     public function mount(Customer $customer, Transaction $transaction)
@@ -28,7 +22,7 @@ class UpdateTransaction extends Component
         $this->transaction = $transaction;
         $this->type = $transaction->type;
         $this->amount = $transaction->amount;
-        $this->datetime = date('Y-m-d\TH:i', strtotime($transaction->datetime));
+        $this->datetime = $transaction->datetime->format('Y-m-d\TH:i');
         $this->particulars = $transaction->particulars;
     }
 
@@ -48,9 +42,6 @@ class UpdateTransaction extends Component
         ]);
 
         session()->flash('message', 'Transaction updated successfully.');
-
-        Cache::forget('customers_with_balances_and_latest_transactions');
-        Cache::forget('customer_count');
 
         return $this->redirect(route('customer.transactions', $this->customer->id), navigate: true);
     }
