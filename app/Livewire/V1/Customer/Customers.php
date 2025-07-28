@@ -5,6 +5,7 @@ namespace App\Livewire\V1\Customer;
 use App\Models\Customer;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Customers extends Component
 {
@@ -12,7 +13,9 @@ class Customers extends Component
 
     public function mount()
     {
-        $this->customers = Customer::with('transactions')->select('customers.id', 'customers.name', 'customers.type', 'customers.email', 'customers.phone', 'customers.address')
+        $this->customers = Customer::with('transactions')
+            ->select('customers.id', 'customers.name', 'customers.type', 'customers.email', 'customers.phone', 'customers.address')
+            ->where('customers.user_id', Auth::id()) // Filter by logged-in user
             ->leftJoin(
                 'transactions',
                 fn($join) =>

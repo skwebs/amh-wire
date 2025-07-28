@@ -11,9 +11,9 @@ class UpdateCustomer extends Component
     public $customer;
     public $user_id;
     public $name;
-    public $email;
-    public $phone;
-    public $address;
+    // public $email;
+    // public $phone;
+    // public $address;
     public $type;
 
     /**
@@ -26,9 +26,9 @@ class UpdateCustomer extends Component
         $this->customer = $customer;
         $this->user_id = auth()->guard()->user()->id;
         $this->name = $customer->name;
-        $this->email = $customer->email;
-        $this->phone = $customer->phone;
-        $this->address = $customer->address;
+        // $this->email = $customer->email;
+        // $this->phone = $customer->phone;
+        // $this->address = $customer->address;
         $this->type = $customer->type;
     }
 
@@ -36,17 +36,17 @@ class UpdateCustomer extends Component
     {
         $this->validate([
             'name' => 'required|min:0',
-            'email' => 'nullable|email',
-            'phone' => 'nullable|size:10|string|max:255',
-            'address' => 'nullable|string|min:5|max:255',
+            // 'email' => 'nullable|email',
+            // 'phone' => 'nullable|size:10|string|max:255',
+            // 'address' => 'nullable|string|min:5|max:255',
             'type' => 'required|in:cash,bank,credit_card,income,expense,other',
         ]);
 
         $this->customer->update([
             'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'address' => $this->address,
+            // 'email' => $this->email,
+            // 'phone' => $this->phone,
+            // 'address' => $this->address,
             'type' => $this->type,
         ]);
 

@@ -21,7 +21,11 @@ class UpdateTransaction extends Component
         $this->customer = $customer;
         $this->transaction = $transaction;
         $this->type = $transaction->type;
-        $this->amount = $transaction->amount;
+        // Format amount to remove .00 for whole numbers
+        $amountFloat = (float) $transaction->amount;
+        $this->amount = $amountFloat == floor($amountFloat)
+            ? (int) $amountFloat
+            : (float) number_format($amountFloat, 2, '.', '');
         $this->datetime = $transaction->datetime->format('Y-m-d\TH:i');
         $this->particulars = $transaction->particulars;
     }
@@ -34,8 +38,11 @@ class UpdateTransaction extends Component
             'particulars' => 'nullable|string|max:255',
         ]);
 
+        // Convert amount to float for storage
+        $amount = (float) $this->amount;
+
         $this->transaction->update([
-            'amount' => $this->amount,
+            'amount' => $amount,
             'datetime' => $this->datetime,
             'particulars' => $this->particulars,
             'type' => $this->type,

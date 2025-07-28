@@ -56,7 +56,6 @@
             @empty
                 <div class="p-4 text-gray-500">No customers found.</div>
             @endforelse
-            {{-- {{ $customers->links() }} --}}
         </div>
     </main>
 

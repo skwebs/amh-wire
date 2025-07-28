@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div class="">
+                {{-- <div class="">
                     <div class="">
                         <label for="email" class="block text-sm font-medium leading-6 text-gray-600">Email</label>
                         <input type="email" name="email" id="email" autocomplete="email" placeholder="Email"
@@ -39,9 +39,9 @@
                             <div class="text-xs text-red-600">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="">
+                {{-- <div class="">
                     <div class="">
                         <label for="phone" class="block text-sm font-medium leading-6 text-gray-600">Phone
                             Number</label>
@@ -54,7 +54,7 @@
                             <div class="text-xs text-red-600">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="">
                     <div class="">
@@ -77,7 +77,7 @@
                     </div>
                 </div>
 
-                <div class="">
+                {{-- <div class="">
                     <div class="">
                         <label for="address" class="block text-sm font-medium leading-6 text-gray-600">Address</label>
                         <input type="text" name="address" id="address" autocomplete="address" placeholder="Address"
@@ -89,7 +89,7 @@
                             <div class="text-xs text-red-600">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
 
 

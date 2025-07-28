@@ -9,9 +9,9 @@ use Livewire\Component;
 class CreateCustomer extends Component
 {
     public string $name = '';
-    public string $email = '';
-    public string $phone = '';
-    public string $address = '';
+    // public string $email = '';
+    // public string $phone = '';
+    // public string $address = '';
     public string $type = '';
     public string $category = '';
 
@@ -24,9 +24,9 @@ class CreateCustomer extends Component
     {
         $this->validate([
             'name' => 'required|min:0',
-            'email' => 'nullable|email',
-            'phone' => 'nullable|size:10|string|max:255',
-            'address' => 'nullable|string|min:5|max:255',
+            // 'email' => 'nullable|email',
+            // 'phone' => 'nullable|size:10|string|max:255',
+            // 'address' => 'nullable|string|min:5|max:255',
             'type' => 'required|in:cash,bank,credit_card,income,expense,other',
         ]);
 
@@ -35,9 +35,9 @@ class CreateCustomer extends Component
         Customer::create([
             'user_id' => $userId,
             'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'address' => $this->address,
+            // 'email' => $this->email,
+            // 'phone' => $this->phone,
+            // 'address' => $this->address,
             'type' => $this->type,
         ]);
 

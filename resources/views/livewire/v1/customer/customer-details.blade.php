@@ -26,7 +26,7 @@
                     <td>:</td>
                     <td>{{ $customer->name }} ({{ $customer->type }})</td>
                 </tr>
-                <tr class="border">
+                {{-- <tr class="border">
                     <th class="p-2 text-left">Email</th>
                     <td>:</td>
                     <td>{{ $customer->email }}</td>
@@ -40,7 +40,7 @@
                     <th class="p-2 text-left">Address</th>
                     <td>:</td>
                     <td>{{ $customer->address }}</td>
-                </tr>
+                </tr> --}}
                 <tr class="border">
                     <th class="p-2 text-left">Last Txn</th>
                     <td>:</td>
