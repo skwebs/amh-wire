@@ -2,7 +2,7 @@
     <x-slot:header class="bg-red-300">
 
         <x-header-all href="{{ route('customer.transactions', $customer->id) }}">
-            <a wire:navigate href="{{ route('customer.details', $customer) }}" class="flex items-center justify-center">
+            <a wire:navigate href="{{ route('customer.update', $customer) }}" class="flex items-center justify-center">
                 <div class="aspect-square h-full">
                     <x-icons.user-circle />
                 </div>
@@ -26,21 +26,13 @@
                     <td>:</td>
                     <td>{{ $customer->name }} ({{ $customer->type }})</td>
                 </tr>
-                {{-- <tr class="border">
-                    <th class="p-2 text-left">Email</th>
-                    <td>:</td>
-                    <td>{{ $customer->email }}</td>
-                </tr>
+
+
                 <tr class="border">
-                    <th class="p-2 text-left">Phone</th>
+                    <th class="p-2 text-left">Billing Date</th>
                     <td>:</td>
-                    <td>{{ $customer->phone }}</td>
+                    <td>{{ $customer->billing_date ?? 'N/A' }}</td>
                 </tr>
-                <tr class="border">
-                    <th class="p-2 text-left">Address</th>
-                    <td>:</td>
-                    <td>{{ $customer->address }}</td>
-                </tr> --}}
                 <tr class="border">
                     <th class="p-2 text-left">Last Txn</th>
                     <td>:</td>
@@ -66,7 +58,10 @@
 
             <div class="mt-5 flex gap-x-4">
                 <button wire:confirm="Are you sure to delete?" wire:click="delete()" wire:loading.attr="disabled"
-                    class="w-full rounded bg-red-700 px-4 py-1 text-center text-white disabled:cursor-not-allowed disabled:opacity-50">Delete</button>
+                    class="w-full rounded bg-red-700 px-4 py-1 text-center text-white disabled:cursor-not-allowed disabled:opacity-50">
+                    <span wire:loading.remove>Delete</span>
+                    <span wire:loading>Deleting...</span>
+                </button>
 
                 <a href="{{ route('customer.update', $customer) }}" wire:navigate
                     class="w-full rounded bg-blue-700 px-4 py-1 text-center text-white">Edit</a>

@@ -27,38 +27,10 @@
                     </div>
                 </div>
 
-                {{-- <div class="">
-                    <div class="">
-                        <label for="email" class="block text-sm font-medium leading-6 text-gray-600">Email</label>
-                        <input type="email" name="email" id="email" autocomplete="email" placeholder="Email"
-                            wire:model="email"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="h-3">
-                        @error('email')
-                            <div class="text-xs text-red-600">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> --}}
-
-                {{-- <div class="">
-                    <div class="">
-                        <label for="phone" class="block text-sm font-medium leading-6 text-gray-600">Phone
-                            Number</label>
-                        <input type="tel" name="phone" id="phone" autocomplete="phone" placeholder="Phone"
-                            wire:model="phone"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="h-3">
-                        @error('phone')
-                            <div class="text-xs text-red-600">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> --}}
                 <div class="">
                     <div class="">
                         <label for="type" class="block text-sm font-medium leading-6 text-gray-600">Type</label>
-                        <select name="type" id="type" wire:model="type"
+                        <select name="type" id="type" wire:model.live="type"
                             class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
                             <option value="">Select Type</option>
                             <option value="cash">Cash</option>
@@ -76,11 +48,36 @@
                     </div>
                 </div>
 
+                @if ($type === 'credit_card')
+                    <div>
+                        <div>
+                            <label for="billing_date" class="block text-sm font-medium leading-6 text-gray-600">Billing
+                                Date</label>
+                            <select name="billing_date" id="billing_date" wire:model="billing_date"
+                                class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
+                                <option value="">Select Billing Date</option>
+                                @for ($i = 1; $i <= 28; $i++)
+                                    @php
+                                        $selected = $i == $billing_date ? 'selected' : '';
+                                    @endphp
+                                    <option value="{{ $i }}" {{ $selected }}>{{ $i }}</option>
+                                @endfor()
+
+                            </select>
+                        </div>
+                        <div class="h-3">
+                            @error('billing_date')
+                                <div class="text-xs text-red-600">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                @endif
+
                 <div class="my-4 flex gap-5">
-                    <button type="submit" wire:loading.attr="disabled"
+                    <button type="submit" wire:target="addCustomer" wire:loading.attr="disabled"
                         class="w-full rounded-md bg-green-700 px-3 py-2 font-semibold text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-50">
-                        <span wire:loading.remove>Submit</span>
-                        <span wire:loading>Submitting...</span>
+                        <span wire:target="addCustomer" wire:loading.remove>Submit</span>
+                        <span wire:target="addCustomer" wire:loading>Submitting...</span>
                     </button>
                 </div>
 

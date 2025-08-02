@@ -54,7 +54,11 @@
                     </div>
                 </a>
             @empty
-                <div class="p-4 text-gray-500">No customers found.</div>
+
+                <div class="p-4 text-center text-sm font-semibold text-gray-400">
+                    No customers found. <a wire:navigate href="{{ route('customer.create') }}" class="text-blue-600">Add
+                        one now</a>.
+                </div>
             @endforelse
         </div>
     </main>

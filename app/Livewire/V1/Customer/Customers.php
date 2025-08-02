@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class Customers extends Component
 {
     public $customers;
+    public $billing_date;
 
     public function mount()
     {

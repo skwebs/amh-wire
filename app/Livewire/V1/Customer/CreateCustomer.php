@@ -15,6 +15,8 @@ class CreateCustomer extends Component
     public string $type = '';
     public string $category = '';
 
+    public ?int $billing_date = null;
+
     /**
      * Creates a new customer and redirects to the customers page.
      *
@@ -24,10 +26,10 @@ class CreateCustomer extends Component
     {
         $this->validate([
             'name' => 'required|min:0',
-            // 'email' => 'nullable|email',
-            // 'phone' => 'nullable|size:10|string|max:255',
-            // 'address' => 'nullable|string|min:5|max:255',
             'type' => 'required|in:cash,bank,credit_card,income,expense,other',
+            'billing_date' => 'nullable|integer|min:1|max:28|required_if:type,credit_card',
+        ], [
+            'billing_date.required_if' => 'The billing date field is required when the type is Credit Card.',
         ]);
 
         $userId = auth()->guard()->user()->id;
@@ -35,10 +37,8 @@ class CreateCustomer extends Component
         Customer::create([
             'user_id' => $userId,
             'name' => $this->name,
-            // 'email' => $this->email,
-            // 'phone' => $this->phone,
-            // 'address' => $this->address,
             'type' => $this->type,
+            'billing_date' => $this->billing_date,
         ]);
 
         // Reset form fields

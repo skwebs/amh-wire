@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->enum('type', ['cash', 'credit_card', 'bank', 'person', 'income', 'expense', 'other'])->nullable();
+            $table->unsignedTinyInteger('billing_date')->nullable();
         });
     }
 
@@ -23,8 +22,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn(['user_id', 'type']);
+            // Drop the billing_date column if it exists
+            if (Schema::hasColumn('customers', 'billing_date')) {
+                $table->dropColumn('billing_date');
+            }
         });
     }
 };

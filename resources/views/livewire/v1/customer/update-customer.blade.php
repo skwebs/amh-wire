@@ -50,7 +50,30 @@
                     </div>
                 </div>
 
+                @if ($type === 'credit_card')
+                    <div>
+                        <div>
+                            <label for="billing_date" class="block text-sm font-medium leading-6 text-gray-600">Billing
+                                Date</label>
+                            <select name="billing_date" id="billing_date" wire:model="billing_date"
+                                class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
+                                <option value="">Select Billing Date</option>
+                                @for ($i = 1; $i <= 28; $i++)
+                                    @php
+                                        $selected = $i == $billing_date ? 'selected' : '';
+                                    @endphp
+                                    <option value="{{ $i }}" {{ $selected }}>{{ $i }}</option>
+                                @endfor()
 
+                            </select>
+                        </div>
+                        <div class="h-3">
+                            @error('billing_date')
+                                <div class="text-xs text-red-600">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                @endif
 
 
 

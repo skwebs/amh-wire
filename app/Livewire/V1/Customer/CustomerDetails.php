@@ -15,6 +15,7 @@ class CustomerDetails extends Component
 
     public $latestTransaction;
 
+
     // #[Layout('layouts.wire')]
     public function mount(Customer $customer)
     {
