@@ -68,11 +68,14 @@
                 <!-- /added above code -->
 
                 <div class="mt-2 flex w-full justify-around gap-2">
-                    <button type="submit" @class([
-                        'w-full  text-white rounded-md px-3 py-2 font-semibold',
+                    <button type="submit" wire:loading.attr="disabled" @class([
+                        'w-full  text-white rounded-md px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-50',
                         'bg-green-700 hover:bg-green-800 ' => $type == 'credit',
                         'bg-red-700 hover:bg-red-800 ' => $type == 'debit',
-                    ])>Update</button>
+                    ])>
+                        <span wire:loading.remove>Update</span>
+                        <span wire:loading>Updating...</span>
+                    </button>
                 </div>
             </form>
         </div>

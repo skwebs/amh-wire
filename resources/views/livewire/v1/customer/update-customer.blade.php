@@ -27,34 +27,7 @@
                     </div>
                 </div>
 
-                {{-- <div class="">
-                    <div class="">
-                        <label for="email" class="block text-sm font-medium leading-6 text-gray-600">Email</label>
-                        <input type="email" name="email" id="email" autocomplete="email" placeholder="Email"
-                            wire:model="email"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="h-3">
-                        @error('email')
-                            <div class="text-xs text-red-600">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> --}}
 
-                {{-- <div class="">
-                    <div class="">
-                        <label for="phone" class="block text-sm font-medium leading-6 text-gray-600">Phone
-                            Number</label>
-                        <input type="tel" name="phone" id="phone" autocomplete="phone" placeholder="Phone"
-                            wire:model="phone"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="h-3">
-                        @error('phone')
-                            <div class="text-xs text-red-600">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> --}}
 
                 <div class="">
                     <div class="">
@@ -77,25 +50,16 @@
                     </div>
                 </div>
 
-                {{-- <div class="">
-                    <div class="">
-                        <label for="address" class="block text-sm font-medium leading-6 text-gray-600">Address</label>
-                        <input type="text" name="address" id="address" autocomplete="address" placeholder="Address"
-                            wire:model="address"
-                            class="block w-full rounded-md border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-                    </div>
-                    <div class="h-3">
-                        @error('address')
-                            <div class="text-xs text-red-600">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> --}}
+
 
 
 
                 <div class="my-4 flex gap-5">
-                    <button type="submit"
-                        class="w-full rounded-md bg-blue-700 px-3 py-2 font-semibold text-white hover:bg-blue-800">Update</button>
+                    <button type="submit" wire:loading.attr="disabled"
+                        class="w-full rounded-md bg-blue-700 px-3 py-2 font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50">
+                        <span wire:loading.remove>Update</span>
+                        <span wire:loading>Updating...</span>
+                    </button>
                 </div>
 
             </form>

@@ -65,8 +65,8 @@
             </table>
 
             <div class="mt-5 flex gap-x-4">
-                <button wire:confirm="Are you sure to delete?" wire:click="delete()"
-                    class="w-full rounded bg-red-700 px-4 py-1 text-center text-white">Delete</button>
+                <button wire:confirm="Are you sure to delete?" wire:click="delete()" wire:loading.attr="disabled"
+                    class="w-full rounded bg-red-700 px-4 py-1 text-center text-white disabled:cursor-not-allowed disabled:opacity-50">Delete</button>
 
                 <a href="{{ route('customer.update', $customer) }}" wire:navigate
                     class="w-full rounded bg-blue-700 px-4 py-1 text-center text-white">Edit</a>
