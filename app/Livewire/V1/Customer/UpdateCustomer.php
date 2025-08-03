@@ -5,6 +5,7 @@ namespace App\Livewire\V1\Customer;
 use App\Models\Customer;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\Attributes\Url;
 
 class UpdateCustomer extends Component
 {
@@ -14,6 +15,9 @@ class UpdateCustomer extends Component
     public $type;
     public $billing_date;
 
+
+    #[Url(as: 'm')]
+    public $message;
     /**
      * Initializes the component with a customer object.
      *

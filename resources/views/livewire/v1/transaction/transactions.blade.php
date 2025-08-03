@@ -19,27 +19,29 @@
                 </div>
             </a>
         </x-header-all>
-        <div wire:loading.class="opacity-40" wire:target="setFilter" class="flex w-full justify-center gap-2 py-1">
-            <flux:button wire:loading.attr="disabled" wire:click="setFilter('current')" @class([
-                'px-4  rounded text-xs py-1 cursor-pointer',
-                'bg-blue-600 text-white' => $filter === 'current',
-                'bg-gray-200 text-gray-600' => $filter !== 'current',
-            ])>
-                Current
-            </flux:button>
-            <flux:button wire:loading.attr="disabled" wire:click="setFilter('all')" @class([
-                'px-4 rounded text-xs py-1 cursor-pointer',
-                'bg-blue-600 text-white' => $filter === 'all',
-                'bg-gray-200 text-gray-600' => $filter !== 'all',
-            ])>
-                All
-            </flux:button>
-            <div class="text-[11px] font-semibold text-gray-600">
-                <span>{{ $billingStartDate ? $billingStartDate->format('d-m-y') : '' }}</span> to
-                <span>{{ now()->format('d-m-y') }}</span>
+        @if ($customer->type == 'credit_card')
+            <div wire:loading.class="opacity-40" wire:target="setFilter" class="flex w-full justify-center gap-2 py-1">
+                <flux:button wire:loading.attr="disabled" wire:click="setFilter('current')"
+                    @class([
+                        'px-4  rounded text-xs py-1 cursor-pointer',
+                        'bg-blue-600 text-white' => $filter === 'current',
+                        'bg-gray-200 text-gray-600' => $filter !== 'current',
+                    ])>
+                    Current
+                </flux:button>
+                <flux:button wire:loading.attr="disabled" wire:click="setFilter('all')" @class([
+                    'px-4 rounded text-xs py-1 cursor-pointer',
+                    'bg-blue-600 text-white' => $filter === 'all',
+                    'bg-gray-200 text-gray-600' => $filter !== 'all',
+                ])>
+                    All
+                </flux:button>
+                <div class="text-[11px] font-semibold text-gray-600">
+                    <span>{{ $billingStartDate ? $billingStartDate->format('d-m-y') : '' }}</span> to
+                    <span>{{ $billingEndDate ? $billingEndDate->format('d-m-y') : '' }}</span>
+                </div>
             </div>
-            {{-- {{ $filter }} --}}
-        </div>
+        @endif
         <div wire:loading.flex
             class="fixed inset-0 z-10 flex w-full -translate-y-6 items-center justify-center bg-black/20 text-2xl font-semibold text-gray-600 transition-all duration-300 ease-in">
             Wait...

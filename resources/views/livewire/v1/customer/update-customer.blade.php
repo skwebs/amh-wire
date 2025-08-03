@@ -12,6 +12,7 @@
         <div class="p-5">
             {{-- <h2 class="mb-5 text-2xl text-blue-700">Update Customer</h2> --}}
 
+
             <form class="flex flex-col gap-2" wire:submit="updateCustomer">
                 <div class="">
                     <div class="">
@@ -72,6 +73,11 @@
                                 <div class="text-xs text-red-600">{{ $message }}</div>
                             @enderror
                         </div>
+                        @if ($message)
+                            <div class="text-sm text-red-600">
+                                {{ $message }}
+                            </div>
+                        @endif
                     </div>
                 @endif
 
