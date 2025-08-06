@@ -15,7 +15,7 @@ class Customers extends Component
     public function mount()
     {
         $this->customers = Customer::with('transactions')
-            ->select('customers.id', 'customers.name', 'customers.type', 'customers.email', 'customers.phone', 'customers.address')
+            ->select('customers.id', 'customers.name', 'customers.type')
             ->where('customers.user_id', Auth::id()) // Filter by logged-in user
             ->leftJoin(
                 'transactions',
@@ -26,7 +26,7 @@ class Customers extends Component
             ->selectRaw('MAX(transactions.datetime) as latest_transaction_date')
             ->selectRaw('SUM(CASE WHEN transactions.type = "debit" THEN transactions.amount ELSE 0 END) as total_debit')
             ->selectRaw('SUM(CASE WHEN transactions.type = "credit" THEN transactions.amount ELSE 0 END) as total_credit')
-            ->groupBy('customers.id', 'customers.name', 'customers.type', 'customers.email', 'customers.phone', 'customers.address')
+            ->groupBy('customers.id', 'customers.name', 'customers.type')
             ->orderBy('latest_transaction_date', 'desc')
             ->get();
     }

@@ -42,6 +42,19 @@
                 </div>
             </div>
         @endif
+
+        <div>
+            @if ($customer->type == 'credit_card')
+                <div class="text-center text-sm">
+                    <span class="font-semibold text-red-600">{{ $previousExpenses }}</span>
+                    <span class="font-semibold text-green-600"> - {{ $currentPayments }}</span>
+                    <span class="font-semibold text-amber-600"> = {{ $previousExpenses - $currentPayments }}</span> +
+                    <span class="text-xl font-semibold text-red-600"> {{ $currentExpenses }}</span> =
+                    <span class="font-semibold text-red-600">
+                        {{ $previousExpenses + $currentExpenses - $currentPayments }}</span>
+                </div>
+            @endif
+        </div>
         <div wire:loading.flex
             class="fixed inset-0 z-10 flex w-full -translate-y-6 items-center justify-center bg-black/20 text-2xl font-semibold text-gray-600 transition-all duration-300 ease-in">
             Wait...

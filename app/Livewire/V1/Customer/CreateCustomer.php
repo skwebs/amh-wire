@@ -5,15 +5,13 @@ namespace App\Livewire\V1\Customer;
 use App\Models\Customer;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Illuminate\Support\Facades\Cache;
+use App\Livewire\V1\AccountType;
 
 class CreateCustomer extends Component
 {
     public string $name = '';
-    // public string $email = '';
-    // public string $phone = '';
-    // public string $address = '';
     public string $type = '';
-    public string $category = '';
 
     public ?int $billing_date = null;
 
@@ -39,15 +37,19 @@ class CreateCustomer extends Component
             'name' => $this->name,
             'type' => $this->type,
             'billing_date' => $this->billing_date,
+            'is_active' => true, // Default to true if applicable
         ]);
 
         // Reset form fields
         $this->reset();
 
+        // Dispatch event (if handled elsewhere)
         $this->dispatch('customer-created');
 
+        // Flash success message
         session()->flash('message', 'Customer added successfully.');
 
+        // Redirect to customers page
         $this->redirect(route('customers'), navigate: true);
     }
 
