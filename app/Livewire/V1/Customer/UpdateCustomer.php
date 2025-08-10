@@ -37,7 +37,7 @@ class UpdateCustomer extends Component
         $this->validate([
             'name' => 'required|min:0',
             'type' => 'required|in:cash,bank,credit_card,income,expense,other',
-            'billing_date' => 'required|integer|min:1|max:28|required_if:type,credit_card',
+            'billing_date' => 'nullable|integer|min:1|max:28|required_if:type,credit_card',
         ], [
             'billing_date.required_if' => 'The billing date field is required when the type is Credit Card.',
         ]);

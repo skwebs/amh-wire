@@ -84,10 +84,10 @@
 
 
                 <div class="my-4 flex gap-5">
-                    <button type="submit" wire:loading.attr="disabled"
+                    <button type="submit" wire:loading.attr="disabled" wire:target="updateCustomer"
                         class="w-full rounded-md bg-blue-700 px-3 py-2 font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50">
-                        <span wire:loading.remove>Update</span>
-                        <span wire:loading>Updating...</span>
+                        <span wire:loading.remove wire:target="updateCustomer">Update</span>
+                        <span wire:loading wire:target="updateCustomer">Updating...</span>
                     </button>
                 </div>
 
