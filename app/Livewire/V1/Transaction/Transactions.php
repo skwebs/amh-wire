@@ -3,6 +3,7 @@
 namespace App\Livewire\V1\Transaction;
 
 use App\Models\Customer;
+use App\Services\BillingPeriodCalculator;
 use Carbon\Carbon;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -14,31 +15,46 @@ class Transactions extends Component
     public $sortDir = 'desc';
     public $sortField = 'datetime';
     public $filter = 'current'; // 'current'|'all'
-    public $billingStartDate;
-    public $billingEndDate;
+    public ?Carbon $billingStartDate = null;
+    public ?Carbon $billingEndDate = null;
 
     public function setFilter($filter)
     {
         $this->filter = in_array($filter, ['current', 'all']) ? $filter : 'current';
-        if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
-            $this->setBillingPeriod($this->customer->billing_date);
+        if ($this->filter === 'current') {
+            $this->setBillingDates();
         }
         $this->fetchTransactions();
     }
 
-    public function calculateBalance()
+    private function setBillingDates(): void
+    {
+        if ($this->customer->type !== 'credit_card') {
+            $this->billingStartDate = null;
+            $this->billingEndDate = null;
+            return;
+        }
+
+        $period = BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+        $this->billingStartDate = $period->startDate ? Carbon::parse($period->startDate) : null;
+        $this->billingEndDate = $period->endDate ? Carbon::parse($period->endDate) : null;
+    }
+
+    private function getPeriodForFilter(): ?object
+    {
+        if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
+            return BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+        }
+
+        return null;
+    }
+
+    private function balanceWithinPeriod(?object $period): float
     {
         $query = $this->customer->transactions()->select('type', 'amount', 'datetime');
-        if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
-            $billingPeriod = $this->currentBillingPeriod($this->customer->billing_date);
-            if ($billingPeriod->startDate && $billingPeriod->endDate) {
-                $query->whereBetween('datetime', [
-                    $billingPeriod->startDate,
-                    $billingPeriod->endDate
-                ]);
-            } else {
-                return 0;
-            }
+
+        if ($period && $period->startDate && $period->endDate) {
+            $query->whereBetween('datetime', [$period->startDate, $period->endDate]);
         }
 
         return $query->get()->sum(function ($transaction) {
@@ -46,67 +62,57 @@ class Transactions extends Component
         });
     }
 
-    public function currentExpenses()
+    private function sumWithinPeriod(?object $period, string $type): float
     {
-        if ($this->customer->type !== 'credit_card') {
-            return 0;
-        }
-
-        $billingPeriod = $this->currentBillingPeriod($this->customer->billing_date);
-        if (!$billingPeriod->startDate || !$billingPeriod->endDate) {
+        if (!$period || !$period->startDate || !$period->endDate) {
             return 0;
         }
 
         return $this->customer->transactions()
             ->select('type', 'amount', 'datetime')
-            ->where('type', 'debit')
-            ->whereBetween('datetime', [
-                $billingPeriod->startDate,
-                $billingPeriod->endDate
-            ])
+            ->where('type', $type)
+            ->whereBetween('datetime', [$period->startDate, $period->endDate])
             ->sum('amount');
     }
 
-    public function previousExpenses()
+    public function calculateBalance(): float
     {
-        if ($this->customer->type !== 'credit_card') {
-            return 0;
+        if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
+            return $this->previousExpenses() + $this->currentExpenses() - $this->currentPayments();
         }
 
-        $billingPeriod = $this->previousBillingPeriod($this->customer->billing_date);
-        if (!$billingPeriod->startDate || !$billingPeriod->endDate) {
-            return 0;
-        }
-
-        return $this->customer->transactions()
-            ->select('type', 'amount', 'datetime')
-            ->where('type', 'debit')
-            ->whereBetween('datetime', [
-                $billingPeriod->startDate,
-                $billingPeriod->endDate
-            ])
-            ->sum('amount');
+        $period = $this->getPeriodForFilter();
+        return $this->balanceWithinPeriod($period);
     }
 
-    public function currentPayments()
+    public function currentExpenses(): float
     {
         if ($this->customer->type !== 'credit_card') {
             return 0;
         }
 
-        $billingPeriod = $this->currentBillingPeriod($this->customer->billing_date);
-        if (!$billingPeriod->startDate || !$billingPeriod->endDate) {
+        $period = BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+        return $this->sumWithinPeriod($period, 'debit');
+    }
+
+    public function previousExpenses(): float
+    {
+        if ($this->customer->type !== 'credit_card') {
             return 0;
         }
 
-        return $this->customer->transactions()
-            ->select('type', 'amount', 'datetime')
-            ->where('type', 'credit')
-            ->whereBetween('datetime', [
-                $billingPeriod->startDate,
-                $billingPeriod->endDate
-            ])
-            ->sum('amount');
+        $period = BillingPeriodCalculator::previousPeriod($this->customer->billing_date);
+        return $this->sumWithinPeriod($period, 'debit');
+    }
+
+    public function currentPayments(): float
+    {
+        if ($this->customer->type !== 'credit_card') {
+            return 0;
+        }
+
+        $period = BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+        return $this->sumWithinPeriod($period, 'credit');
     }
 
     public function sortBy($field)
@@ -128,109 +134,32 @@ class Transactions extends Component
         }
 
         $this->customer = $customer;
-
-        if ($this->customer->type === 'credit_card' && $this->filter === 'current') {
-            $this->setBillingPeriod($customer->billing_date);
+        if ($this->filter === 'current') {
+            $this->setBillingDates();
         }
-
         $this->fetchTransactions();
-    }
-
-    private function setBillingPeriod(int $billingDay): void
-    {
-        if ($this->customer->type !== 'credit_card') {
-            return;
-        }
-
-        if ($billingDay < 1 || $billingDay > 28) {
-            abort(400, 'Invalid billing day');
-        }
-
-        $today = Carbon::today();
-        $billingDate = $today->copy()->setDay($billingDay);
-        $billingStartDate = $billingDate->copy()->addDay()->startOfDay();
-
-        $this->billingStartDate = $billingStartDate->isFuture()
-            ? $today->copy()->subMonth()->day($billingDay + 1)->startOfDay()
-            : $billingStartDate;
-
-        $this->billingEndDate = $billingStartDate->isFuture()
-            ? $billingDate->endOfDay()
-            : $today->copy()->addMonth()->day($billingDay)->endOfDay();
-    }
-
-    public function currentBillingPeriod(int $billingDay): object
-    {
-        if ($this->customer->type !== 'credit_card') {
-            return (object) [
-                'startDate' => null,
-                'endDate' => null,
-                'gracePeriod' => null,
-            ];
-        }
-
-        $this->setBillingPeriod($billingDay);
-
-        return (object) [
-            'startDate' => $this->billingStartDate ? $this->billingStartDate->format('Y-m-d H:i:s') : null,
-            'endDate' => $this->billingEndDate ? $this->billingEndDate->format('Y-m-d H:i:s') : null,
-            'gracePeriod' => $this->billingStartDate ? $this->billingStartDate->copy()->subDay()->addDays(20)->endOfDay()->format('Y-m-d H:i:s') : null,
-        ];
-    }
-
-    public function previousBillingPeriod(int $billingDay): object
-    {
-        if ($this->customer->type !== 'credit_card') {
-            return (object) [
-                'startDate' => null,
-                'endDate' => null,
-            ];
-        }
-
-        if ($billingDay < 1 || $billingDay > 28) {
-            abort(400, 'Invalid billing day');
-        }
-
-        $today = Carbon::today();
-        $currentBillingDate = $today->copy()->setDay($billingDay);
-        $currentStartDate = $currentBillingDate->copy()->addDay()->startOfDay();
-
-        // Determine the current billing period's start and end
-        $currentPeriodStart = $currentStartDate->isFuture()
-            ? $today->copy()->subMonth()->day($billingDay + 1)->startOfDay()
-            : $currentStartDate;
-        $currentPeriodEnd = $currentStartDate->isFuture()
-            ? $currentBillingDate->endOfDay()
-            : $today->copy()->addMonth()->day($billingDay)->endOfDay();
-
-        // Previous billing period is one month before the current period
-        $previousPeriodStart = $currentPeriodStart->copy()->subMonth();
-        $previousPeriodEnd = $currentPeriodEnd->copy()->subMonth();
-
-        return (object) [
-            'startDate' => $previousPeriodStart->format('Y-m-d H:i:s'),
-            'endDate' => $previousPeriodEnd->format('Y-m-d H:i:s'),
-        ];
     }
 
     public function fetchTransactions()
     {
-        $query = $this->customer->transactions()->select('id', 'customer_id', 'particulars', 'amount', 'type', 'datetime')
-            ->orderBy($this->sortField, $this->sortDir);
+        $query = $this->customer->transactions()->select('id', 'customer_id', 'particulars', 'amount', 'type', 'datetime');
 
-        if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
-            $billingPeriod = $this->currentBillingPeriod($this->customer->billing_date);
-            if ($billingPeriod->startDate && $billingPeriod->endDate) {
-                $query->whereBetween('datetime', [
-                    $billingPeriod->startDate,
-                    $billingPeriod->endDate
-                ]);
+        $period = $this->getPeriodForFilter();
+
+        if ($period) {
+            if ($period->startDate && $period->endDate) {
+                $query->whereBetween('datetime', [$period->startDate, $period->endDate]);
             } else {
-                return [];
+                $this->transactions = [];
+                return;
             }
         }
 
-        $this->transactions = $query->get()->groupBy(fn($txn) => $txn->datetime->format('Y-m-d'))->all();
+        $this->transactions = $query
+            ->orderBy($this->sortField, $this->sortDir)
+            ->get()
+            ->groupBy(fn($txn) => $txn->datetime->format('Y-m-d'))
+            ->all();
     }
 
     #[Title('Transactions')]
@@ -245,11 +174,12 @@ class Transactions extends Component
     }
 }
 
+// ====================================================================================================================================================================
+
 // namespace App\Livewire\V1\Transaction;
 
 // use App\Models\Customer;
-// use Carbon\Carbon;
-// use Illuminate\Support\Facades\Cache;
+// use App\Services\BillingPeriodCalculator;
 // use Livewire\Attributes\Title;
 // use Livewire\Component;
 
@@ -260,114 +190,83 @@ class Transactions extends Component
 //     public $sortDir = 'desc';
 //     public $sortField = 'datetime';
 //     public $filter = 'current'; // 'current'|'all'
-//     public $billingStartDate;
-//     public $billingEndDate;
 
 //     public function setFilter($filter)
 //     {
 //         $this->filter = in_array($filter, ['current', 'all']) ? $filter : 'current';
-//         if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
-//             $this->setBillingPeriod($this->customer->billing_date);
-//         }
 //         $this->fetchTransactions();
 //     }
 
-//     public function calculateBalance()
+//     private function getPeriodForFilter(): ?object
 //     {
-//         $cacheKey = "balance_{$this->customer->id}_{$this->filter}";
-//         return Cache::remember($cacheKey, now()->addMinutes(10), function () {
-//             $query = $this->customer->transactions()->select('type', 'amount', 'datetime');
-//             if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
-//                 $billingPeriod = $this->currentBillingPeriod($this->customer->billing_date);
-//                 if ($billingPeriod->startDate && $billingPeriod->endDate) {
-//                     $query->whereBetween('datetime', [
-//                         $billingPeriod->startDate,
-//                         $billingPeriod->endDate
-//                     ]);
-//                 } else {
-//                     return 0;
-//                 }
-//             }
+//         if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
+//             return BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+//         }
 
-//             return $query->get()->sum(function ($transaction) {
-//                 return $transaction->type === 'debit' ? $transaction->amount : -$transaction->amount;
-//             });
+//         return null;
+//     }
+
+//     private function balanceWithinPeriod(?object $period): float
+//     {
+//         $query = $this->customer->transactions()->select('type', 'amount', 'datetime');
+
+//         if ($period && $period->startDate && $period->endDate) {
+//             $query->whereBetween('datetime', [$period->startDate, $period->endDate]);
+//         }
+
+//         return $query->get()->sum(function ($transaction) {
+//             return $transaction->type === 'debit' ? $transaction->amount : -$transaction->amount;
 //         });
 //     }
 
-//     public function currentExpenses()
+//     private function sumWithinPeriod(?object $period, string $type): float
+//     {
+//         if (!$period || !$period->startDate || !$period->endDate) {
+//             return 0;
+//         }
+
+//         return $this->customer->transactions()
+//             ->select('type', 'amount', 'datetime')
+//             ->where('type', $type)
+//             ->whereBetween('datetime', [$period->startDate, $period->endDate])
+//             ->sum('amount');
+//     }
+
+//     public function calculateBalance(): float
+//     {
+//         $period = $this->getPeriodForFilter();
+//         return $this->balanceWithinPeriod($period);
+//     }
+
+//     public function currentExpenses(): float
 //     {
 //         if ($this->customer->type !== 'credit_card') {
 //             return 0;
 //         }
 
-//         $cacheKey = "current_expenses_{$this->customer->id}";
-//         return Cache::remember($cacheKey, now()->addMinutes(10), function () {
-//             $billingPeriod = $this->currentBillingPeriod($this->customer->billing_date);
-//             if (!$billingPeriod->startDate || !$billingPeriod->endDate) {
-//                 return 0;
-//             }
-
-//             return $this->customer->transactions()
-//                 ->select('type', 'amount', 'datetime')
-//                 ->where('type', 'debit')
-//                 ->whereBetween('datetime', [
-//                     $billingPeriod->startDate,
-//                     $billingPeriod->endDate
-//                 ])
-//                 ->sum('amount');
-//         });
+//         $period = BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+//         return $this->sumWithinPeriod($period, 'debit');
 //     }
 
-//     public function previousExpenses()
+//     public function previousExpenses(): float
 //     {
 //         if ($this->customer->type !== 'credit_card') {
 //             return 0;
 //         }
 
-//         $cacheKey = "previous_expenses_{$this->customer->id}";
-//         return Cache::remember($cacheKey, now()->addMinutes(10), function () {
-//             $billingPeriod = $this->previousBillingPeriod($this->customer->billing_date);
-//             if (!$billingPeriod->startDate || !$billingPeriod->endDate) {
-//                 return 0;
-//             }
-
-//             return $this->customer->transactions()
-//                 ->select('type', 'amount', 'datetime')
-//                 ->where('type', 'debit')
-//                 ->whereBetween('datetime', [
-//                     $billingPeriod->startDate,
-//                     $billingPeriod->endDate
-//                 ])
-//                 ->sum('amount');
-//         });
+//         $period = BillingPeriodCalculator::previousPeriod($this->customer->billing_date);
+//         return $this->sumWithinPeriod($period, 'debit');
 //     }
 
-//     public function currentPayments()
+//     public function currentPayments(): float
 //     {
 //         if ($this->customer->type !== 'credit_card') {
 //             return 0;
 //         }
 
-//         $cacheKey = "current_payments_{$this->customer->id}";
-//         return Cache::remember($cacheKey, now()->addMinutes(10), function () {
-//             $billingPeriod = $this->currentBillingPeriod($this->customer->billing_date);
-//             if (!$billingPeriod->startDate || !$billingPeriod->endDate) {
-//                 return 0;
-//             }
-
-//             return $this->customer->transactions()
-//                 ->select('type', 'amount', 'datetime')
-//                 ->where('type', 'credit')
-//                 ->whereBetween('datetime', [
-//                     $billingPeriod->startDate,
-//                     $billingPeriod->endDate
-//                 ])
-//                 ->sum('amount');
-//         });
+//         $period = BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+//         return $this->sumWithinPeriod($period, 'credit');
 //     }
-
-
 
 //     public function sortBy($field)
 //     {
@@ -388,112 +287,29 @@ class Transactions extends Component
 //         }
 
 //         $this->customer = $customer;
-
-//         if ($this->customer->type === 'credit_card' && $this->filter === 'current') {
-//             $this->setBillingPeriod($customer->billing_date);
-//         }
-
 //         $this->fetchTransactions();
-//     }
-
-//     private function setBillingPeriod(int $billingDay): void
-//     {
-//         if ($this->customer->type !== 'credit_card') {
-//             return;
-//         }
-
-//         if ($billingDay < 1 || $billingDay > 28) {
-//             abort(400, 'Invalid billing day');
-//         }
-
-//         $today = Carbon::today();
-//         $billingDate = $today->copy()->setDay($billingDay);
-//         $billingStartDate = $billingDate->copy()->addDay()->startOfDay();
-
-//         $this->billingStartDate = $billingStartDate->isFuture()
-//             ? $today->copy()->subMonth()->day($billingDay + 1)->startOfDay()
-//             : $billingStartDate;
-
-//         $this->billingEndDate = $billingStartDate->isFuture()
-//             ? $billingDate->endOfDay()
-//             : $today->copy()->addMonth()->day($billingDay)->endOfDay();
-//     }
-
-//     public function currentBillingPeriod(int $billingDay): object
-//     {
-//         if ($this->customer->type !== 'credit_card') {
-//             return (object) [
-//                 'startDate' => null,
-//                 'endDate' => null,
-//                 'gracePeriod' => null,
-//             ];
-//         }
-
-//         $this->setBillingPeriod($billingDay);
-
-//         return (object) [
-//             'startDate' => $this->billingStartDate ? $this->billingStartDate->format('Y-m-d H:i:s') : null,
-//             'endDate' => $this->billingEndDate ? $this->billingEndDate->format('Y-m-d H:i:s') : null,
-//             'gracePeriod' => $this->billingStartDate ? $this->billingStartDate->copy()->subDay()->addDays(20)->endOfDay()->format('Y-m-d H:i:s') : null,
-//         ];
-//     }
-
-//     public function previousBillingPeriod(int $billingDay): object
-//     {
-//         if ($this->customer->type !== 'credit_card') {
-//             return (object) [
-//                 'startDate' => null,
-//                 'endDate' => null,
-//             ];
-//         }
-
-//         if ($billingDay < 1 || $billingDay > 28) {
-//             abort(400, 'Invalid billing day');
-//         }
-
-//         $today = Carbon::today();
-//         $currentBillingDate = $today->copy()->setDay($billingDay);
-//         $currentStartDate = $currentBillingDate->copy()->addDay()->startOfDay();
-
-//         // Determine the current billing period's start and end
-//         $currentPeriodStart = $currentStartDate->isFuture()
-//             ? $today->copy()->subMonth()->day($billingDay + 1)->startOfDay()
-//             : $currentStartDate;
-//         $currentPeriodEnd = $currentStartDate->isFuture()
-//             ? $currentBillingDate->endOfDay()
-//             : $today->copy()->addMonth()->day($billingDay)->endOfDay();
-
-//         // Previous billing period is one month before the current period
-//         $previousPeriodStart = $currentPeriodStart->copy()->subMonth();
-//         $previousPeriodEnd = $currentPeriodEnd->copy()->subMonth();
-
-//         return (object) [
-//             'startDate' => $previousPeriodStart->format('Y-m-d H:i:s'),
-//             'endDate' => $previousPeriodEnd->format('Y-m-d H:i:s'),
-//         ];
 //     }
 
 //     public function fetchTransactions()
 //     {
-//         $cacheKey = "transactions_{$this->customer->id}_{$this->filter}_{$this->sortField}_{$this->sortDir}";
-//         $this->transactions = Cache::remember($cacheKey, now()->addMinutes(10), function () {
-//             $query = $this->customer->transactions()->select('id', 'customer_id', 'particulars', 'amount', 'type', 'datetime')
-//                 ->orderBy($this->sortField, $this->sortDir);
+//         $query = $this->customer->transactions()->select('id', 'customer_id', 'particulars', 'amount', 'type', 'datetime');
 
-//             if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
-//                 $billingPeriod = $this->currentBillingPeriod($this->customer->billing_date);
-//                 if ($billingPeriod->startDate && $billingPeriod->endDate) {
-//                     $query->whereBetween('datetime', [
-//                         $billingPeriod->startDate,
-//                         $billingPeriod->endDate
-//                     ]);
-//                 } else {
-//                     return [];
-//                 }
+//         $period = $this->getPeriodForFilter();
+
+//         if ($period) {
+//             if ($period->startDate && $period->endDate) {
+//                 $query->whereBetween('datetime', [$period->startDate, $period->endDate]);
+//             } else {
+//                 $this->transactions = [];
+//                 return;
 //             }
+//         }
 
-//             return $query->get()->groupBy(fn($txn) => $txn->datetime->format('Y-m-d'))->all();
-//         });
+//         $this->transactions = $query
+//             ->orderBy($this->sortField, $this->sortDir)
+//             ->get()
+//             ->groupBy(fn($txn) => $txn->datetime->format('Y-m-d'))
+//             ->all();
 //     }
 
 //     #[Title('Transactions')]
@@ -504,6 +320,8 @@ class Transactions extends Component
 //             'currentExpenses' => $this->currentExpenses(),
 //             'previousExpenses' => $this->previousExpenses(),
 //             'currentPayments' => $this->currentPayments(),
+//             'billingPeriod' => $this->getPeriodForFilter(),
 //         ]);
 //     }
 // }
+// ====================================================================================================================================================================
