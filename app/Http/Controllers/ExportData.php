@@ -15,7 +15,7 @@ class ExportData extends Controller
 
     public function exportToCsv(Customer $customer)
     {
-        
+
         // dd($customer->name);
         $transactions = $customer->transactions;
 
@@ -46,7 +46,7 @@ class ExportData extends Controller
 
         // Process each transaction
         foreach ($transactions as $transaction) {
-            $date = date('d-m-Y', strtotime($transaction->datetime));
+            $date = date('d M Y', strtotime($transaction->datetime));
             $debit = $transaction->type === 'debit' ? $transaction->amount : '';
             $credit = $transaction->type === 'credit' ? $transaction->amount : '';
             $particulars = $transaction->particulars ?? '';
