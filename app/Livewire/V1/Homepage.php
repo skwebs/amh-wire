@@ -4,6 +4,7 @@ namespace App\Livewire\V1;
 
 use App\Models\Customer;
 use App\Models\Transaction;
+use App\Services\CustomerTransactionSummaryService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Title;
@@ -28,6 +29,9 @@ class Homepage extends Component
     public $cashBalance;
     public $banksBalance;
     public $otherBalance;
+    public float $totalCurrentDebit = 0.0;
+    public float $totalCurrentCredit = 0.0;
+    public float $totalPreviousDebit = 0.0;
 
     /**
      * Log out the authenticated user and redirect to login.
@@ -43,7 +47,7 @@ class Homepage extends Component
     /**
      * Initialize component data.
      */
-    public function mount()
+    public function mount(CustomerTransactionSummaryService $transactionService)
     {
         if (!Auth::check()) {
             $this->redirectRoute('login');
@@ -51,13 +55,43 @@ class Homepage extends Component
         }
 
         $this->user = Auth::user();
+
+        // Calculate balances for different account types
         $this->creditCardsExpenses = $this->balance(AccountType::CREDIT_CARD->value);
         $this->cashBalance = $this->balance(AccountType::CASH->value);
         $this->banksBalance = $this->balance(AccountType::BANK->value);
         $this->otherBalance = $this->balance(AccountType::OTHER->value);
+
+        // Fetch recent transactions
         $this->transactions = Transaction::whereHas('customer', function ($query) {
             $query->where('user_id', $this->user->id);
         })->with('customer')->orderByDesc('datetime')->take(5)->get();
+
+        // Calculate credit card transaction sums for current and previous billing cycles
+        $creditCardCustomers = Customer::where('user_id', $this->user->id)
+            ->where('type', AccountType::CREDIT_CARD->value)
+            ->whereNotNull('billing_date')
+            ->get();
+
+        $totalCurrentDebit = 0.0;
+        $totalCurrentCredit = 0.0;
+        $totalPreviousDebit = 0.0;
+
+        foreach ($creditCardCustomers as $customer) {
+            try {
+                $sums = $transactionService->getBillingCycleSums($customer->id);
+                $totalCurrentDebit += $sums['current_debit'];
+                $totalCurrentCredit += $sums['current_credit'];
+                $totalPreviousDebit += $sums['previous_debit'];
+            } catch (\Exception $e) {
+                Log::warning("Failed to fetch transaction sums for customer ID {$customer->id}: {$e->getMessage()}");
+                continue;
+            }
+        }
+
+        $this->totalCurrentDebit = $totalCurrentDebit;
+        $this->totalCurrentCredit = $totalCurrentCredit;
+        $this->totalPreviousDebit = $totalPreviousDebit;
     }
 
     /**
@@ -93,6 +127,10 @@ class Homepage extends Component
     #[Title('Home page')]
     public function render()
     {
-        return view('livewire.v1.homepage');
+        return view('livewire.v1.homepage', [
+            'totalCurrentDebit' => $this->totalCurrentDebit,
+            'totalCurrentCredit' => $this->totalCurrentCredit,
+            'totalPreviousDebit' => $this->totalPreviousDebit,
+        ]);
     }
 }
