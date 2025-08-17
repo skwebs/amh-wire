@@ -38,9 +38,9 @@
                     <td>:</td>
                     <td>
                         @if ($customer->latestTransaction)
-                            {{ $customer->latestTransaction->datetime }} |
+                            {{ $customer->latestTransaction->datetime->diffForHumans() }} |
                             {{ $customer->latestTransaction->amount }} |
-                            {{ $customer->latestTransaction->type }}
+                            {{ $customer->latestTransaction->type == 'credit' ? 'Cr' : 'Dr' }}
                         @else
                             No
                         @endif

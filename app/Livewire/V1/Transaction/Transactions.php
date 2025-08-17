@@ -14,14 +14,14 @@ class Transactions extends Component
     public $transactions;
     public $sortDir = 'desc';
     public $sortField = 'datetime';
-    public $filter = 'current'; // 'current'|'all'
+    public $filter = 'current'; // 'current'|'previous'|'all'
     public ?Carbon $billingStartDate = null;
     public ?Carbon $billingEndDate = null;
 
     public function setFilter($filter)
     {
-        $this->filter = in_array($filter, ['current', 'all']) ? $filter : 'current';
-        if ($this->filter === 'current') {
+        $this->filter = in_array($filter, ['current', 'previous', 'all']) ? $filter : 'current';
+        if (in_array($this->filter, ['current', 'previous'])) {
             $this->setBillingDates();
         }
         $this->fetchTransactions();
@@ -35,15 +35,26 @@ class Transactions extends Component
             return;
         }
 
-        $period = BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+        $period = $this->filter === 'current'
+            ? BillingPeriodCalculator::currentPeriod($this->customer->billing_date)
+            : BillingPeriodCalculator::previousPeriod($this->customer->billing_date);
+
         $this->billingStartDate = $period->startDate ? Carbon::parse($period->startDate) : null;
         $this->billingEndDate = $period->endDate ? Carbon::parse($period->endDate) : null;
     }
 
     private function getPeriodForFilter(): ?object
     {
-        if ($this->filter === 'current' && $this->customer->type === 'credit_card') {
+        if ($this->customer->type !== 'credit_card') {
+            return null;
+        }
+
+        if ($this->filter === 'current') {
             return BillingPeriodCalculator::currentPeriod($this->customer->billing_date);
+        }
+
+        if ($this->filter === 'previous') {
+            return BillingPeriodCalculator::previousPeriod($this->customer->billing_date);
         }
 
         return null;
@@ -127,12 +138,12 @@ class Transactions extends Component
             abort(404, 'Customer not found');
         }
 
-        if ($customer->type === 'credit_card' && $customer->billing_date === null) {
+        if ($this->customer->type === 'credit_card' && $customer->billing_date === null) {
             return redirect()->route('customer.update', [$customer, 'm' => 'Please set Billing Date for this Credit Card']);
         }
 
         $this->customer = $customer;
-        if ($this->filter === 'current') {
+        if (in_array($this->filter, ['current', 'previous'])) {
             $this->setBillingDates();
         }
         $this->fetchTransactions();
